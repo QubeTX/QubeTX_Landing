@@ -38,24 +38,15 @@ header {
     align-items: start;
 }
 
-.unbounded-logo {
-    font-family: "Unbounded", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
+.logo {
+    display: inline-block;
+    margin-left: calc(var(--grid-unit) * -1);
 }
 
-.logo {
-    font-size: calc(var(--grid-unit) * 3);
-    background: linear-gradient(to right, var(--gradient-blue), var(--gradient-purple));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    display: inline-block;
-    padding: calc(var(--grid-unit) * 2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: calc(var(--grid-unit));
-    transform: rotate(-2deg);
+.logo img {
+    height: 120px;
+    width: auto;
+    display: block;
 }
 
 main {
@@ -200,6 +191,10 @@ footer {
     h1 .highlight {
         margin-left: calc(var(--grid-unit) * 16);
     }
+
+    .logo img {
+        height: 90px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -231,5 +226,9 @@ footer {
 
     .hero {
         margin-left: 0;
+    }
+
+    .logo img {
+        height: 60px;
     }
 }
