@@ -1,0 +1,58 @@
+.unbounded-title {
+    font-family: "Unbounded", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.unbounded-heading {
+    font-family: "Unbounded", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: calc(var(--grid-unit) * 8);
+    line-height: 0.9;
+    margin-bottom: calc(var(--grid-unit) * 4);
+}
+
+h1 span {
+    display: block;
+}
+
+h1 span:nth-child(2) {
+    font-size: calc(var(--grid-unit) * 6);
+    margin-left: calc(var(--grid-unit) * 16);
+}
+
+h1 .highlight {
+    background: linear-gradient(to right, var(--gradient-blue), var(--gradient-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-left: calc(var(--grid-unit) * 24);
+}
+
+.section-title {
+    font-size: calc(var(--grid-unit) * 5);
+    margin-bottom: calc(var(--grid-unit) * 2);
+    margin-left: calc(var(--grid-unit) * 16);
+    background: linear-gradient(to right, var(--gradient-blue), var(--gradient-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.section-subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: calc(var(--grid-unit) * 2);
+    color: var(--text-secondary);
+    margin-left: calc(var(--grid-unit) * 16);
+    margin-bottom: calc(var(--grid-unit) * 8);
+    opacity: 0.8;
+}

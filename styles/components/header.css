@@ -1,0 +1,28 @@
+header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+}
+
+.logo {
+    display: inline-block;
+    margin-left: calc(var(--grid-unit) * -1);
+}
+
+.logo img {
+    height: 120px;
+    width: auto;
+    display: block;
+}
+
+@media (max-width: 1200px) {
+    .logo img {
+        height: 90px;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo img {
+        height: 50px;
+    }
+}
