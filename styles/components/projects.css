@@ -1,13 +1,64 @@
 .projects {
-    margin-top: calc(var(--grid-unit) * 16);
+    margin-top: clamp(
+        calc(var(--grid-unit) * 8),
+        calc(8vw + var(--grid-unit) * 4),
+        calc(var(--grid-unit) * 16)
+    );
     position: relative;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 clamp(var(--space-md), 4vw, var(--space-xl));
+}
+
+.section-header {
+    font-size: clamp(
+        calc(var(--grid-unit) * 3),
+        calc(3vw + 1rem),
+        calc(var(--grid-unit) * 4)
+    );
+    color: var(--text-primary);
+    margin-bottom: clamp(
+        calc(var(--grid-unit) * 4),
+        calc(4vw + var(--grid-unit) * 2),
+        calc(var(--grid-unit) * 8)
+    );
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    position: relative;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: calc(var(--grid-unit) * -2);
+    left: 0;
+    width: clamp(
+        calc(var(--grid-unit) * 8),
+        20vw,
+        calc(var(--grid-unit) * 16)
+    );
+    height: 2px;
+    background: linear-gradient(to right,
+        var(--gradient-blue),
+        var(--gradient-purple)
+    );
+    border-radius: 1px;
 }
 
 .project-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: calc(var(--grid-unit) * 6);
-    padding: calc(var(--grid-unit) * 4);
+    gap: clamp(
+        calc(var(--grid-unit) * 3),
+        4vw,
+        calc(var(--grid-unit) * 6)
+    );
+    padding: clamp(
+        calc(var(--grid-unit) * 2),
+        3vw,
+        calc(var(--grid-unit) * 4)
+    );
 }
 
 .project-link {
@@ -128,9 +179,23 @@
 }
 
 @media (max-width: 768px) {
+    .projects {
+        padding: 0 var(--space-md);
+    }
+
+    .section-header {
+        font-size: calc(var(--grid-unit) * 3);
+        margin-bottom: calc(var(--grid-unit) * 6);
+    }
+
+    .section-header::after {
+        width: calc(var(--grid-unit) * 8);
+        bottom: calc(var(--grid-unit) * -1.5);
+    }
+
     .project-grid {
         grid-template-columns: 1fr;
-        padding: calc(var(--grid-unit) * 2);
+        padding: var(--space-md);
         gap: calc(var(--grid-unit) * 4);
     }
 
