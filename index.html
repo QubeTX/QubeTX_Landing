@@ -52,6 +52,7 @@
             </div>
 
             <div class="features">
+                <div class="top-line"></div>
                 <div class="feature-card">
                     <div class="icon">🎨</div>
                     <h2 class="unbounded-heading">Web Development</h2>
@@ -135,5 +136,64 @@
             <p>&copy; 2024 QubeTX - A Department of <a href="https://emmettshaughnessy.com" target="_blank">ES Development LLC</a></p>
         </footer>
     </div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Cursor Movement Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorRing = document.querySelector('.cursor-ring');
+            
+            const moveCursor = (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                // Use requestAnimationFrame for smooth movement
+                requestAnimationFrame(() => {
+                    cursorDot.style.transform = `translate(${posX}px, ${posY}px)`;
+                    cursorRing.style.transform = `translate(${posX}px, ${posY}px)`;
+                });
+            };
+
+            // Add cursor tracking
+            window.addEventListener('mousemove', moveCursor);
+
+            // Handle cursor visibility when leaving/entering window
+            document.addEventListener('mouseenter', () => {
+                cursorDot.style.opacity = '1';
+                cursorRing.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursorDot.style.opacity = '0';
+                cursorRing.style.opacity = '0';
+            });
+
+            // Add magnetic effect to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, [role="button"]');
+            
+            interactiveElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const distanceX = e.clientX - centerX;
+                    const distanceY = e.clientY - centerY;
+                    
+                    // Magnetic pull effect
+                    const pull = 0.2; // Adjust pull strength
+                    const moveX = centerX + distanceX * pull;
+                    const moveY = centerY + distanceY * pull;
+                    
+                    requestAnimationFrame(() => {
+                        cursorDot.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        cursorRing.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
