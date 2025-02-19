@@ -11,7 +11,7 @@
     padding: 0 clamp(var(--space-md), 4vw, var(--space-xl));
 }
 
-.section-header {
+.section-title {
     font-size: clamp(
         calc(var(--grid-unit) * 3),
         calc(3vw + 1rem),
@@ -28,7 +28,7 @@
     position: relative;
 }
 
-.section-header::after {
+.section-title::after {
     content: '';
     position: absolute;
     bottom: calc(var(--grid-unit) * -2);
@@ -44,6 +44,16 @@
         var(--gradient-purple)
     );
     border-radius: 1px;
+    transition: all 0.3s ease;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    font-family: 'Space Mono', monospace;
+    font-size: calc(var(--grid-unit) * 1.65);
+    line-height: 1.6;
+    margin-bottom: calc(var(--grid-unit) * 4);
+    opacity: 0.9;
 }
 
 .project-grid {
@@ -178,19 +188,35 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .projects {
-        padding: 0 var(--space-md);
+        padding: 0 var(--space-sm);
     }
 
-    .section-header {
+    .section-title, .section-subtitle {
+        text-align: center;
+    }
+
+    .section-title {
         font-size: calc(var(--grid-unit) * 3);
+        margin-bottom: calc(var(--grid-unit) * 4);
+    }
+
+    .section-subtitle {
+        font-size: calc(var(--grid-unit) * 1.5);
         margin-bottom: calc(var(--grid-unit) * 6);
     }
 
-    .section-header::after {
+    .section-title::after {
         width: calc(var(--grid-unit) * 8);
         bottom: calc(var(--grid-unit) * -1.5);
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(to right,
+            var(--gradient-blue),
+            var(--gradient-purple),
+            var(--gradient-blue)
+        );
     }
 
     .project-grid {
