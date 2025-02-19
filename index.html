@@ -146,51 +146,81 @@
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorRing = document.querySelector('.cursor-ring');
             
+            let cursorVisible = false;
+            let cursorEnlarged = false;
+            let lastX = 0;
+            let lastY = 0;
+
             const moveCursor = (e) => {
-                const posX = e.clientX;
-                const posY = e.clientY;
+                lastX = e.clientX;
+                lastY = e.clientY;
 
                 // Use requestAnimationFrame for smooth movement
                 requestAnimationFrame(() => {
-                    cursorDot.style.transform = `translate(${posX}px, ${posY}px)`;
-                    cursorRing.style.transform = `translate(${posX}px, ${posY}px)`;
+                    if (!cursorEnlarged) {
+                        cursorDot.style.left = `${lastX}px`;
+                        cursorDot.style.top = `${lastY}px`;
+                        cursorRing.style.left = `${lastX}px`;
+                        cursorRing.style.top = `${lastY}px`;
+                    }
                 });
             };
 
             // Add cursor tracking
             window.addEventListener('mousemove', moveCursor);
 
-            // Handle cursor visibility when leaving/entering window
+            // Handle cursor visibility
             document.addEventListener('mouseenter', () => {
+                cursorVisible = true;
                 cursorDot.style.opacity = '1';
                 cursorRing.style.opacity = '1';
             });
 
             document.addEventListener('mouseleave', () => {
+                cursorVisible = false;
                 cursorDot.style.opacity = '0';
                 cursorRing.style.opacity = '0';
             });
 
             // Add magnetic effect to interactive elements
-            const interactiveElements = document.querySelectorAll('a, button, [role="button"]');
+            const interactiveElements = document.querySelectorAll('a, button, [role="button"], .feature-card');
             
             interactiveElements.forEach(el => {
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    const distanceX = e.clientX - centerX;
-                    const distanceY = e.clientY - centerY;
-                    
-                    // Magnetic pull effect
-                    const pull = 0.2; // Adjust pull strength
-                    const moveX = centerX + distanceX * pull;
-                    const moveY = centerY + distanceY * pull;
-                    
+                el.addEventListener('mouseenter', () => {
+                    cursorEnlarged = true;
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursorEnlarged = false;
+                    // Reset cursor position smoothly
                     requestAnimationFrame(() => {
-                        cursorDot.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                        cursorRing.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        cursorDot.style.left = `${lastX}px`;
+                        cursorDot.style.top = `${lastY}px`;
+                        cursorRing.style.left = `${lastX}px`;
+                        cursorRing.style.top = `${lastY}px`;
                     });
+                });
+
+                el.addEventListener('mousemove', (e) => {
+                    if (cursorEnlarged) {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        const distanceX = e.clientX - centerX;
+                        const distanceY = e.clientY - centerY;
+                        
+                        // Magnetic pull effect
+                        const pull = 0.2; // Adjust pull strength
+                        const moveX = e.clientX - distanceX * pull;
+                        const moveY = e.clientY - distanceY * pull;
+                        
+                        requestAnimationFrame(() => {
+                            cursorDot.style.left = `${moveX}px`;
+                            cursorDot.style.top = `${moveY}px`;
+                            cursorRing.style.left = `${moveX}px`;
+                            cursorRing.style.top = `${moveY}px`;
+                        });
+                    }
                 });
             });
         });
