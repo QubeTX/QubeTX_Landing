@@ -29,6 +29,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: none;
+}
+
+/* Ensure cursor remains hidden on interactive elements */
+a, button, [role="button"], .feature-card {
+    cursor: none !important;
 }
 
 html {
@@ -208,7 +214,7 @@ button:hover ~ .cursor-dot,
     .cursor-ring {
         display: none;
     }
-    body {
-        cursor: auto;
+    body, * {
+        cursor: auto !important;
     }
 }
