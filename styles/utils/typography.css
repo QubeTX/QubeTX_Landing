@@ -41,7 +41,6 @@ h1 .highlight {
 .section-title {
     font-size: calc(var(--grid-unit) * 5);
     margin-bottom: calc(var(--grid-unit) * 2);
-    margin-left: calc(var(--grid-unit) * 16);
     background: linear-gradient(to right, var(--gradient-blue), var(--gradient-purple));
     -webkit-background-clip: text;
     background-clip: text;
@@ -52,7 +51,6 @@ h1 .highlight {
     font-family: 'Space Mono', monospace;
     font-size: calc(var(--grid-unit) * 2);
     color: var(--text-secondary);
-    margin-left: calc(var(--grid-unit) * 16);
     margin-bottom: calc(var(--grid-unit) * 8);
     opacity: 0.8;
 }
