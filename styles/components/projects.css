@@ -26,13 +26,15 @@
     line-height: 1.2;
     letter-spacing: -0.02em;
     position: relative;
+    text-align: center;
 }
 
 .section-title::after {
     content: '';
     position: absolute;
     bottom: calc(var(--grid-unit) * -2);
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: clamp(
         calc(var(--grid-unit) * 8),
         20vw,
@@ -54,6 +56,7 @@
     line-height: 1.6;
     margin-bottom: calc(var(--grid-unit) * 4);
     opacity: 0.9;
+    text-align: center;
 }
 
 .project-grid {
