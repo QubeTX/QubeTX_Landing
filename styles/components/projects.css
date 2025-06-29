@@ -263,9 +263,34 @@
         padding: var(--space-md);
         gap: calc(var(--grid-unit) * 4);
     }
+    
+    /* Reset the third project card's special layout */
+    .project-link:nth-child(3) {
+        grid-column: 1;
+    }
+    
+    .project-link:nth-child(3) .project-card {
+        display: flex;
+        grid-template-columns: none;
+        flex-direction: column;
+    }
+    
+    .project-link:nth-child(3) .project-image-wrapper {
+        aspect-ratio: 16/9;
+    }
+    
+    /* Reset height constraints for mobile */
+    .project-link {
+        height: auto;
+    }
+    
+    .project-card {
+        height: auto;
+    }
 
     .project-content {
         padding: calc(var(--grid-unit) * 4);
+        flex: none;
     }
 
     .project-content h2 {
