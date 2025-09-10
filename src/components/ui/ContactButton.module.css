@@ -1,0 +1,82 @@
+.contactButton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    background: linear-gradient(135deg, var(--gradient-blue), var(--gradient-purple));
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: 'Unbounded', sans-serif;
+    font-size: calc(var(--grid-unit) * 2.25);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    border-radius: calc(var(--grid-unit) * 6);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+}
+
+.contactButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%
+    );
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease;
+}
+
+.contactButton:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.contactButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 40px rgba(37, 99, 235, 0.3),
+        0 20px 60px rgba(124, 58, 237, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.contactButton span {
+    position: relative;
+    z-index: 1;
+}
+
+.arrowIcon {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.contactButton:hover .arrowIcon {
+    transform: translateX(4px);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@media (max-width: 768px) {
+    .contactButton {
+        font-size: calc(var(--grid-unit) * 2);
+        padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 4);
+    }
+}
+
+@media (max-width: 480px) {
+    .contactButton {
+        font-size: calc(var(--grid-unit) * 1.75);
+        padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3);
+    }
+}

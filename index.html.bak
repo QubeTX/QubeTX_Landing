@@ -4,7 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QubeTX - Web Development & Digital Infrastructure</title>
-    <link rel="icon" type="image/png" href="/qubeTXFavicon.png">
+    <link rel="icon" type="image/png" href="qubeTXFavicon.png">
+    
+    <!-- Base styles -->
+    <link rel="stylesheet" href="styles/base.css">
+    
+    <!-- Utilities -->
+    <link rel="stylesheet" href="styles/utils/typography.css">
+    <link rel="stylesheet" href="styles/utils/responsive.css">
+    
+    <!-- Components -->
+    <link rel="stylesheet" href="styles/components/header.css">
+    <link rel="stylesheet" href="styles/components/hero.css">
+    <link rel="stylesheet" href="styles/components/features.css">
+    <link rel="stylesheet" href="styles/components/projects.css">
+    <link rel="stylesheet" href="styles/components/contact.css">
+    <link rel="stylesheet" href="styles/components/footer.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +27,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="root"></div>
+    <div class="container">
         <header>
             <div class="logo">
                 <img src="logoQUBETX_horizontal.png" alt="QubeTX Logo">
@@ -156,6 +171,94 @@
             <p>&copy; 2024 QubeTX - A Department of <a href="https://emmettshaughnessy.com" target="_blank">ES Development LLC</a></p>
         </footer>
     </div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Cursor Movement Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorRing = document.querySelector('.cursor-ring');
+            
+            let cursorVisible = false;
+            let cursorEnlarged = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            const moveCursor = (e) => {
+                lastX = e.clientX;
+                lastY = e.clientY;
+
+                // Use requestAnimationFrame for smooth movement
+                requestAnimationFrame(() => {
+                    if (!cursorEnlarged) {
+                        cursorDot.style.left = `${lastX}px`;
+                        cursorDot.style.top = `${lastY}px`;
+                        cursorRing.style.left = `${lastX}px`;
+                        cursorRing.style.top = `${lastY}px`;
+                    }
+                });
+            };
+
+            // Add cursor tracking
+            window.addEventListener('mousemove', moveCursor);
+
+            // Handle cursor visibility
+            document.addEventListener('mouseenter', () => {
+                cursorVisible = true;
+                cursorDot.style.opacity = '1';
+                cursorRing.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursorVisible = false;
+                cursorDot.style.opacity = '0';
+                cursorRing.style.opacity = '0';
+            });
+
+            // Add magnetic effect to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, [role="button"], .feature-card');
+            
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorEnlarged = true;
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursorEnlarged = false;
+                    // Reset cursor position smoothly
+                    requestAnimationFrame(() => {
+                        cursorDot.style.left = `${lastX}px`;
+                        cursorDot.style.top = `${lastY}px`;
+                        cursorRing.style.left = `${lastX}px`;
+                        cursorRing.style.top = `${lastY}px`;
+                    });
+                });
+
+                el.addEventListener('mousemove', (e) => {
+                    if (cursorEnlarged) {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        const distanceX = e.clientX - centerX;
+                        const distanceY = e.clientY - centerY;
+                        
+                        // Magnetic pull effect
+                        const pull = 0.2; // Adjust pull strength
+                        const moveX = e.clientX - distanceX * pull;
+                        const moveY = e.clientY - distanceY * pull;
+                        
+                        requestAnimationFrame(() => {
+                            cursorDot.style.left = `${moveX}px`;
+                            cursorDot.style.top = `${moveY}px`;
+                            cursorRing.style.left = `${moveX}px`;
+                            cursorRing.style.top = `${moveY}px`;
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

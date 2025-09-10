@@ -1,0 +1,29 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--container-padding-y) var(--container-padding-x);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--section-spacing);
+}
+
+.main {
+    display: grid;
+    gap: var(--content-spacing);
+}
+
+/* Container padding */
+@media (max-width: 768px) {
+    .container {
+        padding: max(
+            calc(var(--grid-unit) * 2),
+            min(4vw, calc(var(--grid-unit) * 3))
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: calc(var(--grid-unit) * 1.5);
+    }
+}
