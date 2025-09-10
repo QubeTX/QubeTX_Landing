@@ -5,16 +5,16 @@ function CustomCursor() {
   const cursorDotRef = useRef(null)
   const cursorRingRef = useRef(null)
   const [cursorEnlarged, setCursorEnlarged] = useState(false)
-  const [lastX, setLastX] = useState(0)
-  const [lastY, setLastY] = useState(0)
+  const positionRef = useRef({ x: 0, y: 0 })
+  const cleanupRef = useRef([])
 
   useEffect(() => {
     const cursorDot = cursorDotRef.current
     const cursorRing = cursorRingRef.current
 
     const moveCursor = (e) => {
-      setLastX(e.clientX)
-      setLastY(e.clientY)
+      positionRef.current.x = e.clientX
+      positionRef.current.y = e.clientY
 
       requestAnimationFrame(() => {
         if (!cursorEnlarged && cursorDot && cursorRing) {
@@ -46,7 +46,16 @@ function CustomCursor() {
 
     // Add magnetic effect to interactive elements
     const setupInteractiveElements = () => {
-      const interactiveElements = document.querySelectorAll('a, button, [role="button"], .featureCard')
+      // Clean up previous listeners
+      cleanupRef.current.forEach(({ el, handlers }) => {
+        el.removeEventListener('mouseenter', handlers.handleEnter)
+        el.removeEventListener('mouseleave', handlers.handleLeave)
+        el.removeEventListener('mousemove', handlers.handleMove)
+      })
+      cleanupRef.current = []
+
+      // Use data attributes instead of class selectors
+      const interactiveElements = document.querySelectorAll('a, button, [role="button"], [data-interactive="true"]')
       
       interactiveElements.forEach(el => {
         const handleEnter = () => setCursorEnlarged(true)
@@ -55,10 +64,11 @@ function CustomCursor() {
           // Reset cursor position smoothly
           requestAnimationFrame(() => {
             if (cursorDot && cursorRing) {
-              cursorDot.style.left = `${lastX}px`
-              cursorDot.style.top = `${lastY}px`
-              cursorRing.style.left = `${lastX}px`
-              cursorRing.style.top = `${lastY}px`
+              const { x, y } = positionRef.current
+              cursorDot.style.left = `${x}px`
+              cursorDot.style.top = `${y}px`
+              cursorRing.style.left = `${x}px`
+              cursorRing.style.top = `${y}px`
             }
           })
         }
@@ -89,8 +99,11 @@ function CustomCursor() {
         el.addEventListener('mouseleave', handleLeave)
         el.addEventListener('mousemove', handleMove)
 
-        // Store event handlers for cleanup
-        el._cursorHandlers = { handleEnter, handleLeave, handleMove }
+        // Store for cleanup
+        cleanupRef.current.push({
+          el,
+          handlers: { handleEnter, handleLeave, handleMove }
+        })
       })
     }
 
@@ -110,17 +123,15 @@ function CustomCursor() {
       document.removeEventListener('mouseenter', handleMouseEnter)
       document.removeEventListener('mouseleave', handleMouseLeave)
 
-      // Clean up interactive element event listeners
-      const interactiveElements = document.querySelectorAll('a, button, [role="button"], .featureCard')
-      interactiveElements.forEach(el => {
-        if (el._cursorHandlers) {
-          el.removeEventListener('mouseenter', el._cursorHandlers.handleEnter)
-          el.removeEventListener('mouseleave', el._cursorHandlers.handleLeave)
-          el.removeEventListener('mousemove', el._cursorHandlers.handleMove)
-        }
+      // Clean up all interactive element event listeners
+      cleanupRef.current.forEach(({ el, handlers }) => {
+        el.removeEventListener('mouseenter', handlers.handleEnter)
+        el.removeEventListener('mouseleave', handlers.handleLeave)
+        el.removeEventListener('mousemove', handlers.handleMove)
       })
+      cleanupRef.current = []
     }
-  }, [cursorEnlarged, lastX, lastY])
+  }, [cursorEnlarged])
 
   return (
     <>
