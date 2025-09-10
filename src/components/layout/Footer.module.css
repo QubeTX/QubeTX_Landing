@@ -1,0 +1,49 @@
+.footer {
+    text-align: right;
+    color: var(--text-secondary);
+    margin-top: calc(var(--grid-unit) * 8);
+    font-family: 'Space Mono', monospace;
+    font-size: calc(var(--grid-unit) * 1.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: calc(var(--grid-unit) * 4) 0;
+}
+
+.footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+}
+
+.footer a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--gradient-blue);
+}
+
+.commitInfo {
+    font-size: 10px;
+    opacity: 0.5;
+    margin-top: 8px;
+    font-family: 'Space Mono', monospace;
+}
+
+.commitLabel {
+    font-weight: 600;
+    color: var(--gradient-blue);
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        text-align: center;
+        padding: calc(var(--grid-unit) * 4) calc(var(--grid-unit) * 2);
+        margin-top: calc(var(--grid-unit) * 6);
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: calc(var(--grid-unit) * 5) calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3);
+    }
+}

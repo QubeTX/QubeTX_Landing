@@ -1,0 +1,40 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(24px, 3vw, 48px) 0;
+    width: 100%;
+}
+
+.logo {
+    display: inline-block;
+    margin: 0;
+}
+
+.logo img {
+    height: clamp(50px, 8vw, 120px);
+    width: auto;
+    display: block;
+    aspect-ratio: auto;
+    transform-origin: left center;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 16px;
+        justify-content: flex-start;
+    }
+    
+    .logo {
+        margin: 0;
+    }
+    
+    .logo img {
+        height: clamp(40px, 6vw, 50px);
+    }
+}

@@ -5,12 +5,36 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2025-09-10
+## [2.0.0] - 2025-09-10
+
+### Changed
+- **BREAKING**: Migrated from static HTML/CSS to React 19 with Vite
+- Restructured entire codebase to component-based architecture
+- Moved all styling to CSS Modules for better encapsulation
+- Enhanced responsive design with additional breakpoints (375px, 390px, 414px)
+- Migrated all image assets to public/ directory
+- Updated build system from static files to Vite bundler
 
 ### Added
+- React 19 component architecture
+- Vite 7 build tool and development server
+- CSS Modules for scoped styling
+- Custom magnetic cursor effect with React hooks
+- Component organization (layout, sections, ui, effects)
+- npm package management
+- Hot Module Replacement for development
+- Production build optimization
+- Development server on port 8080, preview on port 8081
 - `CLAUDE.md` file for Claude Code guidance and project context
 - `OG_TREE.txt` file with complete project structure snapshot
 - `CHANGELOG.md` file to track project history
+
+### Improved
+- Mobile responsiveness with fluid typography using clamp()
+- Touch target sizes (minimum 44px)
+- Button heights (minimum 48px)
+- Progressive enhancement for smaller devices
+- Development workflow with HMR
 
 ## [1.3.0] - 2025-06-28
 
@@ -87,7 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Favicon
 
 ### Project Information
-- **Type**: Static HTML/CSS website
+- **Type**: React SPA with Vite
 - **Deployment**: GitHub Pages
 - **Domain**: qubetx.com
 - **Purpose**: Official landing page for QubeTX, a department of ES Development LLC

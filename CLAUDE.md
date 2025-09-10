@@ -4,52 +4,79 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-QubeTX Landing Page - A static website serving as the official landing page for QubeTX, a department of ES Development LLC. The site is deployed via GitHub Pages.
+QubeTX Landing Page - A modern React-based website serving as the official landing page for QubeTX, a department of ES Development LLC. Built with React 19 and Vite for optimal performance and developer experience.
 
 ## Architecture
 
 ### Technology Stack
-- Pure HTML/CSS (no JavaScript framework)
-- Static site hosted on GitHub Pages
-- Custom domain configured via CNAME
+- **React 19** - Component-based UI framework
+- **Vite 7** - Fast build tool and dev server
+- **CSS Modules** - Scoped component styling
+- **Custom Cursor** - Interactive magnetic cursor effect
+- **GitHub Pages** - Static site deployment
 
 ### File Structure
 ```
 /
-├── index.html              # Main HTML file
-├── styles/                 # CSS organization
-│   ├── base.css           # CSS variables and resets
-│   ├── main.css           # Entry point (imports only)
-│   ├── components/        # Component-specific styles
-│   │   ├── header.css
-│   │   ├── hero.css
-│   │   ├── features.css
-│   │   ├── projects.css
-│   │   ├── contact.css
-│   │   └── footer.css
-│   └── utils/             # Utility styles
-│       ├── typography.css
-│       └── responsive.css
-├── *.png                  # Image assets (logos, project images)
+├── index.html              # Root HTML file (Vite entry point)
+├── package.json           # Project dependencies and scripts
+├── vite.config.js         # Vite configuration
+├── public/                # Static assets
+│   ├── *.png             # Image assets (logos, project images)
+│   └── qubeTXFavicon.png # Site favicon
+├── src/                   # Source code
+│   ├── main.jsx          # React app entry point
+│   ├── App.jsx           # Root component
+│   ├── styles/           # Global styles
+│   │   ├── global.css    # Global CSS and variables
+│   │   └── App.module.css
+│   └── components/       # React components
+│       ├── layout/       # Layout components
+│       │   ├── Header.jsx
+│       │   └── Footer.jsx
+│       ├── sections/     # Page sections
+│       │   ├── Hero.jsx
+│       │   ├── Features.jsx
+│       │   ├── Projects.jsx
+│       │   └── Contact.jsx
+│       ├── ui/           # Reusable UI components
+│       │   ├── FeatureCard.jsx
+│       │   ├── ProjectCard.jsx
+│       │   └── ContactButton.jsx
+│       └── effects/      # Visual effects
+│           └── CustomCursor.jsx
 └── QubeTX_Design_System.md # Design specifications
 ```
 
-### CSS Architecture
-- Modular CSS with separate files for each component
-- CSS custom properties defined in base.css
-- BEM-like naming conventions
-- Mobile-first responsive design with breakpoints at 768px and 1200px
+### Component Architecture
+- **CSS Modules**: Each component has a corresponding `.module.css` file
+- **Component Organization**: Separated by function (layout, sections, ui, effects)
+- **Props Pattern**: UI components receive data via props from section components
+- **Custom Hooks**: Custom cursor uses React hooks for DOM interaction
 
 ## Development Commands
 
-### Local Development
+### Installation
 ```bash
-# Open the site locally (macOS)
-open index.html
+# Install dependencies
+npm install
+```
 
-# Start a local server with Python
-python3 -m http.server 8000
-# Then visit http://localhost:8000
+### Development
+```bash
+# Start development server on port 8080
+npm run dev
+# Access at http://localhost:8080
+```
+
+### Building
+```bash
+# Build for production
+npm run build
+# Output goes to dist/ directory
+
+# Preview production build locally
+npm run preview
 ```
 
 ### Deployment
@@ -73,22 +100,53 @@ git push origin main
 - Primary Blue: `#0066FF`
 - Dark Background: `#0a0f1c`
 - Card Background: `#0d1117`
+- Gradient Blue: `#2563eb`
+- Gradient Purple: `#7c3aed`
 - Text: `#ffffff` (primary), `#94a3b8` (secondary)
 
 ### Grid System
-- 8px base unit
-- 1400px max container width
-- Consistent spacing multiples (8px, 32px, 64px, 96px)
+- 8px base unit (CSS variable: `--grid-unit`)
+- Responsive spacing with clamp() functions
+- Container padding: `clamp(16px, 4vw, 32px)`
+- Section spacing: `clamp(48px, 10vw, 96px)`
+
+### Responsive Design
+- Mobile-first approach with CSS Modules
+- Breakpoints:
+  - 375px - Small mobile
+  - 390px - iPhone 12/13 mini
+  - 414px - Standard mobile
+  - 768px - Tablet
+  - 1200px - Desktop
+- Touch target minimum: 44px
+- Button height minimum: 48px
 
 ### Component Patterns
-- Cards use `var(--card-bg)` background with subtle borders
-- Hover states include translation, scale, and opacity transitions
-- Border radius: 16px for feature cards, 24px for project cards
+- Cards use CSS Module classes with hover transitions
+- Magnetic cursor effect on interactive elements
+- Smooth animations (0.3-0.6s ease)
+- Progressive enhancement for mobile devices
+
+## Vite Configuration
+
+### Path Aliases
+```javascript
+'@': '/src'
+'@assets': '/attached_assets'
+```
+
+### Dev Server
+- Host: `0.0.0.0` (allows external connections)
+- Port: `8080` (development), `8081` (preview)
+- HMR configured for port 443
 
 ## Important Considerations
 
-- This is a static site - no build process or bundling required
-- Images are stored in the root directory alongside HTML
-- The CNAME file must be preserved for custom domain functionality
-- All styling follows the QubeTX Design System specifications
-- Responsive breakpoints: Mobile (<768px), Tablet (768px-1199px), Desktop (1200px+)
+- React 19 with Vite for modern development experience
+- All styling uses CSS Modules for component scoping
+- Images served from `public/` directory (referenced as `/image.png`)
+- Custom cursor implemented with React hooks and refs
+- The CNAME file must be in `public/` for custom domain functionality
+- All components follow the QubeTX Design System specifications
+- No external UI libraries - all components are custom built
+- Responsive design uses clamp() for fluid typography and spacing
