@@ -1,13 +1,14 @@
 .header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: start;
-    padding: max(var(--space-sm), min(2vw, var(--space-md)));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(24px, 3vw, 48px) 0;
+    width: 100%;
 }
 
 .logo {
     display: inline-block;
-    margin-left: max(calc(var(--grid-unit) * -1), min(-2vw, calc(var(--grid-unit) * -2)));
+    margin: 0;
 }
 
 .logo img {
@@ -25,11 +26,12 @@
 
 @media (max-width: 480px) {
     .header {
-        padding: var(--space-sm);
+        padding: 16px;
+        justify-content: flex-start;
     }
     
     .logo {
-        margin-left: calc(var(--grid-unit) * -0.5);
+        margin: 0;
     }
     
     .logo img {

@@ -1,16 +1,19 @@
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: clamp(32px, 6vw, 64px) clamp(16px, 3vw, 32px);
-    display: grid;
-    grid-template-columns: 1fr;
+    padding: clamp(32px, 6vw, 64px) clamp(32px, 4vw, 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: clamp(40px, 8vw, 96px);
     width: 100%;
     overflow-x: hidden;
 }
 
 .main {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: clamp(32px, 6vw, 48px);
     width: 100%;
     overflow-x: hidden;

@@ -21,6 +21,19 @@
     border-bottom-color: var(--gradient-blue);
 }
 
+.commitInfo {
+    font-size: 10px;
+    opacity: 0.5;
+    margin-top: 8px;
+    font-family: 'Space Mono', monospace;
+}
+
+.commitLabel {
+    font-weight: 600;
+    color: var(--gradient-blue);
+    opacity: 0.8;
+}
+
 @media (max-width: 768px) {
     .footer {
         text-align: center;

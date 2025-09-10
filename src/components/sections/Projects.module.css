@@ -1,7 +1,11 @@
 .projects {
-    margin-top: clamp(48px, 8vw, 128px);
+    margin-top: clamp(48px, 8vw, 96px);
     position: relative;
-    padding: 0 clamp(16px, 3vw, 0px);
+    padding: 0 clamp(32px, 4vw, 64px);
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .sectionTitle {
@@ -48,18 +52,20 @@
 
 .projectGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-    gap: clamp(24px, 4vw, 40px);
-    padding: clamp(16px, 3vw, 32px);
-    max-width: 1600px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(32px, 4vw, 48px);
+    padding: clamp(32px, 4vw, 48px) 0;
+    max-width: 1200px;
     margin: 0 auto;
+    justify-items: center;
+    width: 100%;
 }
 
 /* Enhanced mobile breakpoints */
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
     .projectGrid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
+        gap: 32px;
+        padding: 24px;
     }
 }
 

@@ -4,7 +4,7 @@
 QubeTX is a professional web development and digital infrastructure company landing page. Originally a static HTML/CSS website, it has been modernized to use React + Vite while preserving the sophisticated dark theme design, custom cursor effects, and responsive layout.
 
 ## Project Architecture
-- **Framework**: React 18 with Vite
+- **Framework**: React 19 with Vite
 - **Styling**: CSS Modules for component-scoped styles
 - **Languages**: JavaScript (JSX), CSS
 - **Build Tool**: Vite

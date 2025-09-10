@@ -1,11 +1,15 @@
 .hero {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: clamp(24px, 4vw, 32px);
-    margin-left: clamp(0px, 6vw, 64px);
     padding-top: clamp(24px, 5vw, 48px);
     padding-bottom: clamp(32px, 8vw, 64px);
-    padding-left: clamp(16px, 3vw, 0px);
-    padding-right: clamp(16px, 3vw, 0px);
+    padding-left: clamp(16px, 3vw, 32px);
+    padding-right: clamp(16px, 3vw, 32px);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .title {
@@ -13,6 +17,8 @@
     line-height: 0.95;
     margin-bottom: clamp(20px, 4vw, 32px);
     letter-spacing: -0.02em;
+    text-align: center;
+    width: 100%;
 }
 
 .title span {
@@ -21,7 +27,8 @@
 
 .title span:nth-child(2) {
     font-size: clamp(24px, calc(1.5rem + 4vw), 48px);
-    margin-left: clamp(20px, 10vw, 128px);
+    margin-left: 0;
+    padding-left: clamp(20px, 5vw, 60px);
 }
 
 .title .highlight {
@@ -29,7 +36,8 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin-left: clamp(40px, 15vw, 192px);
+    margin-left: 0;
+    padding-left: clamp(40px, 8vw, 120px);
     font-size: clamp(28px, calc(1.75rem + 4.5vw), 56px);
 }
 
@@ -37,23 +45,24 @@
     font-family: 'Space Mono', monospace;
     font-size: clamp(14px, calc(0.875rem + 0.75vw), 20px);
     color: var(--text-secondary);
-    max-width: min(800px, 90%);
-    margin-left: clamp(16px, 6vw, 96px);
+    max-width: 800px;
+    margin: 0 auto;
     border-left: 2px solid rgba(255, 255, 255, 0.1);
     padding-left: clamp(16px, 4vw, 48px);
     line-height: 1.6;
-    transform: translateX(clamp(0px, 2vw, 16px));
     opacity: 0.9;
+    text-align: left;
 }
 
 .company {
     font-size: clamp(10px, calc(0.625rem + 0.5vw), 12px);
     color: var(--text-secondary);
-    margin-left: clamp(16px, 6vw, 96px);
+    margin: 0 auto;
     font-family: 'Space Mono', monospace;
     opacity: 0.75;
     letter-spacing: 0.4px;
     text-transform: uppercase;
+    text-align: center;
 }
 
 /* Enhanced mobile breakpoints */

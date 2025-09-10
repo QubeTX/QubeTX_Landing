@@ -2,13 +2,13 @@
 .cursorRing {
     pointer-events: none;
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -50px;
+    left: -50px;
     border-radius: 50%;
     z-index: 9999;
     transition: opacity 0.3s ease;
     transform-origin: center;
-    will-change: transform, width, height, opacity, background-color;
+    will-change: transform;
 }
 
 .cursorDot {
@@ -18,9 +18,7 @@
     margin-top: -3px;
     background: var(--gradient-blue);
     mix-blend-mode: screen;
-    filter: drop-shadow(0 0 4px var(--gradient-blue));
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    animation: cursorPulse 2s ease-in-out infinite;
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .cursorRing {
@@ -29,78 +27,29 @@
     margin-left: -16px;
     margin-top: -16px;
     background: transparent;
-    border: 1.5px solid transparent;
-    background-image: conic-gradient(
-        from 0deg,
-        var(--gradient-blue),
-        var(--gradient-purple),
-        var(--gradient-blue)
-    );
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    animation: rotate 8s linear infinite;
+    border: 1.5px solid rgba(37, 99, 235, 0.5);
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.cursorRing::before,
-.cursorRing::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    background: inherit;
-    opacity: 0.15;
-    filter: blur(8px);
-    animation: cursorGlow 4s ease-in-out infinite;
-}
-
-.cursorRing::after {
-    inset: -8px;
-    opacity: 0.1;
-    filter: blur(12px);
-    animation-delay: -2s;
-}
 
 /* Enlarged state when hovering interactive elements */
 .cursorDot.enlarged {
-    transform: scale(2.5);
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
     background: var(--gradient-purple);
-    filter: drop-shadow(0 0 12px var(--gradient-purple));
 }
 
 .cursorRing.enlarged {
-    width: 64px;
-    height: 64px;
-    margin-left: -32px;
-    margin-top: -32px;
+    width: 48px;
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+    border-color: rgba(124, 58, 237, 0.6);
     border-width: 2px;
-    mix-blend-mode: screen;
-    animation: hoverRotate 4s linear infinite;
 }
 
-@keyframes cursorGlow {
-    0%, 100% { transform: scale(1); opacity: 0.15; filter: blur(8px); }
-    50% { transform: scale(1.2); opacity: 0.25; filter: blur(12px); }
-}
-
-@keyframes cursorPulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg) scale(1); }
-    to { transform: rotate(360deg) scale(1); }
-}
-
-@keyframes hoverRotate {
-    from { transform: rotate(0deg) scale(1.5); }
-    to { transform: rotate(360deg) scale(1.5); }
-}
 
 /* Hide cursor on touch devices */
 @media (hover: none) {

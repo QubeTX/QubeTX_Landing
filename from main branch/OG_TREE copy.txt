@@ -1,0 +1,42 @@
+# QubeTX Landing Page - Project File Tree Snapshot
+# Generated: 2025-09-10
+# Repository: https://github.com/QubeTX/QubeTX_Landing.git
+
+## Directory Structure
+
+.
+├── .gitattributes (66 bytes)
+├── CLAUDE.md (2,898 bytes) - Claude Code guidance file
+├── CNAME (10 bytes) - GitHub Pages custom domain config
+├── demo-pages/ - Empty demo pages directory
+├── dorsey.png (392,669 bytes) - Project image
+├── gvalley.png (928,963 bytes) - Project image
+├── index.html (13,184 bytes) - Main landing page
+├── logoQUBETX_horizontal.png (687,938 bytes) - Horizontal logo variant
+├── logoQUBETX.png (98,903 bytes) - Main logo
+├── magz.png (482,027 bytes) - Project image
+├── OG_TREE.txt - This file
+├── QubeTX_Design_System.md (3,349 bytes) - Design system documentation
+├── qubeTXFavicon.png (161,850 bytes) - Favicon
+├── README.md (221 bytes) - Project readme
+└── styles/ - CSS directory
+    ├── base.css (5,029 bytes) - Base styles and CSS variables
+    ├── components/ - Component-specific styles
+    │   ├── contact.css (3,528 bytes)
+    │   ├── features.css (8,177 bytes)
+    │   ├── footer.css (913 bytes)
+    │   ├── header.css (742 bytes)
+    │   ├── hero.css (1,605 bytes)
+    │   └── projects.css (7,328 bytes)
+    ├── main.css (304 bytes) - Main CSS entry point (imports only)
+    └── utils/ - Utility styles
+        ├── responsive.css (2,558 bytes)
+        └── typography.css (1,362 bytes)
+
+## Summary
+- Total Files: 24 (including this file)
+- Total Directories: 5
+- Total Image Assets: 6 PNG files (~2.75 MB)
+- Total CSS Files: 10 files (~31.6 KB)
+- Project Type: Static HTML/CSS website
+- Deployment: GitHub Pages with custom domain
