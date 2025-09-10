@@ -1,22 +1,26 @@
 .contactButton {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
+    gap: clamp(12px, 2vw, 16px);
+    padding: clamp(16px, 3vw, 24px) clamp(32px, 5vw, 48px);
     background: linear-gradient(135deg, var(--gradient-blue), var(--gradient-purple));
     color: var(--text-primary);
     text-decoration: none;
     font-family: 'Unbounded', sans-serif;
-    font-size: calc(var(--grid-unit) * 2.25);
+    font-size: clamp(16px, calc(1rem + 0.5vw), 18px);
     font-weight: 500;
     letter-spacing: -0.01em;
-    border-radius: calc(var(--grid-unit) * 6);
+    border-radius: clamp(32px, 6vw, 48px);
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
     background-size: 200% 200%;
     animation: gradientShift 4s ease infinite;
+    min-height: 48px;
+    min-width: 200px;
+    justify-content: center;
+    touch-action: manipulation;
 }
 
 .contactButton::before {
@@ -56,6 +60,9 @@
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease;
+    width: clamp(18px, 2.5vw, 20px);
+    height: clamp(18px, 2.5vw, 20px);
+    flex-shrink: 0;
 }
 
 .contactButton:hover .arrowIcon {
@@ -67,16 +74,54 @@
     50% { background-position: 100% 50%; }
 }
 
+/* Enhanced mobile breakpoints for accessibility */
 @media (max-width: 768px) {
     .contactButton {
-        font-size: calc(var(--grid-unit) * 2);
-        padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 4);
+        font-size: 16px;
+        padding: 18px 36px;
+        min-height: 52px;
+        min-width: 220px;
+    }
+    
+    .contactButton:hover {
+        transform: translateY(-1px);
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 414px) {
     .contactButton {
-        font-size: calc(var(--grid-unit) * 1.75);
-        padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3);
+        font-size: 16px;
+        padding: 16px 32px;
+        min-height: 48px;
+        min-width: 200px;
+        border-radius: 28px;
+    }
+    
+    .arrowIcon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 390px) {
+    .contactButton {
+        padding: 15px 30px;
+        min-width: 190px;
+    }
+}
+
+@media (max-width: 375px) {
+    .contactButton {
+        font-size: 15px;
+        padding: 14px 28px;
+        min-height: 46px;
+        min-width: 180px;
+        border-radius: 24px;
+        gap: 10px;
+    }
+    
+    .arrowIcon {
+        width: 16px;
+        height: 16px;
     }
 }

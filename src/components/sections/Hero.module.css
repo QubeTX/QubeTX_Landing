@@ -1,15 +1,18 @@
 .hero {
     display: grid;
-    gap: max(var(--space-md), min(4vw, var(--space-lg)));
-    margin-left: max(0px, min(8vw, var(--space-2xl)));
-    padding-top: max(var(--space-md), min(5vw, var(--space-xl)));
-    padding-bottom: max(var(--space-lg), min(8vw, var(--space-2xl)));
+    gap: clamp(24px, 4vw, 32px);
+    margin-left: clamp(0px, 6vw, 64px);
+    padding-top: clamp(24px, 5vw, 48px);
+    padding-bottom: clamp(32px, 8vw, 64px);
+    padding-left: clamp(16px, 3vw, 0px);
+    padding-right: clamp(16px, 3vw, 0px);
 }
 
 .title {
-    font-size: calc(var(--grid-unit) * 8);
-    line-height: 0.9;
-    margin-bottom: calc(var(--grid-unit) * 4);
+    font-size: clamp(32px, calc(2rem + 5vw), 64px);
+    line-height: 0.95;
+    margin-bottom: clamp(20px, 4vw, 32px);
+    letter-spacing: -0.02em;
 }
 
 .title span {
@@ -17,8 +20,8 @@
 }
 
 .title span:nth-child(2) {
-    font-size: calc(var(--grid-unit) * 6);
-    margin-left: calc(var(--grid-unit) * 16);
+    font-size: clamp(24px, calc(1.5rem + 4vw), 48px);
+    margin-left: clamp(20px, 10vw, 128px);
 }
 
 .title .highlight {
@@ -26,110 +29,149 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin-left: calc(var(--grid-unit) * 24);
+    margin-left: clamp(40px, 15vw, 192px);
+    font-size: clamp(28px, calc(1.75rem + 4.5vw), 56px);
 }
 
 .subtitle {
     font-family: 'Space Mono', monospace;
-    font-size: clamp(
-        calc(var(--grid-unit) * 1.75),
-        calc(2vw + 1rem),
-        calc(var(--grid-unit) * 2.5)
-    );
+    font-size: clamp(14px, calc(0.875rem + 0.75vw), 20px);
     color: var(--text-secondary);
-    max-width: min(800px, 90vw);
-    margin-left: max(var(--space-md), min(8vw, var(--space-3xl)));
+    max-width: min(800px, 90%);
+    margin-left: clamp(16px, 6vw, 96px);
     border-left: 2px solid rgba(255, 255, 255, 0.1);
-    padding-left: max(var(--space-md), min(5vw, var(--space-xl)));
-    line-height: clamp(1.3, calc(1.3 + 0.2 * ((100vw - 320px) / 880)), 1.5);
-    transform: translateX(clamp(0px, 2vw, var(--space-sm)));
+    padding-left: clamp(16px, 4vw, 48px);
+    line-height: 1.6;
+    transform: translateX(clamp(0px, 2vw, 16px));
+    opacity: 0.9;
 }
 
 .company {
-    font-size: clamp(
-        calc(var(--grid-unit) * 1.25),
-        calc(1.5vw + 0.5rem),
-        calc(var(--grid-unit) * 1.5)
-    );
+    font-size: clamp(10px, calc(0.625rem + 0.5vw), 12px);
     color: var(--text-secondary);
-    margin-left: max(var(--space-md), min(8vw, var(--space-3xl)));
+    margin-left: clamp(16px, 6vw, 96px);
     font-family: 'Space Mono', monospace;
-    opacity: 0.8;
-    letter-spacing: max(0.3px, min(0.02em, 0.5px));
+    opacity: 0.75;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
 }
 
-/* Fluid heading sizes */
+/* Enhanced mobile breakpoints */
 @media (max-width: 768px) {
+    .hero {
+        padding: 24px 20px 40px;
+        margin-left: 0;
+    }
+    
     .title {
-        font-size: clamp(
-            calc(var(--grid-unit) * 3.5),
-            calc(5vw + 1rem),
-            calc(var(--grid-unit) * 4.5)
-        );
+        font-size: clamp(28px, 8vw, 36px);
+        margin-bottom: 24px;
     }
 
     .title span:nth-child(2) {
-        font-size: clamp(
-            calc(var(--grid-unit) * 2.5),
-            calc(4vw + 0.75rem),
-            calc(var(--grid-unit) * 3.5)
-        );
-        margin-left: max(
-            calc(var(--grid-unit) * 1),
-            min(4vw, calc(var(--grid-unit) * 4))
-        );
+        font-size: clamp(20px, 6vw, 28px);
+        margin-left: clamp(16px, 5vw, 32px);
     }
 
     .title .highlight {
-        font-size: clamp(
-            calc(var(--grid-unit) * 3),
-            calc(4.5vw + 0.875rem),
-            calc(var(--grid-unit) * 4)
-        );
-        margin-left: max(
-            calc(var(--grid-unit) * 2),
-            min(6vw, calc(var(--grid-unit) * 8))
-        );
+        font-size: clamp(24px, 7vw, 32px);
+        margin-left: clamp(24px, 8vw, 64px);
+    }
+    
+    .subtitle {
+        font-size: clamp(14px, 3.5vw, 16px);
+        margin-left: 24px;
+        padding-left: 20px;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 414px) {
     .hero {
-        margin-left: 0;
-        padding: var(--space-md);
-        gap: var(--space-md);
+        padding: 20px 16px 32px;
+        gap: 20px;
     }
 
     .title, .title span:nth-child(2), .title .highlight {
         margin-left: 0;
         text-align: left;
-        width: 100%;
     }
 
     .title {
-        font-size: calc(var(--grid-unit) * 3.5);
-        letter-spacing: -0.01em;
+        font-size: 28px;
+        line-height: 1;
     }
 
     .title span:nth-child(2) {
-        font-size: calc(var(--grid-unit) * 2.5);
-        margin-top: var(--space-xs);
+        font-size: 20px;
+        margin-top: 8px;
     }
 
     .title .highlight {
-        font-size: calc(var(--grid-unit) * 3);
-        margin-top: var(--space-xs);
+        font-size: 24px;
+        margin-top: 8px;
     }
 
     .subtitle {
-        margin-left: var(--space-md);
-        padding-left: var(--space-md);
+        margin-left: 16px;
+        padding-left: 16px;
         transform: none;
-        border-left-width: 1px;
+        border-left-width: 2px;
+        font-size: 14px;
+        line-height: 1.5;
     }
 
     .company {
-        margin-left: var(--space-md);
-        letter-spacing: 0.3px;
+        margin-left: 16px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 390px) {
+    .hero {
+        padding: 18px 14px 30px;
+    }
+    
+    .title {
+        font-size: 26px;
+    }
+    
+    .title span:nth-child(2) {
+        font-size: 18px;
+    }
+    
+    .title .highlight {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 375px) {
+    .hero {
+        padding: 16px 12px 28px;
+        gap: 18px;
+    }
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .title span:nth-child(2) {
+        font-size: 17px;
+        margin-top: 6px;
+    }
+
+    .title .highlight {
+        font-size: 20px;
+        margin-top: 6px;
+    }
+
+    .subtitle {
+        margin-left: 12px;
+        padding-left: 12px;
+        font-size: 13px;
+    }
+
+    .company {
+        margin-left: 12px;
     }
 }
