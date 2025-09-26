@@ -53,9 +53,7 @@ html {
 
 body {
     font-family: 'Space Grotesk', monospace;
-    background: radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.4), transparent 55%),
-                radial-gradient(circle at 80% 18%, rgba(124, 58, 237, 0.35), transparent 60%),
-                linear-gradient(135deg, #05060f 0%, #101b3a 45%, #0a1040 70%, #040714 100%);
+    background: linear-gradient(135deg, #0a0f1c 0%, #151b2e 50%, #0a0f1c 100%);
     color: var(--text-primary);
     min-height: 100vh;
     line-height: 1.6;
@@ -70,15 +68,15 @@ body {
 body::before {
     content: '';
     position: fixed;
-    inset: -10%;
+    inset: -12%;
     pointer-events: none;
-    background: conic-gradient(from 160deg at 40% 40%, rgba(135, 82, 255, 0.32), rgba(37, 99, 235, 0.25), rgba(135, 82, 255, 0.32)),
-                radial-gradient(circle at 60% 75%, rgba(37, 99, 235, 0.4), transparent 65%);
-    background-size: 170% 170%;
-    filter: blur(95px) saturate(140%);
-    opacity: 0.78;
-    transform: scale(1.12);
-    animation: ambientPulse 14s ease-in-out infinite alternate;
+    background: radial-gradient(circle at 8% 28%, rgba(37, 99, 235, 0.35), transparent 65%),
+                radial-gradient(circle at 92% 26%, rgba(84, 112, 255, 0.3), transparent 68%),
+                radial-gradient(circle at 50% 88%, rgba(60, 80, 180, 0.22), transparent 70%);
+    filter: blur(80px) saturate(125%);
+    opacity: 0.62;
+    transform: scale(1.08);
+    animation: ambientPulse 16s ease-in-out infinite alternate;
     z-index: -2;
 }
 
@@ -87,11 +85,11 @@ body::after {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(circle at 25% 75%, rgba(37, 99, 235, 0.28), transparent 55%),
-                radial-gradient(circle at 72% 35%, rgba(124, 58, 237, 0.3), transparent 60%),
-                linear-gradient(105deg, rgba(11, 16, 40, 0), rgba(58, 90, 210, 0.4), rgba(11, 16, 40, 0));
-    background-size: 150% 150%;
-    opacity: 0.75;
+    background: radial-gradient(circle at 50% -15%, rgba(124, 58, 237, 0.35), transparent 52%),
+                radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.3), transparent 60%),
+                linear-gradient(120deg, rgba(10, 17, 40, 0), rgba(46, 70, 160, 0.28), rgba(10, 17, 40, 0));
+    background-size: 140% 140%;
+    opacity: 0.68;
     mix-blend-mode: screen;
     animation: auroraShift 18s ease-in-out infinite alternate;
     z-index: -1;

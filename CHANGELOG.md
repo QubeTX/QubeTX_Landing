@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Rebuilt the custom cursor for precise tracking with intensified blue/purple bloom layers
-- Energized global background with animated lighting gradients to match the cursor palette
+- Energized global background with animated lighting gradients that respect the original brand palette
 - Tidied UI accessibility by hiding decorative feature icons and pruning unused animations
 
 ## [2.1.2] - 2025-09-26
