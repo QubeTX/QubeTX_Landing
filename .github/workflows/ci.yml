@@ -19,7 +19,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Fetch all history for git info
+        fetch-depth: 0
     
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -30,15 +30,11 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Run linting
-      run: |
-        echo "No linting configured yet"
-        # npm run lint (when configured)
+    - name: Type check
+      run: npx tsc --noEmit
     
     - name: Run tests
-      run: |
-        echo "No tests configured yet"
-        # npm test (when configured)
+      run: npm test
     
     - name: Build project
       run: npm run build
@@ -135,9 +131,11 @@ jobs:
       run: npm audit --audit-level=moderate
       continue-on-error: true
     
-    - name: Check bundle size
+    - name: Build for bundle metrics
+      run: npm run build
+    
+    - name: Bundle size report
       run: |
-        npm run build
         echo "Bundle Size Report:"
         echo "==================="
         du -sh dist/
@@ -145,8 +143,6 @@ jobs:
           size=$(du -h "$file" | cut -f1)
           echo "$file: $size"
         done
-        
-        # Check if bundle is too large
         js_size=$(find dist -name "*.js" -exec du -b {} + | awk '{sum += $1} END {print sum}')
         if [ "$js_size" -gt 524288 ]; then
           echo "⚠️ Warning: JavaScript bundle is larger than 512KB ($js_size bytes)"
