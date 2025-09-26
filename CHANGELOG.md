@@ -5,6 +5,13 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2025-09-26
+
+### Changed
+- Rebuilt the custom cursor for precise tracking with intensified blue/purple bloom layers
+- Energized global background with animated lighting gradients to match the cursor palette
+- Tidied UI accessibility by hiding decorative feature icons and pruning unused animations
+
 ## [2.1.2] - 2025-09-26
 
 ### Changed

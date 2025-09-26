@@ -7,8 +7,8 @@ type FeatureCardProps = Feature
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, lineBreak, description }) => {
   return (
     <article className={styles.featureCard} data-interactive="true">
-      <div className={styles.icon}>
-        <span role="img" aria-label={title}>
+      <div className={styles.icon} aria-hidden="true">
+        <span>
           {icon}
         </span>
       </div>

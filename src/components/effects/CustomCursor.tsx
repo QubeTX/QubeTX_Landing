@@ -25,14 +25,14 @@ const CustomCursor: React.FC = () => {
   const cursorBloomRef = useRef<HTMLDivElement | null>(null)
 
   const pointerRef = useRef<Position>(createInitialPosition())
-  const dotPositionRef = useRef<Position>(createInitialPosition())
   const ringPositionRef = useRef<Position>(createInitialPosition())
   const bloomPositionRef = useRef<Position>(createInitialPosition())
 
   const animationFrameRef = useRef<number | null>(null)
-  const cleanupRef = useRef<InteractiveCleanup[]>([])
   const scheduledSetupRef = useRef<number | null>(null)
+  const cleanupRef = useRef<InteractiveCleanup[]>([])
   const enlargedRef = useRef(false)
+  const isVisibleRef = useRef(false)
 
   const [isPointerFine, setIsPointerFine] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
@@ -75,40 +75,39 @@ const CustomCursor: React.FC = () => {
       return
     }
 
-    dotPositionRef.current = { ...pointerRef.current }
     ringPositionRef.current = { ...pointerRef.current }
     bloomPositionRef.current = { ...pointerRef.current }
+
+    const setCursorVisibility = (visible: boolean) => {
+      if (isVisibleRef.current === visible) {
+        return
+      }
+
+      isVisibleRef.current = visible
+      cursorDot.style.opacity = visible ? '1' : '0'
+      cursorRing.style.opacity = visible ? '1' : '0'
+      cursorBloom.style.opacity = visible ? '0.4' : '0'
+    }
 
     const updateCursorVisuals = () => {
       const target = pointerRef.current
 
-      const dotPosition = dotPositionRef.current
-      dotPosition.x = lerp(dotPosition.x, target.x, 0.35)
-      dotPosition.y = lerp(dotPosition.y, target.y, 0.35)
+      cursorDot.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`
 
       const ringPosition = ringPositionRef.current
-      ringPosition.x = lerp(ringPosition.x, target.x, 0.2)
-      ringPosition.y = lerp(ringPosition.y, target.y, 0.2)
+      ringPosition.x = lerp(ringPosition.x, target.x, 0.32)
+      ringPosition.y = lerp(ringPosition.y, target.y, 0.32)
+      cursorRing.style.transform = `translate3d(${ringPosition.x}px, ${ringPosition.y}px, 0)`
 
       const bloomPosition = bloomPositionRef.current
-      bloomPosition.x = lerp(bloomPosition.x, target.x, 0.12)
-      bloomPosition.y = lerp(bloomPosition.y, target.y, 0.12)
-
-      cursorDot.style.transform = `translate3d(${dotPosition.x}px, ${dotPosition.y}px, 0)`
-      cursorRing.style.transform = `translate3d(${ringPosition.x}px, ${ringPosition.y}px, 0)`
+      bloomPosition.x = lerp(bloomPosition.x, target.x, 0.22)
+      bloomPosition.y = lerp(bloomPosition.y, target.y, 0.22)
       cursorBloom.style.transform = `translate3d(${bloomPosition.x}px, ${bloomPosition.y}px, 0)`
 
       animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
     }
 
     animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
-
-    const handlePointerMove = (event: PointerEvent) => {
-      pointerRef.current = {
-        x: event.clientX,
-        y: event.clientY
-      }
-    }
 
     const toggleCursorState = (isEnlarged: boolean) => {
       if (enlargedRef.current === isEnlarged) {
@@ -121,18 +120,19 @@ const CustomCursor: React.FC = () => {
       cursorBloom.classList.toggle(styles.enlarged, isEnlarged)
     }
 
-    const handleMouseEnter = (event: PointerEvent) => {
-      pointerRef.current = { x: event.clientX, y: event.clientY }
-      cursorDot.style.opacity = '1'
-      cursorRing.style.opacity = '1'
-      cursorBloom.style.opacity = '0.22'
-      toggleCursorState(false)
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerRef.current = {
+        x: event.clientX,
+        y: event.clientY
+      }
+
+      if (!isVisibleRef.current) {
+        setCursorVisibility(true)
+      }
     }
 
-    const handleMouseLeave = () => {
-      cursorDot.style.opacity = '0'
-      cursorRing.style.opacity = '0'
-      cursorBloom.style.opacity = '0'
+    const handleWindowLeave = () => {
+      setCursorVisibility(false)
       toggleCursorState(false)
     }
 
@@ -148,7 +148,10 @@ const CustomCursor: React.FC = () => {
       )
 
       interactiveElements.forEach((element) => {
-        const handleEnter = () => toggleCursorState(true)
+        const handleEnter = () => {
+          setCursorVisibility(true)
+          toggleCursorState(true)
+        }
         const handleLeave = () => toggleCursorState(false)
 
         element.addEventListener('pointerenter', handleEnter)
@@ -177,8 +180,8 @@ const CustomCursor: React.FC = () => {
     })
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true })
-    document.addEventListener('pointerenter', handleMouseEnter)
-    document.addEventListener('pointerleave', handleMouseLeave)
+    window.addEventListener('blur', handleWindowLeave)
+    document.addEventListener('mouseleave', handleWindowLeave)
 
     return () => {
       if (animationFrameRef.current !== null) {
@@ -193,14 +196,17 @@ const CustomCursor: React.FC = () => {
       observer.disconnect()
 
       window.removeEventListener('pointermove', handlePointerMove)
-      document.removeEventListener('pointerenter', handleMouseEnter)
-      document.removeEventListener('pointerleave', handleMouseLeave)
+      window.removeEventListener('blur', handleWindowLeave)
+      document.removeEventListener('mouseleave', handleWindowLeave)
 
       cleanupRef.current.forEach(({ el, handleEnter, handleLeave }) => {
         el.removeEventListener('pointerenter', handleEnter)
         el.removeEventListener('pointerleave', handleLeave)
       })
       cleanupRef.current = []
+
+      setCursorVisibility(false)
+      toggleCursorState(false)
     }
   }, [isCursorEnabled])
 
