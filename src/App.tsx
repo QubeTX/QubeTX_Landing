@@ -7,17 +7,18 @@ import Contact from './components/sections/Contact'
 import Footer from './components/layout/Footer'
 import CustomCursor from './components/effects/CustomCursor'
 import styles from './styles/App.module.css'
+import { CONTACT_CTA, FEATURES, HERO_CONTENT, PROJECTS } from './data/content'
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
-      <div className={styles.container}>
+      <div id="top" className={styles.container}>
         <Header />
         <main className={styles.main}>
-          <Hero />
-          <Features />
-          <Projects />
-          <Contact />
+          <Hero content={HERO_CONTENT} />
+          <Features items={FEATURES} />
+          <Projects items={PROJECTS} />
+          <Contact cta={CONTACT_CTA} />
         </main>
         <Footer />
       </div>

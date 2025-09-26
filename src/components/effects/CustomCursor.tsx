@@ -1,0 +1,220 @@
+import React, { useEffect, useRef, useState } from 'react'
+import styles from './CustomCursor.module.css'
+
+type InteractiveCleanup = {
+  el: Element
+  handleEnter: () => void
+  handleLeave: () => void
+}
+
+type Position = {
+  x: number
+  y: number
+}
+
+const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor
+
+const createInitialPosition = (): Position => ({
+  x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
+  y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0
+})
+
+const CustomCursor: React.FC = () => {
+  const cursorDotRef = useRef<HTMLDivElement | null>(null)
+  const cursorRingRef = useRef<HTMLDivElement | null>(null)
+  const cursorBloomRef = useRef<HTMLDivElement | null>(null)
+
+  const pointerRef = useRef<Position>(createInitialPosition())
+  const dotPositionRef = useRef<Position>(createInitialPosition())
+  const ringPositionRef = useRef<Position>(createInitialPosition())
+  const bloomPositionRef = useRef<Position>(createInitialPosition())
+
+  const animationFrameRef = useRef<number | null>(null)
+  const cleanupRef = useRef<InteractiveCleanup[]>([])
+  const scheduledSetupRef = useRef<number | null>(null)
+  const enlargedRef = useRef(false)
+
+  const [isPointerFine, setIsPointerFine] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const pointerQuery = window.matchMedia('(pointer: fine)')
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const handlePointerChange = () => setIsPointerFine(pointerQuery.matches)
+    const handleMotionChange = () => setPrefersReducedMotion(motionQuery.matches)
+
+    handlePointerChange()
+    handleMotionChange()
+
+    pointerQuery.addEventListener('change', handlePointerChange)
+    motionQuery.addEventListener('change', handleMotionChange)
+
+    return () => {
+      pointerQuery.removeEventListener('change', handlePointerChange)
+      motionQuery.removeEventListener('change', handleMotionChange)
+    }
+  }, [])
+
+  const isCursorEnabled = isPointerFine && !prefersReducedMotion
+
+  useEffect(() => {
+    if (!isCursorEnabled || typeof window === 'undefined') {
+      return
+    }
+
+    const cursorDot = cursorDotRef.current
+    const cursorRing = cursorRingRef.current
+    const cursorBloom = cursorBloomRef.current
+
+    if (!cursorDot || !cursorRing || !cursorBloom) {
+      return
+    }
+
+    dotPositionRef.current = { ...pointerRef.current }
+    ringPositionRef.current = { ...pointerRef.current }
+    bloomPositionRef.current = { ...pointerRef.current }
+
+    const updateCursorVisuals = () => {
+      const target = pointerRef.current
+
+      const dotPosition = dotPositionRef.current
+      dotPosition.x = lerp(dotPosition.x, target.x, 0.35)
+      dotPosition.y = lerp(dotPosition.y, target.y, 0.35)
+
+      const ringPosition = ringPositionRef.current
+      ringPosition.x = lerp(ringPosition.x, target.x, 0.2)
+      ringPosition.y = lerp(ringPosition.y, target.y, 0.2)
+
+      const bloomPosition = bloomPositionRef.current
+      bloomPosition.x = lerp(bloomPosition.x, target.x, 0.12)
+      bloomPosition.y = lerp(bloomPosition.y, target.y, 0.12)
+
+      cursorDot.style.transform = `translate3d(${dotPosition.x}px, ${dotPosition.y}px, 0)`
+      cursorRing.style.transform = `translate3d(${ringPosition.x}px, ${ringPosition.y}px, 0)`
+      cursorBloom.style.transform = `translate3d(${bloomPosition.x}px, ${bloomPosition.y}px, 0)`
+
+      animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
+    }
+
+    animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
+
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerRef.current = {
+        x: event.clientX,
+        y: event.clientY
+      }
+    }
+
+    const toggleCursorState = (isEnlarged: boolean) => {
+      if (enlargedRef.current === isEnlarged) {
+        return
+      }
+
+      enlargedRef.current = isEnlarged
+      cursorDot.classList.toggle(styles.enlarged, isEnlarged)
+      cursorRing.classList.toggle(styles.enlarged, isEnlarged)
+      cursorBloom.classList.toggle(styles.enlarged, isEnlarged)
+    }
+
+    const handleMouseEnter = (event: PointerEvent) => {
+      pointerRef.current = { x: event.clientX, y: event.clientY }
+      cursorDot.style.opacity = '1'
+      cursorRing.style.opacity = '1'
+      cursorBloom.style.opacity = '0.22'
+      toggleCursorState(false)
+    }
+
+    const handleMouseLeave = () => {
+      cursorDot.style.opacity = '0'
+      cursorRing.style.opacity = '0'
+      cursorBloom.style.opacity = '0'
+      toggleCursorState(false)
+    }
+
+    const setupInteractiveElements = () => {
+      cleanupRef.current.forEach(({ el, handleEnter, handleLeave }) => {
+        el.removeEventListener('pointerenter', handleEnter)
+        el.removeEventListener('pointerleave', handleLeave)
+      })
+      cleanupRef.current = []
+
+      const interactiveElements = document.querySelectorAll<HTMLElement>(
+        'a, button, [role="button"], [data-interactive="true"]'
+      )
+
+      interactiveElements.forEach((element) => {
+        const handleEnter = () => toggleCursorState(true)
+        const handleLeave = () => toggleCursorState(false)
+
+        element.addEventListener('pointerenter', handleEnter)
+        element.addEventListener('pointerleave', handleLeave)
+
+        cleanupRef.current.push({ el: element, handleEnter, handleLeave })
+      })
+    }
+
+    const observer = new MutationObserver(() => {
+      if (scheduledSetupRef.current !== null) {
+        return
+      }
+
+      scheduledSetupRef.current = window.requestAnimationFrame(() => {
+        scheduledSetupRef.current = null
+        setupInteractiveElements()
+      })
+    })
+
+    setupInteractiveElements()
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    document.addEventListener('pointerenter', handleMouseEnter)
+    document.addEventListener('pointerleave', handleMouseLeave)
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+
+      if (scheduledSetupRef.current !== null) {
+        cancelAnimationFrame(scheduledSetupRef.current)
+        scheduledSetupRef.current = null
+      }
+
+      observer.disconnect()
+
+      window.removeEventListener('pointermove', handlePointerMove)
+      document.removeEventListener('pointerenter', handleMouseEnter)
+      document.removeEventListener('pointerleave', handleMouseLeave)
+
+      cleanupRef.current.forEach(({ el, handleEnter, handleLeave }) => {
+        el.removeEventListener('pointerenter', handleEnter)
+        el.removeEventListener('pointerleave', handleLeave)
+      })
+      cleanupRef.current = []
+    }
+  }, [isCursorEnabled])
+
+  if (!isCursorEnabled) {
+    return null
+  }
+
+  return (
+    <>
+      <div ref={cursorBloomRef} className={styles.cursorBloom} />
+      <div ref={cursorRingRef} className={styles.cursorRing} />
+      <div ref={cursorDotRef} className={styles.cursorDot} />
+    </>
+  )
+}
+
+export default CustomCursor

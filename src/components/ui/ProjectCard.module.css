@@ -100,8 +100,10 @@
     display: flex;
     gap: clamp(8px, 1.5vw, 16px);
     margin: 0;
+    padding: 0;
     flex-wrap: wrap;
     align-items: flex-start;
+    list-style: none;
 }
 
 .tag {

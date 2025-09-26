@@ -1,14 +1,13 @@
 import React from 'react'
 import styles from './Footer.module.css'
 
-function Footer() {
-  // Access the git commit info injected at build time
+const Footer: React.FC = () => {
   const commitInfo = typeof __GIT_COMMIT__ !== 'undefined' ? __GIT_COMMIT__ : 'Development'
-  
+
   return (
     <footer className={styles.footer}>
       <p>
-        &copy; 2025 QubeTX - A Department of{' '}
+        &copy; {new Date().getFullYear()} QubeTX - A Department of{' '}
         <a href="https://emmettshaughnessy.com" target="_blank" rel="noopener noreferrer">
           ES Development LLC
         </a>

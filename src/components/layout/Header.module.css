@@ -9,6 +9,8 @@
 .logo {
     display: inline-block;
     margin: 0;
+    text-decoration: none;
+    color: inherit;
 }
 
 .logo img {

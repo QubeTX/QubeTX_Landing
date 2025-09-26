@@ -42,12 +42,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none;
-}
-
-/* Ensure cursor remains hidden on interactive elements */
-a, button, [role="button"] {
-    cursor: none !important;
+    cursor: inherit;
 }
 
 html {
@@ -65,9 +60,22 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: none;
     font-size: var(--text-base);
     -webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: fine) {
+    body {
+        cursor: none;
+    }
+
+    body * {
+        cursor: none !important;
+    }
+
+    a, button, [role="button"] {
+        cursor: none !important;
+    }
 }
 
 /* Typography Utilities */

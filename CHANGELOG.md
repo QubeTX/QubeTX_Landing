@@ -5,6 +5,38 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-09-26
+
+### Changed
+- Rebuilt the custom cursor with layered bloom, ring, and core elements for a modern glow and subtle trailing motion
+- Smoothed cursor interpolation and throttled interactive listener updates to prevent aggressive snapping
+- Updated cursor styling to centralize opacity control while retaining reduced-motion and touch safeguards
+
+## [2.1.0] - 2025-09-26
+
+### Added
+- TypeScript toolchain (`typescript`, React DOM types) with strict configuration and global CSS module declarations
+- `CODEX_PROJECT.md` with current project overview and workspace tree
+- Centralized content source in `src/data/content.ts` powering sections for reuse and future expansion
+
+### Changed
+- Migrated all React components to `.tsx` with explicit props and accessibility improvements
+- Updated custom cursor to respect reduced-motion preferences and pointer availability
+- Refined section semantics, project tag markup, and global cursor styles for better accessibility
+
+## [2.0.2] - 2025-09-26
+
+### Added
+- Vitest test harness with Hero component coverage and shared Testing Library setup
+
+### Changed
+- `AGENTS.md` instructions now document run-mode testing commands and updated dev server ports
+
+## [2.0.1] - 2025-09-26
+
+### Added
+- `AGENTS.md` contributor guidelines with project structure, workflow, and review expectations
+
 ## [2.0.0] - 2025-09-10
 
 ### Changed
