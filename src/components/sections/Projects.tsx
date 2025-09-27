@@ -1,4 +1,4 @@
-import React from 'react'
+import type { FC } from 'react'
 import ProjectCard from '../ui/ProjectCard'
 import type { Project } from '@/data/content'
 import styles from './Projects.module.css'
@@ -7,7 +7,7 @@ type ProjectsProps = {
   items: Project[]
 }
 
-const Projects: React.FC<ProjectsProps> = ({ items }) => {
+const Projects: FC<ProjectsProps> = ({ items }) => {
   return (
     <section className={styles.projects} aria-labelledby="featured-projects">
       <h2 id="featured-projects" className={`unbounded-heading ${styles.sectionTitle}`}>

@@ -1,14 +1,14 @@
-import React from 'react'
+import type { FC, ReactNode } from 'react'
 import styles from './ContactButton.module.css'
 
 type ContactButtonProps = {
   href: string
-  children: React.ReactNode
+  children: ReactNode
   target?: '_blank' | '_self' | '_parent' | '_top'
   rel?: string
 }
 
-const ContactButton: React.FC<ContactButtonProps> = ({
+const ContactButton: FC<ContactButtonProps> = ({
   href,
   children,
   target = '_blank',

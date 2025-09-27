@@ -1,0 +1,11 @@
+dist/
+node_modules/
+from main branch/
+OG_TREE.txt
+PROJECT_TREE.txt
+*.png
+*.ico
+*.jpg
+*.jpeg
+*.gif
+*.svg

@@ -1,4 +1,4 @@
-import React from 'react'
+import type { FC } from 'react'
 import Header from './components/layout/Header'
 import Hero from './components/sections/Hero'
 import Features from './components/sections/Features'
@@ -9,7 +9,7 @@ import CustomCursor from './components/effects/CustomCursor'
 import styles from './styles/App.module.css'
 import { CONTACT_CTA, FEATURES, HERO_CONTENT, PROJECTS } from './data/content'
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
     <>
       <div id="top" className={styles.container}>

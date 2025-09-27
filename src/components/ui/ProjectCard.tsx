@@ -1,10 +1,10 @@
-import React from 'react'
+import type { FC } from 'react'
 import type { Project } from '@/data/content'
 import styles from './ProjectCard.module.css'
 
 type ProjectCardProps = Project
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, description }) => {
+const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, description }) => {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={styles.projectLink}>
       <article className={styles.projectCard}>

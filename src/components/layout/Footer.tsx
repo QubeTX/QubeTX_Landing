@@ -1,7 +1,7 @@
-import React from 'react'
+import type { FC } from 'react'
 import styles from './Footer.module.css'
 
-const Footer: React.FC = () => {
+const Footer: FC = () => {
   const commitInfo = typeof __GIT_COMMIT__ !== 'undefined' ? __GIT_COMMIT__ : 'Development'
 
   return (

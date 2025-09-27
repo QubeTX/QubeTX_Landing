@@ -1,10 +1,10 @@
-import React from 'react'
+import type { FC } from 'react'
 import type { Feature } from '@/data/content'
 import styles from './FeatureCard.module.css'
 
 type FeatureCardProps = Feature
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, lineBreak, description }) => {
+const FeatureCard: FC<FeatureCardProps> = ({ icon, title, lineBreak, description }) => {
   return (
     <article className={styles.featureCard} data-interactive="true">
       <div className={styles.icon} aria-hidden="true">

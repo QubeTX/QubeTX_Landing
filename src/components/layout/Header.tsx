@@ -1,4 +1,4 @@
-import React from 'react'
+import type { FC } from 'react'
 import styles from './Header.module.css'
 
 type HeaderProps = {
@@ -6,7 +6,7 @@ type HeaderProps = {
   logoAlt?: string
 }
 
-const Header: React.FC<HeaderProps> = ({
+const Header: FC<HeaderProps> = ({
   logoSrc = '/logoQUBETX_horizontal.png',
   logoAlt = 'QubeTX Logo'
 }) => {

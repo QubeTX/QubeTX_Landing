@@ -1,4 +1,4 @@
-import React from 'react'
+import type { FC } from 'react'
 import type { HeroContent } from '@/data/content'
 import styles from './Hero.module.css'
 
@@ -6,7 +6,7 @@ type HeroProps = {
   content: HeroContent
 }
 
-const Hero: React.FC<HeroProps> = ({ content }) => {
+const Hero: FC<HeroProps> = ({ content }) => {
   const { title, conjunction, highlight, subheadline, company } = content
 
   return (

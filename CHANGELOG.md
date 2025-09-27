@@ -5,6 +5,15 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.4] - 2025-09-27
+
+### Added
+- ESLint configuration with React and TypeScript rules plus an `npm run lint` script for local checks
+
+### Changed
+- Updated components to use `import type` for React typings and satisfied new lint expectations
+- Escaped apostrophes in contact messaging to comply with JSX accessibility linting
+
 ## [2.1.3] - 2025-09-26
 
 ### Changed

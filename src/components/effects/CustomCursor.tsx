@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type FC } from 'react'
 import styles from './CustomCursor.module.css'
 
 type InteractiveCleanup = {
@@ -19,7 +19,7 @@ const createInitialPosition = (): Position => ({
   y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0
 })
 
-const CustomCursor: React.FC = () => {
+const CustomCursor: FC = () => {
   const cursorDotRef = useRef<HTMLDivElement | null>(null)
   const cursorRingRef = useRef<HTMLDivElement | null>(null)
   const cursorBloomRef = useRef<HTMLDivElement | null>(null)
