@@ -168,25 +168,32 @@
         </main>
 
         <footer>
-            <p>&copy; 2024 QubeTX - A Department of <a href="https://emmettshaughnessy.com" target="_blank">ES Development LLC</a></p>
+            <p>&copy; <span id="currentYear">2024</span> QubeTX - A Department of <a href="https://emmettshaughnessy.com" target="_blank">ES Development LLC</a></p>
         </footer>
-    </div>
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+      </div>
+      <!-- Custom Cursor -->
+      <div class="cursor-dot"></div>
+      <div class="cursor-ring"></div>
 
-    <!-- Cursor Movement Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cursorDot = document.querySelector('.cursor-dot');
-            const cursorRing = document.querySelector('.cursor-ring');
-            
-            let cursorVisible = false;
-            let cursorEnlarged = false;
-            let lastX = 0;
-            let lastY = 0;
+      <!-- Cursor Movement Script -->
+      <script>
+          document.addEventListener('DOMContentLoaded', () => {
+              // This logic updates the footer's copyright year so it always reflects the user's current year.
+              // It prevents stale hard-coded years by swapping in the latest value as soon as the DOM is ready.
+              const currentYearElement = document.getElementById('currentYear');
+              if (currentYearElement) {
+                  currentYearElement.textContent = new Date().getFullYear();
+              }
 
-            const moveCursor = (e) => {
+              const cursorDot = document.querySelector('.cursor-dot');
+              const cursorRing = document.querySelector('.cursor-ring');
+              
+              let cursorVisible = false;
+              let cursorEnlarged = false;
+              let lastX = 0;
+              let lastY = 0;
+
+              const moveCursor = (e) => {
                 lastX = e.clientX;
                 lastY = e.clientY;
 
