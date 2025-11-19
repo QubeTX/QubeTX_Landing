@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState, type FC } from 'react'
 import styles from './CustomCursor.module.css'
 

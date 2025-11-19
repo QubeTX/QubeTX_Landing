@@ -16,6 +16,19 @@ export type Project = {
   description: string
 }
 
+export type TechItem = {
+  id: string
+  name: string
+  icon: string
+}
+
+export type ProcessStep = {
+  id: string
+  number: string
+  title: string
+  description: string
+}
+
 export const HERO_CONTENT = {
   title: 'Web Development',
   conjunction: 'and',
@@ -61,6 +74,54 @@ export const FEATURES: Feature[] = [
     lineBreak: 'Performance',
     description:
       'Comprehensive security audits, SSL implementation, and performance optimization. Ensure your digital assets are protected while delivering lightning-fast experiences to your users.'
+  }
+]
+
+export const TECH_STACK: TechItem[] = [
+  { id: 'nextjs', name: 'Next.js 16', icon: '▲' },
+  { id: 'react', name: 'React 19', icon: '⚛' },
+  { id: 'typescript', name: 'TypeScript', icon: 'TS' },
+  { id: 'tailwind', name: 'Tailwind CSS', icon: '🌊' },
+  { id: 'threejs', name: 'Three.js', icon: '🧊' },
+  { id: 'framer', name: 'Framer Motion', icon: '🎬' },
+]
+
+export const PROCESS: ProcessStep[] = [
+  {
+    id: 'discovery',
+    number: '01',
+    title: 'Discovery',
+    description: 'We start by understanding your business goals, target audience, and technical requirements to build a solid foundation.'
+  },
+  {
+    id: 'strategy',
+    number: '02',
+    title: 'Strategy',
+    description: 'Developing a comprehensive roadmap and architectural plan to ensure the project meets your long-term objectives.'
+  },
+  {
+    id: 'design',
+    number: '03',
+    title: 'Design',
+    description: 'Creating intuitive, accessible, and visually stunning interfaces that reflect your brand identity.'
+  },
+  {
+    id: 'development',
+    number: '04',
+    title: 'Development',
+    description: 'Writing clean, efficient, and scalable code using modern frameworks and best practices.'
+  },
+  {
+    id: 'launch',
+    number: '05',
+    title: 'Launch',
+    description: 'Thorough testing and seamless deployment to ensure a perfect start for your new digital platform.'
+  },
+  {
+    id: 'growth',
+    number: '06',
+    title: 'Growth',
+    description: 'Ongoing support, analysis, and optimization to help your digital presence evolve with your business.'
   }
 ]
 

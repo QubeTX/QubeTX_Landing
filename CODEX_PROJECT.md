@@ -1,72 +1,62 @@
 # QubeTX Landing – Project Overview
 
 ## TL;DR
-- React 19 + Vite single-page marketing site for QubeTX, now fully migrated to TypeScript.
-- Componentized layout with shared content data (`src/data/content.ts`) to eliminate duplication and keep sections reusable.
-- Custom cursor effect now renders a soft bloom trail and automatically disables for touch devices and reduced-motion users.
-- Vitest provides smoke coverage; run `npm test` for CI parity and `npm run build` for production bundling. CI now runs `npx tsc --noEmit`, `npm test`, and the production build on every push.
-- ESLint enforces React + TypeScript conventions; run `npm run lint` before commits to keep code style aligned.
+- Next.js 16 App Router site that statically exports to `out/` for GitHub Pages.
+- React 19 + TypeScript UI composed from `src/components` and rendered via `app/page.tsx`.
+- Hero/Features/Process/TechStack/Projects/Contact sections draw content from `src/data/content.ts`.
+- Custom background motion uses `@react-three/fiber` + Three.js via `DotMatrix`.
+- ESLint (React + TS rules) is the primary quality gate; no automated tests yet.
+- Fresh `.gitignore` keeps `.next/`, `node_modules/`, `dist/`, and `out/` out of commits so GitHub pushes no longer choke on 100MB binaries.
 
 ## Current Status
-QubeTX Landing presents the agency's capabilities, featured projects, and contact CTA. The app bootstraps from `src/main.tsx`, renders `<App />`, and composes layout/section/UI atoms housed under `src/components`. Centralized content data feeds Hero, Features, Projects, and Contact sections, encouraging reuse for future pages or alternative feeds. Styling relies on CSS Modules with a global variables/reset layer in `src/styles/global.css`. Responsive breakpoints and fluid typography are tuned for 375–1200px+ viewports. The cursor effect (`CustomCursor`) now renders a bloom/trailing treatment while only engaging when a fine pointer is available and honoring the user's reduced-motion preference.
+The landing page now runs on Next.js with the App Router. Global layout lives under `app/` (`layout.tsx` wires fonts/meta, `page.tsx` composes all sections). Presentation logic remains modularized inside `src/components` (`layout`, `sections`, `ui`, `effects`). Content constants in `src/data/content.ts` keep copy centralized for easy future swaps. Background animation blends Lenis smooth scrolling with a Three.js instanced mesh grid (`DotMatrix`) to create the brand's neon field; effects are only mounted client-side via `use client`. Static assets sit in `public/` and are referenced directly. `next.config.mjs` forces `output: 'export'` plus `turbopack.root` so local dev doesn't jump up to unintended parent lockfiles.
 
 ## Build & Test Commands
-- `npm run dev` – start Vite dev server on `http://localhost:8080`.
-- `npm run build` – produce an optimized bundle in `dist/`.
-- `npm run preview` – serve the production bundle locally.
-- `npm run lint` – run ESLint with the shared React/TypeScript ruleset.
-- `npm test` – execute the Vitest suite in CI mode.
+- `npm run dev` – Next dev server on http://localhost:3000 using Turbopack.
+- `npm run build` – Generates the static export under `out/`.
+- `npm run start` – Serves the pre-built output locally (Node server).
+- `npm run lint` – ESLint with React + TypeScript rules; run after edits (no Vitest suite yet).
 
 ## Workspace File Tree
 ```
 .
-├── .eslintignore
-├── .eslintrc.cjs
-├── index.html
+├── AGENTS.md
+├── CHANGELOG.md
+├── CODEX_PROJECT.md
+├── README.md
+├── app
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
 ├── package.json
+├── postcss.config.js
+├── public
+│   ├── dorsey.png
+│   ├── gvalley.png
+│   ├── logoQUBETX.png
+│   ├── logoQUBETX_horizontal.png
+│   ├── magz.png
+│   └── qubeTXFavicon.png
 ├── src
-│   ├── App.tsx
-│   ├── __tests__
-│   │   └── Hero.test.tsx
 │   ├── components
 │   │   ├── effects
-│   │   │   └── CustomCursor.tsx
+│   │   │   └── DotMatrix.tsx
 │   │   ├── layout
-│   │   │   ├── Footer.module.css
-│   │   │   ├── Footer.tsx
-│   │   │   ├── Header.module.css
-│   │   │   └── Header.tsx
 │   │   ├── sections
-│   │   │   ├── Contact.module.css
-│   │   │   ├── Contact.tsx
-│   │   │   ├── Features.module.css
-│   │   │   ├── Features.tsx
-│   │   │   ├── Hero.module.css
-│   │   │   ├── Hero.tsx
-│   │   │   ├── Projects.module.css
-│   │   │   └── Projects.tsx
 │   │   └── ui
-│   │       ├── ContactButton.module.css
-│   │       ├── ContactButton.tsx
-│   │       ├── FeatureCard.module.css
-│   │       ├── FeatureCard.tsx
-│   │       ├── ProjectCard.module.css
-│   │       └── ProjectCard.tsx
 │   ├── data
 │   │   └── content.ts
-│   ├── main.tsx
-│   ├── setupTests.ts
-│   ├── styles
-│   │   ├── App.module.css
-│   │   └── global.css
+│   ├── r3f.d.ts
 │   └── types
 │       └── global.d.ts
-├── tsconfig.json
-├── tsconfig.node.json
-└── vite.config.ts
+└── tsconfig.json
 ```
 
 ## Key Docs & References
-- `CHANGELOG.md` – release history and day-to-day updates.
-- `QubeTX_Design_System.md` – typography, color, and component guidance.
-- `AGENTS.md` – agent workflow and collaboration rules.
+- `QubeTX_Design_System.md` – typography, gradients, and motion guardrails.
+- `AGENTS.md` – collaboration/process expectations.
+- `CHANGELOG.md` – release notes + daily changes (keep current).
+- `CODEX_PROJECT.md` – this overview + workspace tree (update when structure shifts).

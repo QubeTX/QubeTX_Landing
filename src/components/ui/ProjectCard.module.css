@@ -17,8 +17,12 @@
     flex-direction: column;
 }
 
+.projectLink:hover {
+    position: relative;
+    z-index: 10;
+}
+
 .projectLink:hover .projectCard {
-    transform: translateY(-8px);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
@@ -143,9 +147,7 @@
 }
 
 @media (max-width: 768px) {
-    .projectLink:hover .projectCard {
-        transform: translateY(-4px);
-    }
+    /* Mobile styles */
     
     .projectContent {
         padding: 24px;

@@ -1,0 +1,89 @@
+.process {
+  position: relative;
+  padding: var(--section-spacing) var(--container-padding-x);
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.sectionTitle {
+  color: var(--text-primary);
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.sectionSubtitle {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-xl);
+  padding: var(--space-lg) 0;
+}
+
+.step {
+  position: relative;
+  background: rgba(13, 17, 23, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: var(--space-lg);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-blue), var(--gradient-purple));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+  background: rgba(13, 17, 23, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.step:hover::before {
+  opacity: 1;
+}
+
+.number {
+  font-family: "Unbounded", sans-serif;
+  font-size: var(--text-3xl);
+  color: rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--space-md);
+  font-weight: 800;
+  transition: color 0.3s ease;
+}
+
+.step:hover .number {
+  color: var(--primary-blue);
+}
+
+.title {
+  font-family: "Unbounded", sans-serif;
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+

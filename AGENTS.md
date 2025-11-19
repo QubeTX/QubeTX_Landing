@@ -1,16 +1,29 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-Source lives in `src/`, with `main.jsx` bootstrapping `App.jsx`. UI code is partitioned into `components/` (`layout`, `sections`, `ui`, `effects`) and scoped styles reside in `styles/` as CSS Modules (`*.module.css`). Static assets for production builds are kept in `public/`, while the compiled output in `dist/` mirrors GitHub Pages deployments. Design references and architectural notes live alongside the root docs (`README.md`, `QubeTX_Design_System.md`).
+- Next.js 16 App Router drives the site. `app/layout.tsx` defines global HTML/head/fonts and `app/page.tsx` assembles every visible section.
+- Presentational code still lives in `src/components` (`layout`, `sections`, `ui`, `effects`). Import via the `@/*` alias set in `tsconfig.json`.
+- Copy lives in `src/data/content.ts` and is passed into sections for predictable reuse.
+- Three.js / R3F helpers are typed via `src/r3f.d.ts`; keep effect-specific code under `src/components/effects`.
+- Static assets belong in `public/`. The static export produced by `next build` lands in `out/` and mirrors what gets deployed.
 
 ## Build, Test, and Development Commands
-Run `npm install` once to sync dependencies. Use `npm run dev` for the Vite dev server on `http://localhost:8080` (HMR tunnels through port 443). Execute `npm run build` to generate an optimized bundle under `dist/`, and `npm run preview` to serve that bundle locally on `http://localhost:8081`. Run the automated test suite with `npm test` (non-watch mode) or `npm run test:watch` to stay in Vitest's watcher—press `Ctrl+C` to exit.
+- `npm run dev` – Starts the Next dev server on http://localhost:3000 using Turbopack/HMR.
+- `npm run build` – Generates the production export into `out/`; required before deployments.
+- `npm run start` – Runs the production server against the artefacts from `npm run build`.
+- `npm run lint` – ESLint (React + TypeScript rules) is the current QA gate; run it alongside builds until a proper test suite exists.
 
 ## Coding Style & Naming Conventions
-Author React components in JSX with PascalCase filenames (`Hero.jsx`) and default exports. Hooks, helpers, and event handlers stay camelCase. Keep indentation at two spaces; stick with single quotes in JavaScript as seen in the existing codebase. Co-locate component styles as CSS Modules and expose class names through the imported `styles` object. Prefix branches with the work type (e.g., `feature/`, `fix/`), matching deployment automation.
+- Use TypeScript everywhere. Default exports for components, PascalCase filenames (`Hero.tsx`, `DotMatrix.tsx`), camelCase hooks/utilities.
+- Stick with single quotes in TS/JS, 2-space indentation, and CSS Modules for scoped styles (imported as `styles` in components).
+- Client components need `'use client';` at the top. Server-only modules go in `app/` or dedicated helpers—keep effects isolated in client files.
+- Keep Lenis/Framer hooks inside `use client` modules, and respect reduced-motion checks when adding new animations.
 
 ## Testing Guidelines
-Vitest with Testing Library lives under `src/__tests__/`. New specs should assert user-facing behavior, import render helpers from `@testing-library/react`, and share utilities through `src/setupTests.js`. Use `npm test` to perform a one-off CI-style run (equivalent to `vitest run`) and avoid the watch prompt. For exploratory work, `npm run test:watch` starts the watcher; end the session with `Ctrl+C` or by pressing `q` when prompted. Always follow with `npm run build` to confirm the bundle succeeds.
+- There is no automated test suite yet. Treat `npm run lint` + `npm run build` as the minimum verification combo before sharing work.
+- If you add tests later, colocate them under `src/__tests__/` and document the new commands in CODEX + this file.
 
 ## Commit & Pull Request Guidelines
-Prefer Conventional Commit prefixes (`feat:`, `fix:`, `chore:`) as reflected in history. Each change should focus on a single concern with descriptive bodies explaining context and verification. Pull requests must link the relevant issue, summarize UI changes with before/after screenshots, and confirm both `npm run build` and the Vitest suite pass before requesting review.
+- Prefer Conventional Commit prefixes (`feat:`, `fix:`, `chore:`) with concise summaries.
+- Scope each change to a single concern. Include screenshots/GIFs for UI-affecting PRs.
+- Always run `npm run lint` and `npm run build` locally before committing or opening a PR so reviewers inherit a clean state.

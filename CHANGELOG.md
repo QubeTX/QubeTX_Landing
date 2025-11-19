@@ -5,6 +5,34 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.7] - 2025-11-19
+
+### Added
+- Project-wide `.gitignore` covering Next.js build output, caches, and dependency directories so only source files land in version control.
+
+### Fixed
+- Removed the committed `node_modules/` tree (including the 120MB `@next/swc` binary) plus other generated artifacts so pushes stay under GitHub's 100MB file limit.
+
+## [2.1.6] - 2025-11-19
+
+### Added
+- ESLint devDependencies and a working `npm run lint` script that runs the full TypeScript/React rule set.
+- Updated CODEX_PROJECT.md and AGENTS.md with the current Next.js App Router workflow and workspace tree.
+
+### Changed
+- Replaced the legacy Vite node_modules with the correct Next.js dependency graph and regenerated `package-lock.json`.
+- Cleaned up dot-matrix and UI components to use `import type`/JSX-safe props so the stricter linting passes without `@ts-nocheck`.
+ 
+### Fixed
+- Set `turbopack.root` inside `next.config.mjs` so Next.js no longer climbs to `/Users/realemmetts` when multiple lockfiles exist, restoring local dev/build commands.
+
+## [2.1.5] - 2025-11-19
+
+### Fixed
+- Restored the Features section build by importing the missing `FC` type so TypeScript compilation succeeds
+- Typed Hero motion variants so Framer Motion accepts the spring transition during TypeScript checks
+- Imported the missing `FC` type in the Projects section to keep TypeScript builds passing
+
 ## [2.1.4] - 2025-09-27
 
 ### Added
