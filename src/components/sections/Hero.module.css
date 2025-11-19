@@ -71,7 +71,7 @@
         padding: 24px 20px 40px;
         margin-left: 0;
     }
-    
+
     .title {
         font-size: clamp(28px, 8vw, 36px);
         margin-bottom: 24px;
@@ -86,7 +86,7 @@
         font-size: clamp(24px, 7vw, 32px);
         margin-left: clamp(24px, 8vw, 64px);
     }
-    
+
     .subtitle {
         font-size: clamp(14px, 3.5vw, 16px);
         margin-left: 24px;
@@ -100,23 +100,25 @@
         gap: 20px;
     }
 
-    .title, .title span:nth-child(2), .title .highlight {
+    .title,
+    .title span:nth-child(2),
+    .title .highlight {
         margin-left: 0;
         text-align: left;
     }
 
     .title {
-        font-size: 28px;
+        font-size: 24px;
         line-height: 1;
     }
 
     .title span:nth-child(2) {
-        font-size: 20px;
+        font-size: 18px;
         margin-top: 8px;
     }
 
     .title .highlight {
-        font-size: 24px;
+        font-size: 20px;
         margin-top: 8px;
     }
 
@@ -139,17 +141,17 @@
     .hero {
         padding: 18px 14px 30px;
     }
-    
+
     .title {
-        font-size: 26px;
-    }
-    
-    .title span:nth-child(2) {
-        font-size: 18px;
-    }
-    
-    .title .highlight {
         font-size: 22px;
+    }
+
+    .title span:nth-child(2) {
+        font-size: 16px;
+    }
+
+    .title .highlight {
+        font-size: 18px;
     }
 }
 
