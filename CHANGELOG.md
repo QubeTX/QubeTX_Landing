@@ -5,6 +5,11 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.8] - 2025-11-19
+
+### Fixed
+- Anchored the custom cursor to the viewport origin so its glow, ring, and dot now track the real pointer instead of sitting ~200px offset and blocking interactive elements.
+
 ## [2.1.7] - 2025-11-19
 
 ### Added
