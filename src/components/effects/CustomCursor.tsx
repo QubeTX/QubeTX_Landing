@@ -77,6 +77,14 @@ const CustomCursor: FC = () => {
       return
     }
 
+    // Ensure we don't start at 0,0 if window is available
+    if (pointerRef.current.x === 0 && pointerRef.current.y === 0) {
+      pointerRef.current = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+      }
+    }
+
     ringPositionRef.current = { ...pointerRef.current }
     bloomPositionRef.current = { ...pointerRef.current }
 
