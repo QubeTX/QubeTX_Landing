@@ -1,6 +1,6 @@
 {
   "name": "qubetx-landing",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "description": "The official landing page for QubeTX, a department of ES Development LLC.",
   "private": true,
   "scripts": {

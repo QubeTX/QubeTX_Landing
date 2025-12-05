@@ -135,6 +135,15 @@ body::after {
     100% { transform: translate3d(-2%, 1%, 0) scale(1.02); opacity: 0.72; }
 }
 
+@keyframes pulseSlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.6; }
+}
+
+.animate-pulse-slow {
+    animation: pulseSlow 4s ease-in-out infinite;
+}
+
 @media (pointer: fine) {
     body {
         cursor: none;

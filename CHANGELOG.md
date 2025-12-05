@@ -5,6 +5,18 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-12-05
+
+### Added
+- New `/wallpaper` route serving an interactive animated wallpaper page
+- `WallpaperMatrix` component: a tuned variant of `DotMatrix` with lower opacity (0.2), slower animation, and smoother mouse interaction optimized for 16:9 displays
+- `animate-pulse-slow` animation class for subtle glow effects (4s ease-in-out cycle)
+- Centered QubeTX logo with radial glow effect and "A Department of ES Dev LLC" tagline
+
+### Changed
+- Grid configuration for wallpaper uses 60×35 dots with 0.6 spacing for widescreen optimization
+- Separated `viewport` export from `metadata` in wallpaper page per Next.js 16 best practices
+
 ## [2.1.8] - 2025-11-19
 
 ### Fixed
