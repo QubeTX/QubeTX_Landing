@@ -50,8 +50,5 @@ playroom-dist/
 *.swp
 *.swo
 
-# Claude IDE
-.claude/
-
 # Next.js auto-generated
 next-env.d.ts
