@@ -1,6 +1,6 @@
 .features {
     display: grid;
-    grid-template-columns: repeat(3, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: clamp(28px, 3vw, 40px);
     margin: clamp(32px, 6vw, 48px) auto;
     position: relative;
@@ -90,6 +90,20 @@
 @keyframes pulse {
     0%, 100% { opacity: 0.9; filter: blur(0.5px); }
     50% { opacity: 0.7; filter: blur(1px); }
+}
+
+/* Desktop: 6-col grid with centered bottom row */
+@media (min-width: 1025px) {
+    .features {
+        grid-template-columns: repeat(6, 1fr);
+    }
+    .features > :not(.topLine) {
+        grid-column: span 2;
+    }
+    /* 4th card (5th child after topLine) starts at col 2 to center bottom row */
+    .features > :nth-child(5) {
+        grid-column: 2 / span 2;
+    }
 }
 
 /* Enhanced mobile breakpoints */

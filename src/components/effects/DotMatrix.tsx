@@ -2,82 +2,125 @@
 'use client';
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef, Suspense } from "react";
+import { useEffect, useMemo, useRef, Suspense } from "react";
 import * as THREE from "three";
+
+const SPACING = 0.7;
+const MAX_PARTICLES = 1800;
+
+const vertexShader = `
+  uniform float uTime;
+  uniform vec2 uMouse;
+
+  varying float vZ;
+  varying float vMouseDist;
+
+  void main() {
+    vec3 basePos = vec3(instanceMatrix[3]);
+
+    float wave = sin(basePos.x * 0.5 + uTime) * 0.2
+               + cos(basePos.y * 0.5 + uTime) * 0.2;
+
+    float dist = distance(basePos.xy, uMouse);
+    float mouseEffect = smoothstep(3.0, 0.0, dist) * 2.0;
+
+    float z = wave + mouseEffect;
+    float scale = 1.0 + z * 0.5;
+
+    vec3 pos = position * scale + vec3(basePos.xy, z);
+
+    vZ = z;
+    vMouseDist = dist;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  uniform vec3 uColor;
+  uniform vec3 uMouseColor;
+
+  varying float vZ;
+  varying float vMouseDist;
+
+  void main() {
+    float t = smoothstep(3.0, 0.0, vMouseDist);
+    vec3 color = mix(uColor, uMouseColor, t * 0.6);
+    color *= 1.0 + vZ * 0.3;
+    float alpha = 0.4 + vZ * 0.15;
+    gl_FragColor = vec4(color, alpha);
+  }
+`;
 
 const Dots = () => {
   const { viewport, mouse } = useThree();
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const count = 50 * 50; // Grid size
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const mouseTarget = useRef(new THREE.Vector2(0, 0));
 
-  // Grid parameters
-  const rows = 50;
-  const cols = 50;
-  const spacing = 0.5;
-
-  // Initialize positions
-  const particles = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const x = (j - cols / 2) * spacing;
-        const y = (i - rows / 2) * spacing;
-        const z = 0;
-        temp.push({ x, y, z, mx: x, my: y });
-      }
+  const { cols, rows, count } = useMemo(() => {
+    let c = Math.ceil(viewport.width / SPACING) + 4;
+    let r = Math.ceil(viewport.height / SPACING) + 4;
+    if (c * r > MAX_PARTICLES) {
+      const ratio = Math.sqrt(MAX_PARTICLES / (c * r));
+      c = Math.floor(c * ratio);
+      r = Math.floor(r * ratio);
     }
-    return temp;
+    return { cols: c, rows: r, count: c * r };
+  }, [viewport.width, viewport.height]);
+
+  const material = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+        uColor: { value: new THREE.Color("#0066FF") },
+        uMouseColor: { value: new THREE.Color("#9346FF") },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      depthWrite: false,
+    });
   }, []);
 
+  // Set instance matrices once on mount / resize
+  useEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh) return;
+
+    const dummy = new THREE.Object3D();
+    let idx = 0;
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        const x = (j - cols / 2) * SPACING;
+        const y = (i - rows / 2) * SPACING;
+        dummy.position.set(x, y, 0);
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(idx, dummy.matrix);
+        idx++;
+      }
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }, [cols, rows]);
+
   useFrame((state) => {
-    if (!meshRef.current) return;
-
     const time = state.clock.getElapsedTime();
-
-    // Convert normalized mouse coordinates to world coordinates
     const mouseX = (mouse.x * viewport.width) / 2;
     const mouseY = (mouse.y * viewport.height) / 2;
 
-    particles.forEach((particle, i) => {
-      const { mx, my } = particle;
+    // Smooth mouse trailing
+    mouseTarget.current.x += (mouseX - mouseTarget.current.x) * 0.08;
+    mouseTarget.current.y += (mouseY - mouseTarget.current.y) * 0.08;
 
-      // Distance from mouse
-      const dx = mouseX - mx;
-      const dy = mouseY - my;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      // Wave effect based on time and position
-      let z = Math.sin(mx * 0.5 + time) * 0.2 + Math.cos(my * 0.5 + time) * 0.2;
-
-      // Mouse interaction
-      if (dist < 3) {
-        const force = (3 - dist) / 3;
-        z += force * 2; // Push dots towards camera
-      }
-
-      dummy.position.set(mx, my, z);
-
-      // Scale effect based on Z position
-      const scale = 1 + z * 0.5;
-      dummy.scale.set(scale, scale, scale);
-
-      dummy.updateMatrix();
-      meshRef.current!.setMatrixAt(i, dummy.matrix);
-
-      // Optional: Change color based on Z
-      // const color = new THREE.Color();
-      // color.setHSL(0.6, 1, 0.5 + z * 0.1);
-      // meshRef.current!.setColorAt(i, color);
-    });
-
-    meshRef.current.instanceMatrix.needsUpdate = true;
+    // 2 uniform updates per frame
+    material.uniforms.uTime.value = time;
+    material.uniforms.uMouse.value.set(mouseTarget.current.x, mouseTarget.current.y);
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      <circleGeometry args={[0.05, 16]} />
-      <meshBasicMaterial color="#0066FF" transparent opacity={0.4} />
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} key={count} material={material}>
+      <circleGeometry args={[0.05, 6]} />
     </instancedMesh>
   );
 };
@@ -88,7 +131,7 @@ export const DotMatrix = () => {
       <Canvas
         camera={{ position: [0, 0, 15], fov: 60 }}
         gl={{ antialias: true, alpha: true }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
       >
         <Suspense fallback={null}>
           <Dots />

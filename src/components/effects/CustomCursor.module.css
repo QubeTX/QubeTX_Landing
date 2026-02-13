@@ -87,26 +87,31 @@
 
 @keyframes ringGlow {
     0%, 100% {
-        transform: translate3d(0, 0, 0) scale(1);
+        scale: 1;
+        translate: 0 0;
         border-color: rgba(180, 198, 255, 0.45);
     }
     50% {
-        transform: translate3d(3px, -3px, 0) scale(1.06);
+        scale: 1.06;
+        translate: 3px -3px;
         border-color: rgba(202, 160, 255, 0.6);
     }
 }
 
 @keyframes bloomOrbit {
     0% {
-        transform: translate3d(-4%, -3%, 0) scale(1.05);
+        scale: 1.05;
+        translate: -4% -3%;
         filter: blur(75px) saturate(130%);
     }
     50% {
-        transform: translate3d(5%, 4%, 0) scale(1.12);
+        scale: 1.12;
+        translate: 5% 4%;
         filter: blur(90px) saturate(160%);
     }
     100% {
-        transform: translate3d(-3%, 2%, 0) scale(1.08);
+        scale: 1.08;
+        translate: -3% 2%;
         filter: blur(82px) saturate(145%);
     }
 }

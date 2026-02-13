@@ -97,7 +97,7 @@
     letter-spacing: -0.02em;
     transition: all 0.3s ease;
     word-wrap: break-word;
-    hyphens: auto;
+    hyphens: none;
     margin-bottom: 4px;
 }
 
@@ -112,11 +112,11 @@
     color: var(--text-secondary);
     font-size: clamp(14px, calc(0.875rem + 0.25vw), 15px);
     line-height: 1.65;
-    opacity: 0.85;
+    opacity: 0.92;
     transition: opacity 0.3s ease;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: none;
     flex-grow: 1;
 }
 
