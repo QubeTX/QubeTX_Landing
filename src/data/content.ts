@@ -137,14 +137,14 @@ export const PROJECTS: Project[] = [
       "A dynamic digital presence for NYC's renowned jazz bassist and educator. The site showcases Leon's extensive musical journey, performances, and educational contributions to the jazz world."
   },
   {
-    id: 'green-valley',
-    href: 'https://gvalleytx.com',
-    image: '/gvalley.png',
-    alt: 'Green Valley Lawn Services Project',
-    title: 'Green Valley',
-    tags: ['Business', 'Service', 'Houston'],
+    id: 'system-reports',
+    href: 'https://reports.qubetx.com',
+    image: '/reports.png',
+    alt: 'QubeTX System Reports',
+    title: 'System Reports',
+    tags: ['CLI', 'Rust', 'Reports'],
     description:
-      "A professional website for Houston's premier commercial lawn care provider. The site reflects their commitment to excellence and showcases their comprehensive range of services."
+      'Cross-platform system reports with beautiful Unicode tables. The TR-300 series delivers high-performance hardware and software diagnostics in a clean, terminal-native format.'
   },
   {
     id: 'magz-sports',
@@ -155,6 +155,16 @@ export const PROJECTS: Project[] = [
     tags: ['Sports', 'Marketing', 'Agency'],
     description:
       'A dynamic sports marketing platform connecting elite collegiate and professional athletes with leading global brands through strategic partnerships and data-driven campaigns.'
+  },
+  {
+    id: 'green-valley',
+    href: 'https://gvalleytx.com',
+    image: '/gvalley.png',
+    alt: 'Green Valley Lawn Services Project',
+    title: 'Green Valley',
+    tags: ['Business', 'Service', 'Houston'],
+    description:
+      "A professional website for Houston's premier commercial lawn care provider. The site reflects their commitment to excellence and showcases their comprehensive range of services."
   }
 ]
 

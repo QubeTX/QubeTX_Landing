@@ -87,33 +87,19 @@
 
 @keyframes ringGlow {
     0%, 100% {
-        scale: 1;
-        translate: 0 0;
         border-color: rgba(180, 198, 255, 0.45);
+        box-shadow: 0 0 28px rgba(67, 130, 255, 0.45);
     }
     50% {
-        scale: 1.06;
-        translate: 3px -3px;
         border-color: rgba(202, 160, 255, 0.6);
+        box-shadow: 0 0 36px rgba(140, 130, 255, 0.55);
     }
 }
 
 @keyframes bloomOrbit {
-    0% {
-        scale: 1.05;
-        translate: -4% -3%;
-        filter: blur(75px) saturate(130%);
-    }
-    50% {
-        scale: 1.12;
-        translate: 5% 4%;
-        filter: blur(90px) saturate(160%);
-    }
-    100% {
-        scale: 1.08;
-        translate: -3% 2%;
-        filter: blur(82px) saturate(145%);
-    }
+    0%   { filter: blur(75px) saturate(130%); }
+    50%  { filter: blur(90px) saturate(160%); }
+    100% { filter: blur(82px) saturate(145%); }
 }
 
 @media (hover: none) {
