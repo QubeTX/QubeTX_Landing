@@ -68,20 +68,13 @@ const Dots = () => {
     return { cols: c, rows: r, count: c * r };
   }, [viewport.width, viewport.height]);
 
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uColor: { value: new THREE.Color("#0066FF") },
-        uMouseColor: { value: new THREE.Color("#9346FF") },
-      },
-      vertexShader,
-      fragmentShader,
-      transparent: true,
-      depthWrite: false,
-    });
-  }, []);
+  const matRef = useRef<THREE.ShaderMaterial>(null);
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uMouse: { value: new THREE.Vector2(0, 0) },
+    uColor: { value: new THREE.Color("#0066FF") },
+    uMouseColor: { value: new THREE.Color("#9346FF") },
+  }), []);
 
   // Set instance matrices once on mount / resize
   useEffect(() => {
@@ -105,6 +98,7 @@ const Dots = () => {
   }, [cols, rows]);
 
   useFrame((state) => {
+    if (!matRef.current) return;
     const time = state.clock.getElapsedTime();
     const mouseX = (mouse.x * viewport.width) / 2;
     const mouseY = (mouse.y * viewport.height) / 2;
@@ -114,13 +108,21 @@ const Dots = () => {
     mouseTarget.current.y += (mouseY - mouseTarget.current.y) * 0.08;
 
     // 2 uniform updates per frame
-    material.uniforms.uTime.value = time;
-    material.uniforms.uMouse.value.set(mouseTarget.current.x, mouseTarget.current.y);
+    matRef.current.uniforms.uTime.value = time;
+    matRef.current.uniforms.uMouse.value.set(mouseTarget.current.x, mouseTarget.current.y);
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} key={count} material={material}>
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} key={count}>
       <circleGeometry args={[0.05, 6]} />
+      <shaderMaterial
+        ref={matRef}
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        transparent
+        depthWrite={false}
+      />
     </instancedMesh>
   );
 };
