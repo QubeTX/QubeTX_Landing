@@ -165,6 +165,46 @@ export const PROJECTS: Project[] = [
     tags: ['Business', 'Service', 'Houston'],
     description:
       "A professional website for Houston's premier commercial lawn care provider. The site reflects their commitment to excellence and showcases their comprehensive range of services."
+  },
+  {
+    id: 'qorkme',
+    href: 'https://qork.me',
+    image: '/qorkme.png',
+    alt: 'QorkMe URL Shortener',
+    title: 'QorkMe',
+    tags: ['URL Shortener', 'Tool', 'Bauhaus'],
+    description:
+      'A modern URL shortener with a Bauhaus-inspired dot matrix interface and live clock display. Thoughtful short links for modern teams, powered by Supabase and Vercel.'
+  },
+  {
+    id: 'bauhaus-qr',
+    href: 'https://qr.qork.me',
+    image: '/qr-qork.png',
+    alt: 'Bauhaus QR Generator',
+    title: 'Bauhaus QR Generator',
+    tags: ['QR Code', 'AI', 'Bauhaus'],
+    description:
+      'A beautifully designed QR code generator enhanced with AI customization. Supports text, URLs, WiFi, vCards, email, SMS, and phone number encoding with PNG and SVG export.'
+  },
+  {
+    id: 'foundry-rmp',
+    href: 'https://foundry.qubetx.com',
+    image: '/foundry.png',
+    alt: 'Foundry Raw Materials Processor',
+    title: 'Foundry RMP',
+    tags: ['Internal Tool', 'CivMC', 'Gaming'],
+    description:
+      'A raw materials processing tool built for a CivMC group. Accepts JSON input to process and manage in-game resource data with an industrial, utilitarian interface.'
+  },
+  {
+    id: 'bauhaus-timer',
+    href: 'https://timer.emmetts.dev',
+    image: '/timer.png',
+    alt: 'Bauhaus Timer',
+    title: 'Bauhaus Timer',
+    tags: ['Timer', 'Utility', 'Bauhaus'],
+    description:
+      'A precision countdown, stopwatch, and interval timer designed with Bauhaus principles. Features a circular progress ring, dark mode, and sound controls for focused productivity.'
   }
 ]
 

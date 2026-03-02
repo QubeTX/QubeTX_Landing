@@ -25,16 +25,16 @@ const Projects: FC<ProjectsProps> = ({ items }) => {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section className={styles.projects} aria-labelledby="featured-projects">
+    <section className={styles.projects} aria-labelledby="projects-heading">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 id="featured-projects" className={`unbounded-heading ${styles.sectionTitle}`}>
-          Featured Projects
+        <h2 id="projects-heading" className={`unbounded-heading ${styles.sectionTitle}`}>
+          Projects
         </h2>
-        <p className={styles.sectionSubtitle}>Crafted with precision, powered by passion</p>
+        <p className={styles.sectionSubtitle}>A collection of our public work</p>
       </motion.div>
 
       <motion.div 
