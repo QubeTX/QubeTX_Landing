@@ -33,7 +33,6 @@ const Features: FC<FeaturesProps> = ({ items }) => {
       initial="hidden"
       animate={isInView ? "show" : "hidden"}
     >
-      <div className={styles.topLine} aria-hidden="true" />
       {items.map((feature) => (
         <FeatureCard key={feature.id} {...feature} />
       ))}

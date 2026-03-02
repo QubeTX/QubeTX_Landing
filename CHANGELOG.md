@@ -5,6 +5,26 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-03-02
+
+### Changed
+- **Unified card hover behavior** across Feature, Project, and Process cards — all now share the same `translateY(-5px)` lift with a gradient bar reveal on top, matching the Process section pattern
+- **Glassmorphic section containers** — Features, Process, Projects, TechStack, and Contact sections all receive a consistent frosted-glass treatment (`rgba(13, 17, 23, 0.65)` background, `backdrop-filter: blur(12px)`, subtle border, rounded corners)
+- **Header and Footer frosted glass** — both now have translucent backgrounds with backdrop blur for depth against the DotMatrix background
+- **Contact section** restructured from a flat layout with a `::before` divider line into a centered glassmorphic card wrapper (`.contactCard`)
+- **Footer bottom bar** centered; removed commit hash display (`commitInfo`/`commitLabel` styles and `__GIT_COMMIT__` reference)
+- **Features section** simplified — removed complex layered gradient background, animated grid-line pseudo-elements (`::before`/`::after`), `@keyframes float`/`pulse`, and the decorative `topLine` element; max-width reduced from 1280px to 1200px
+- **Projects section** max-width reduced from 1400px to 1200px for consistency with other sections
+
+### Removed
+- 3D mouse-tracking tilt effect from FeatureCard and ProjectCard (removed `useMotionValue`, `useSpring`, `useTransform`, `rotateX`/`rotateY`, `translateZ` layers, and `whileHover` scale)
+- Shimmer animation (`::after` sweep + `@keyframes shimmer`) from FeatureCard
+- Overlay gradient (`::before`) hover effect from FeatureCard
+- `backdrop-filter: blur(10px)` and layered `box-shadow` from FeatureCard base styles
+- Icon `rotate(5deg)` on FeatureCard hover (kept `scale(1.1)`)
+- Features section `topLine` decorative element and its mobile `display: none` rule
+- Features section `::before` grid-dot pattern and `::after` pulsing overlay with `float`/`pulse` keyframes
+
 ## [2.3.0] - 2026-03-02
 
 ### Added

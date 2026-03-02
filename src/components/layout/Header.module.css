@@ -4,6 +4,9 @@
     align-items: center;
     padding: clamp(24px, 3vw, 48px) 0;
     width: 100%;
+    background: rgba(13, 17, 23, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .logo {

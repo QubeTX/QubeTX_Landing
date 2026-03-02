@@ -10,15 +10,17 @@ type ContactProps = {
 const Contact: FC<ContactProps> = ({ cta }) => {
   return (
     <section className={styles.contact} aria-labelledby="contact-heading">
-      <h2 id="contact-heading" className={`unbounded-heading ${styles.contactTitle}`}>
-        Get In Touch
-      </h2>
-      <p className={styles.contactSubtitle}>
-        Ready to transform your digital presence? Let&apos;s discuss your project.
-      </p>
+      <div className={styles.contactCard}>
+        <h2 id="contact-heading" className={`unbounded-heading ${styles.contactTitle}`}>
+          Get In Touch
+        </h2>
+        <p className={styles.contactSubtitle}>
+          Ready to transform your digital presence? Let&apos;s discuss your project.
+        </p>
 
-      <div className={styles.contactButtonWrapper}>
-        <ContactButton href={cta.href}>{cta.label}</ContactButton>
+        <div className={styles.contactButtonWrapper}>
+          <ContactButton href={cta.href}>{cta.label}</ContactButton>
+        </div>
       </div>
     </section>
   )

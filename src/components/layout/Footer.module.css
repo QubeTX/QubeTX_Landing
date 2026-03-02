@@ -5,6 +5,9 @@
     font-family: 'Space Mono', monospace;
     font-size: var(--text-sm);
     color: var(--text-secondary);
+    background: rgba(13, 17, 23, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .content {
@@ -97,7 +100,7 @@
 /* Bottom bar */
 .bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
@@ -119,19 +122,6 @@
 .copyright a:hover {
     color: var(--text-primary);
     border-bottom-color: var(--gradient-blue);
-}
-
-.commitInfo {
-    font-size: 10px;
-    opacity: 0.5;
-    margin: 0;
-    font-family: 'Space Mono', monospace;
-}
-
-.commitLabel {
-    font-weight: 600;
-    color: var(--gradient-blue);
-    opacity: 0.8;
 }
 
 /* Responsive */
