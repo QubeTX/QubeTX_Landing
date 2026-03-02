@@ -1,22 +1,15 @@
-import type { FC } from 'react'
+'use client'
+
 import styles from './Header.module.css'
+import QubeTXLogo from '@/components/ui/QubeTXLogo'
 
-type HeaderProps = {
-  logoSrc?: string
-  logoAlt?: string
-}
-
-const Header: FC<HeaderProps> = ({
-  logoSrc = '/logoQUBETX_horizontal.png',
-  logoAlt = 'QubeTX Logo'
-}) => {
+export default function Header() {
   return (
     <header className={styles.header}>
-      <a className={styles.logo} href="#top">
-        <img src={logoSrc} alt={logoAlt} loading="lazy" />
+      <a className={styles.logo} href="#top" aria-label="QubeTX - Back to top">
+        <QubeTXLogo className={styles.logoMark} />
+        <span className={styles.logoText}>QubeTX</span>
       </a>
     </header>
   )
 }
-
-export default Header

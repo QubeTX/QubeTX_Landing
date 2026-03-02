@@ -1,3 +1,5 @@
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
 import Features from "@/components/sections/Features";
 import Process from "@/components/sections/Process";
@@ -15,12 +17,24 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 w-full">
-        <Hero content={HERO_CONTENT} />
-        <Features items={FEATURES} />
+        <Header />
+        <div id="top">
+          <Hero content={HERO_CONTENT} />
+        </div>
+        <div id="services">
+          <Features items={FEATURES} />
+        </div>
         <TechStack />
-        <Process />
-        <Projects items={PROJECTS} />
-        <Contact cta={CONTACT_CTA} />
+        <div id="process">
+          <Process />
+        </div>
+        <div id="projects">
+          <Projects items={PROJECTS} />
+        </div>
+        <div id="contact">
+          <Contact cta={CONTACT_CTA} />
+        </div>
+        <Footer />
       </div>
     </main>
   );

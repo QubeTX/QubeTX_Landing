@@ -26,6 +26,13 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   title: "QubeTX | Web Development & Digital Infrastructure",
   description: "Professional website development, maintenance services, and backend API infrastructure for modern digital businesses.",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/qubeTXFavicon.png', type: 'image/png' },
+    ],
+    apple: '/qubeTXFavicon.png',
+  },
 };
 
 export default function RootLayout({

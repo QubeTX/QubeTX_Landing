@@ -5,6 +5,22 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-03-02
+
+### Added
+- New colorized QubeTX SVG logo (`public/qubetx-logo.svg`) with brand gradient strokes (Primary Blue outer frame, Gradient Blue left face, Gradient Purple right face, blue-to-purple gradient cross-sections)
+- SVG favicon (`public/favicon.svg`) with white rounded-rect background and solid Primary Blue strokes for small-size visibility
+- `QubeTXLogo` inline SVG React component (`src/components/ui/QubeTXLogo.tsx`) with `useId`-based unique gradient IDs to prevent collision when rendered in multiple locations
+- Multi-column Footer with logo section, navigation anchor links, connect links, and bottom bar with copyright/commit info
+- Section `id` attributes on page wrappers (`#top`, `#services`, `#process`, `#projects`, `#contact`) enabling footer anchor navigation
+- Favicon metadata in `layout.tsx` with SVG primary and PNG fallback for Apple devices
+
+### Changed
+- Header now renders inline SVG logo via `QubeTXLogo` component alongside "QubeTX" Unbounded wordmark (replaces `<img>` tag with `logoSrc`/`logoAlt` props)
+- Header wordmark hidden on screens <= 375px, showing only cube mark
+- Footer fully rewritten from single-line copyright to structured multi-column layout with Navigation and Connect columns
+- `page.tsx` now imports and renders Header and Footer components, wrapping sections with anchor-link `id` attributes
+
 ## [2.2.1] - 2025-12-05
 
 ### Added

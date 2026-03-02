@@ -7,23 +7,31 @@
 }
 
 .logo {
-    display: inline-block;
-    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(8px, 1.5vw, 16px);
     text-decoration: none;
     color: inherit;
-}
-
-.logo img {
-    height: clamp(50px, 8vw, 120px);
-    width: auto;
-    display: block;
-    aspect-ratio: auto;
-    transform-origin: left center;
     transition: transform 0.3s ease;
 }
 
-.logo img:hover {
+.logo:hover {
     transform: scale(1.02);
+}
+
+.logoMark {
+    height: clamp(40px, 6vw, 72px);
+    width: auto;
+    display: block;
+}
+
+.logoText {
+    font-family: "Unbounded", serif;
+    font-weight: 700;
+    font-size: clamp(18px, 3vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
 }
 
 @media (max-width: 480px) {
@@ -31,12 +39,10 @@
         padding: 16px;
         justify-content: flex-start;
     }
-    
-    .logo {
-        margin: 0;
-    }
-    
-    .logo img {
-        height: clamp(40px, 6vw, 50px);
+}
+
+@media (max-width: 375px) {
+    .logoText {
+        display: none;
     }
 }
