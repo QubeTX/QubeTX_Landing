@@ -53,6 +53,9 @@ export default function Footer() {
                       : {})}
                   >
                     {link.label}
+                    {'external' in link && link.external && (
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    )}
                   </a>
                 </li>
               ))}
@@ -67,6 +70,7 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} QubeTX &mdash; A Department of{' '}
           <a href="https://emmettshaughnessy.com" target="_blank" rel="noopener noreferrer">
             ES Development LLC
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </p>
       </div>
