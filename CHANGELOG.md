@@ -5,6 +5,22 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-03-03
+
+### Performance
+
+- **CustomCursor event delegation** — Replaced per-element `pointerenter`/`pointerleave` listeners and `MutationObserver` with two delegated `pointerover`/`pointerout` listeners on `document.body`, eliminating DOM re-querying on every mutation (`src/components/effects/CustomCursor.tsx`)
+
+### Refactoring
+
+- **Shared animation variants** — Extracted duplicate framer-motion variant definitions into `src/utils/animations.ts` with `createContainerVariants()`, `slideUpVariants`, `slideLeftVariants`, `heroItemVariants`, and `sectionTitleAnimation`; updated 7 component files to use shared imports (Features, Projects, Process, TechStack, Hero, FeatureCard, ProjectCard)
+
+### Added
+
+- **Test infrastructure** — Vitest with React Testing Library, jsdom environment, CSS module support, and framer-motion mock (`vitest.config.ts`, `src/test/setup.ts`, `src/test/mocks/framer-motion.ts`)
+- **63 component tests across 12 test files** covering data exports, UI components (ContactButton, FeatureCard, ProjectCard), section components (Contact, Features, Projects, Process, TechStack, Hero), and layout components (Header, Footer)
+- `npm test` and `npm run test:watch` scripts
+
 ## [2.4.0] - 2026-03-02
 
 ### Changed

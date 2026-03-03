@@ -4,14 +4,10 @@ import { useRef } from 'react'
 import type { FC } from 'react'
 import { motion } from 'framer-motion'
 import type { Feature } from '@/data/content'
+import { slideUpVariants } from '@/utils/animations'
 import styles from './FeatureCard.module.css'
 
 type FeatureCardProps = Feature
-
-const itemVariant = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
-}
 
 const FeatureCard: FC<FeatureCardProps> = ({ icon, title, lineBreak, description }) => {
   const ref = useRef<HTMLElement>(null)
@@ -21,7 +17,7 @@ const FeatureCard: FC<FeatureCardProps> = ({ icon, title, lineBreak, description
       ref={ref}
       className={styles.featureCard}
       data-interactive="true"
-      variants={itemVariant}
+      variants={slideUpVariants}
     >
       <div className={styles.icon} aria-hidden="true">
         <span>

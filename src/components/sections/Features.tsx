@@ -4,21 +4,14 @@ import { useRef, type FC } from 'react'
 import { motion, useInView } from 'framer-motion'
 import FeatureCard from '../ui/FeatureCard'
 import type { Feature } from '@/data/content'
+import { createContainerVariants } from '@/utils/animations'
 import styles from './Features.module.css'
 
 type FeaturesProps = {
   items: Feature[]
 }
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-}
+const container = createContainerVariants(0.15)
 
 const Features: FC<FeaturesProps> = ({ items }) => {
   const ref = useRef(null)

@@ -4,14 +4,10 @@ import { useRef } from 'react'
 import type { FC } from 'react'
 import { motion } from 'framer-motion'
 import type { Project } from '@/data/content'
+import { slideUpVariants } from '@/utils/animations'
 import styles from './ProjectCard.module.css'
 
 type ProjectCardProps = Project
-
-const itemVariant = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
-}
 
 const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, description }) => {
   const ref = useRef<HTMLElement>(null)
@@ -22,7 +18,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
       target="_blank"
       rel="noopener noreferrer"
       className={styles.projectLink}
-      variants={itemVariant}
+      variants={slideUpVariants}
     >
       <article
         ref={ref}

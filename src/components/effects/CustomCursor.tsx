@@ -3,11 +3,7 @@
 import { useEffect, useRef, useState, type FC } from 'react'
 import styles from './CustomCursor.module.css'
 
-type InteractiveCleanup = {
-  el: Element
-  handleEnter: () => void
-  handleLeave: () => void
-}
+const INTERACTIVE_SELECTOR = 'a, button, [role="button"], [data-interactive="true"]'
 
 type Position = {
   x: number
@@ -31,8 +27,6 @@ const CustomCursor: FC = () => {
   const bloomPositionRef = useRef<Position>(createInitialPosition())
 
   const animationFrameRef = useRef<number | null>(null)
-  const scheduledSetupRef = useRef<number | null>(null)
-  const cleanupRef = useRef<InteractiveCleanup[]>([])
   const enlargedRef = useRef(false)
   const isVisibleRef = useRef(false)
 
@@ -146,48 +140,28 @@ const CustomCursor: FC = () => {
       toggleCursorState(false)
     }
 
-    const setupInteractiveElements = () => {
-      cleanupRef.current.forEach(({ el, handleEnter, handleLeave }) => {
-        el.removeEventListener('pointerenter', handleEnter)
-        el.removeEventListener('pointerleave', handleLeave)
-      })
-      cleanupRef.current = []
-
-      const interactiveElements = document.querySelectorAll<HTMLElement>(
-        'a, button, [role="button"], [data-interactive="true"]'
-      )
-
-      interactiveElements.forEach((element) => {
-        const handleEnter = () => {
-          setCursorVisibility(true)
-          toggleCursorState(true)
-        }
-        const handleLeave = () => toggleCursorState(false)
-
-        element.addEventListener('pointerenter', handleEnter)
-        element.addEventListener('pointerleave', handleLeave)
-
-        cleanupRef.current.push({ el: element, handleEnter, handleLeave })
-      })
+    const isInteractive = (target: EventTarget | null): boolean => {
+      if (!(target instanceof Element)) return false
+      return target.closest(INTERACTIVE_SELECTOR) !== null
     }
 
-    const observer = new MutationObserver(() => {
-      if (scheduledSetupRef.current !== null) {
-        return
+    const handlePointerOver = (event: PointerEvent) => {
+      if (isInteractive(event.target)) {
+        setCursorVisibility(true)
+        toggleCursorState(true)
       }
+    }
 
-      scheduledSetupRef.current = window.requestAnimationFrame(() => {
-        scheduledSetupRef.current = null
-        setupInteractiveElements()
-      })
-    })
+    const handlePointerOut = (event: PointerEvent) => {
+      if (isInteractive(event.target)) {
+        if (!isInteractive(event.relatedTarget)) {
+          toggleCursorState(false)
+        }
+      }
+    }
 
-    setupInteractiveElements()
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    })
+    document.body.addEventListener('pointerover', handlePointerOver, { passive: true })
+    document.body.addEventListener('pointerout', handlePointerOut, { passive: true })
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true })
     window.addEventListener('blur', handleWindowLeave)
@@ -198,22 +172,11 @@ const CustomCursor: FC = () => {
         cancelAnimationFrame(animationFrameRef.current)
       }
 
-      if (scheduledSetupRef.current !== null) {
-        cancelAnimationFrame(scheduledSetupRef.current)
-        scheduledSetupRef.current = null
-      }
-
-      observer.disconnect()
-
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('blur', handleWindowLeave)
       document.removeEventListener('mouseleave', handleWindowLeave)
-
-      cleanupRef.current.forEach(({ el, handleEnter, handleLeave }) => {
-        el.removeEventListener('pointerenter', handleEnter)
-        el.removeEventListener('pointerleave', handleLeave)
-      })
-      cleanupRef.current = []
+      document.body.removeEventListener('pointerover', handlePointerOver)
+      document.body.removeEventListener('pointerout', handlePointerOut)
 
       setCursorVisibility(false)
       toggleCursorState(false)

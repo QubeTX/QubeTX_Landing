@@ -4,21 +4,14 @@ import { useRef, type FC } from 'react'
 import { motion, useInView } from 'framer-motion'
 import ProjectCard from '../ui/ProjectCard'
 import type { Project } from '@/data/content'
+import { createContainerVariants, sectionTitleAnimation } from '@/utils/animations'
 import styles from './Projects.module.css'
 
 type ProjectsProps = {
   items: Project[]
 }
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
-}
+const container = createContainerVariants(0.2)
 
 const Projects: FC<ProjectsProps> = ({ items }) => {
   const ref = useRef(null)
@@ -27,9 +20,9 @@ const Projects: FC<ProjectsProps> = ({ items }) => {
   return (
     <section className={styles.projects} aria-labelledby="projects-heading">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6 }}
+        initial={sectionTitleAnimation.initial}
+        animate={sectionTitleAnimation.getAnimate(isInView)}
+        transition={sectionTitleAnimation.transition}
       >
         <h2 id="projects-heading" className={`unbounded-heading ${styles.sectionTitle}`}>
           Projects
