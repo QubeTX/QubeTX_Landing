@@ -2,78 +2,101 @@
 'use client';
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef, Suspense } from "react";
+import { useMemo, useRef, Suspense, useEffect } from "react";
 import * as THREE from "three";
+
+const vertexShader = `
+  uniform float uTime;
+  uniform vec2 uMouse;
+
+  void main() {
+    // Get the instance position from the matrix (column 3)
+    vec3 basePos = instanceMatrix[3].xyz;
+    float time = uTime * 0.5;
+
+    // Subtle wave effect based on time and position
+    float z = sin(basePos.x * 0.3 + time) * 0.15 + cos(basePos.y * 0.3 + time) * 0.15;
+
+    // Gentle mouse interaction
+    float dist = distance(basePos.xy, uMouse);
+    if (dist < 4.0) {
+      float force = (4.0 - dist) / 4.0;
+      z += force * 1.5;
+    }
+
+    // Scale effect based on Z position
+    float scale = 1.0 + z * 0.3;
+
+    // Apply transformations
+    vec3 pos = position * scale + vec3(basePos.xy, z);
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  void main() {
+    // Match #0066FF (vec3(0.0, 0.4, 1.0)) with 0.2 opacity
+    gl_FragColor = vec4(0.0, 0.4, 1.0, 0.2);
+  }
+`;
 
 const Dots = () => {
   const { viewport, mouse } = useThree();
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const count = 60 * 35; // Wide grid for 16:9
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const matRef = useRef<THREE.ShaderMaterial>(null);
 
-  // Grid parameters
   const rows = 35;
   const cols = 60;
-  const spacing = 0.6; // Slightly wider spacing
+  const count = rows * cols;
+  const spacing = 0.6;
 
-  // Initialize positions
-  const particles = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const x = (j - cols / 2) * spacing;
-        const y = (i - rows / 2) * spacing;
-        const z = 0;
-        temp.push({ x, y, z, mx: x, my: y });
-      }
-    }
-    return temp;
-  }, []);
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uMouse: { value: new THREE.Vector2(0, 0) },
+  }), []);
 
-  useFrame((state) => {
+  // Initialize positions once
+  useEffect(() => {
     if (!meshRef.current) return;
 
-    const time = state.clock.getElapsedTime() * 0.5; // Slower animation
+    const dummy = new THREE.Object3D();
+    let i = 0;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = (c - cols / 2) * spacing;
+        const y = (r - rows / 2) * spacing;
 
-    // Convert normalized mouse coordinates to world coordinates
-    // Use a default position if mouse hasn't moved to prevent initial explosion
+        dummy.position.set(x, y, 0);
+        dummy.updateMatrix();
+        meshRef.current.setMatrixAt(i++, dummy.matrix);
+      }
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  }, [rows, cols, spacing]);
+
+  useFrame((state) => {
+    if (!matRef.current) return;
+
+    const time = state.clock.getElapsedTime();
     const mouseX = (mouse.x * viewport.width) / 2;
     const mouseY = (mouse.y * viewport.height) / 2;
 
-    particles.forEach((particle, i) => {
-      const { mx, my } = particle;
-
-      // Distance from mouse
-      const dx = mouseX - mx;
-      const dy = mouseY - my;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      // Subtle wave effect based on time and position
-      let z = Math.sin(mx * 0.3 + time) * 0.15 + Math.cos(my * 0.3 + time) * 0.15;
-
-      // Gentle mouse interaction
-      if (dist < 4) {
-        const force = (4 - dist) / 4;
-        z += force * 1.5; // Gentle push towards camera
-      }
-
-      dummy.position.set(mx, my, z);
-
-      // Scale effect based on Z position - subtler
-      const scale = 1 + z * 0.3;
-      dummy.scale.set(scale, scale, scale);
-
-      dummy.updateMatrix();
-      meshRef.current!.setMatrixAt(i, dummy.matrix);
-    });
-
-    meshRef.current.instanceMatrix.needsUpdate = true;
+    matRef.current.uniforms.uTime.value = time;
+    matRef.current.uniforms.uMouse.value.set(mouseX, mouseY);
   });
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <circleGeometry args={[0.04, 16]} />
-      <meshBasicMaterial color="#0066FF" transparent opacity={0.2} />
+      <shaderMaterial
+        ref={matRef}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
+        transparent
+        depthWrite={false}
+      />
     </instancedMesh>
   );
 };
