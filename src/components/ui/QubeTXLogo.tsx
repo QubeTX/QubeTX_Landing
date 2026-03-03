@@ -1,11 +1,11 @@
 'use client'
 
-import { useId, type SVGProps } from 'react'
+import { useId, type ComponentPropsWithoutRef } from 'react'
 
 type QubeTXLogoProps = {
   size?: number
   className?: string
-} & Omit<SVGProps<SVGSVGElement>, 'viewBox' | 'xmlns'>
+} & Omit<ComponentPropsWithoutRef<'svg'>, 'viewBox' | 'xmlns'>
 
 export default function QubeTXLogo({ size, className, ...props }: QubeTXLogoProps) {
   const uid = useId()
