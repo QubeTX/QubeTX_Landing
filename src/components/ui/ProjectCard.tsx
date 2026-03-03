@@ -40,6 +40,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
             ))}
           </ul>
           <p className={styles.projectDescription}>{description}</p>
+          <span className="sr-only"> (opens in a new tab)</span>
         </div>
       </article>
     </motion.a>

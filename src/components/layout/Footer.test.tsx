@@ -19,7 +19,7 @@ describe('Footer', () => {
   it('renders connect links', () => {
     render(<Footer />)
     expect(screen.getByRole('link', { name: 'Start Your Project' })).toHaveAttribute('href', '#contact')
-    expect(screen.getByRole('link', { name: 'emmettshaughnessy.com' })).toHaveAttribute('href', 'https://emmettshaughnessy.com')
+    expect(screen.getByRole('link', { name: 'emmettshaughnessy.com(opens in a new tab)' })).toHaveAttribute('href', 'https://emmettshaughnessy.com')
   })
 
   it('renders dynamic year in copyright', () => {
@@ -30,14 +30,14 @@ describe('Footer', () => {
 
   it('sets external link attributes correctly', () => {
     render(<Footer />)
-    const externalLink = screen.getByRole('link', { name: 'emmettshaughnessy.com' })
+    const externalLink = screen.getByRole('link', { name: 'emmettshaughnessy.com(opens in a new tab)' })
     expect(externalLink).toHaveAttribute('target', '_blank')
     expect(externalLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('renders the ES Development LLC link', () => {
     render(<Footer />)
-    const esDevLink = screen.getByRole('link', { name: 'ES Development LLC' })
+    const esDevLink = screen.getByRole('link', { name: 'ES Development LLC(opens in a new tab)' })
     expect(esDevLink).toHaveAttribute('href', 'https://emmettshaughnessy.com')
     expect(esDevLink).toHaveAttribute('target', '_blank')
     expect(esDevLink).toHaveAttribute('rel', 'noopener noreferrer')
