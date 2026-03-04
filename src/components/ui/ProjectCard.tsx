@@ -7,16 +7,16 @@ import type { Project } from '@/data/content'
 import { slideUpVariants } from '@/utils/animations'
 import styles from './ProjectCard.module.css'
 
-type ProjectCardProps = Project
+type ProjectCardProps = Project & { target?: string }
 
-const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, description }) => {
+const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, description, target = "_blank" }) => {
   const ref = useRef<HTMLElement>(null)
 
   return (
     <motion.a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
       className={styles.projectLink}
       variants={slideUpVariants}
     >
@@ -42,6 +42,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
           <p className={styles.projectDescription}>{description}</p>
         </div>
       </article>
+      {target === '_blank' && (
+        <span className="sr-only">(opens in a new tab)</span>
+      )}
     </motion.a>
   )
 }
