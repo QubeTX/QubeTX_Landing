@@ -17,6 +17,9 @@ const ContactButton: FC<ContactButtonProps> = ({
   return (
     <a href={href} target={target} rel={rel} className={styles.contactButton}>
       <span>{children}</span>
+      {target === '_blank' && (
+        <span className="sr-only">(opens in a new tab)</span>
+      )}
       <svg
         className={styles.arrowIcon}
         width="20"
