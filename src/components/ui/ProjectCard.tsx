@@ -30,6 +30,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
             <span className={styles.visitSite}>Visit Site →</span>
           </div>
         </div>
+        <span className="sr-only"> (opens in a new tab)</span>
         <div className={styles.projectContent}>
           <h3 className={`unbounded-heading ${styles.projectTitle}`}>{title}</h3>
           <ul className={styles.projectTags} aria-label="Project tags">
