@@ -15,8 +15,8 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
   return (
     <motion.a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
       className={styles.projectLink}
       variants={slideUpVariants}
     >
@@ -42,6 +42,9 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
           <p className={styles.projectDescription}>{description}</p>
         </div>
       </article>
+      {href.startsWith('http') && (
+        <span className="sr-only"> (opens in a new tab)</span>
+      )}
     </motion.a>
   )
 }
