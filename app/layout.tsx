@@ -45,6 +45,9 @@ export default function RootLayout({
       <body
         className={`${unbounded.variable} ${spaceGrotesk.variable} ${spaceMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
       >
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-background focus:text-primary">
+          Skip to content
+        </a>
         <SmoothScroll>
           <CustomCursor />
           {children}

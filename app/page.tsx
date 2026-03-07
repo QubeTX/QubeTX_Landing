@@ -11,7 +11,7 @@ import { HERO_CONTENT, FEATURES, PROJECTS, CONTACT_CTA } from "@/data/content";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden">
+    <main id="main-content" className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden">
       <div className="fixed inset-0 z-0">
         <DotMatrix />
       </div>
