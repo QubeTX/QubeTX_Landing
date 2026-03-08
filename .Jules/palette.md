@@ -1,0 +1,3 @@
+## 2024-05-24 - Custom Cursor Keyboard Accessibility
+**Learning:** When using custom cursors that set `cursor: none` globally, default browser focus rings may be obscured or styling disabled if standard hover states are assumed. Additionally, complex landing pages need explicit skip-to-content links.
+**Action:** Ensure global `*:focus-visible` styles are maintained with high contrast outlines, and include a `.skip-link` pointing to `#main-content` at the top of the layout hierarchy.
