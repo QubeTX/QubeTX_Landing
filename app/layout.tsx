@@ -46,6 +46,9 @@ export default function RootLayout({
         className={`${unbounded.variable} ${spaceGrotesk.variable} ${spaceMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
       >
         <SmoothScroll>
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
           <CustomCursor />
           {children}
         </SmoothScroll>

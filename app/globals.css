@@ -158,6 +158,28 @@ body::after {
     }
 }
 
+/* Accessibility Utilities */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary-blue);
+    color: white;
+    padding: 8px;
+    z-index: 10000;
+    transition: top 0.2s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Global focus-visible styles to ensure keyboard accessibility alongside custom cursors */
+*:focus-visible {
+    outline: 2px solid var(--primary-blue) !important;
+    outline-offset: 2px !important;
+}
+
 /* Typography Utilities */
 .unbounded-title {
     font-family: "Unbounded", serif;
