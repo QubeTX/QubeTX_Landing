@@ -197,14 +197,14 @@ export const PROJECTS: Project[] = [
       'A raw materials processing tool built for a CivMC group. Accepts JSON input to process and manage in-game resource data with an industrial, utilitarian interface.'
   },
   {
-    id: 'bauhaus-timer',
+    id: 'shaughv-timer',
     href: 'https://timer.emmetts.dev',
     image: '/timer.png',
-    alt: 'Bauhaus Timer',
-    title: 'Bauhaus Timer',
-    tags: ['Timer', 'Utility', 'Bauhaus'],
+    alt: 'SHAUGHV Timer',
+    title: 'SHAUGHV Timer',
+    tags: ['Timer', 'Utility', 'SHAUGHV'],
     description:
-      'A precision countdown, stopwatch, and interval timer designed with Bauhaus principles. Features a circular progress ring, dark mode, and sound controls for focused productivity.'
+      'A precision countdown, stopwatch, and interval timer with SHAUGHV design sensibility. Features a circular progress ring, dark mode, and sound controls for focused productivity.'
   }
 ]
 

@@ -5,6 +5,13 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2026-03-09
+
+### Changed
+- **Renamed Bauhaus Timer → SHAUGHV Timer** in project cards (`src/data/content.ts`): updated id, title, alt text, tags, and description
+- **Updated timer screenshot** (`public/timer.png`) with fresh capture from [timer.emmetts.dev](https://timer.emmetts.dev)
+- **White QubeTX logo** — Added `color` prop to `QubeTXLogo` component (defaults to white); logo now renders white site-wide to match adjacent text
+
 ## [2.5.0] - 2026-03-03
 
 ### Performance
