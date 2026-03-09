@@ -1,16 +1,22 @@
 import React from 'react'
 
+const motionPropKeys = new Set([
+  'initial', 'animate', 'exit', 'variants', 'transition',
+  'whileHover', 'whileTap', 'whileInView', 'whileFocus', 'whileDrag',
+  'layout', 'layoutId', 'onAnimationStart', 'onAnimationComplete',
+  'viewport',
+])
+
 const createMotionComponent = (tag: string) => {
-  return React.forwardRef((props: Record<string, unknown>, ref: React.Ref<unknown>) => {
-    const {
-      initial, animate, exit, variants, transition,
-      whileHover, whileTap, whileInView, whileFocus, whileDrag,
-      layout, layoutId, onAnimationStart, onAnimationComplete,
-      viewport,
-      ...htmlProps
-    } = props
+  const Component = React.forwardRef((props: Record<string, unknown>, ref: React.Ref<unknown>) => {
+    const htmlProps: Record<string, unknown> = {}
+    for (const key in props) {
+      if (!motionPropKeys.has(key)) htmlProps[key] = props[key]
+    }
     return React.createElement(tag, { ...htmlProps, ref })
   })
+  Component.displayName = `motion.${tag}`
+  return Component
 }
 
 export const motion = new Proxy({} as Record<string, React.ComponentType>, {

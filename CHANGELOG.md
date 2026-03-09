@@ -5,6 +5,11 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.2] - 2026-03-09
+
+### Fixed
+- **CI lint failure** — Rewrote framer-motion test mock (`src/test/mocks/framer-motion.ts`) to filter motion props via a `Set` instead of destructuring, eliminating 15 unused-variable warnings; added `displayName` to the `forwardRef` component to fix the `react/display-name` error
+
 ## [2.5.1] - 2026-03-09
 
 ### Changed
