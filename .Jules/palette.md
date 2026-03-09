@@ -1,0 +1,3 @@
+## 2025-03-09 - Add ARIA label to ProjectCard links
+**Learning:** Wrapping an entire component (like an article card) in an anchor tag without an `aria-label` causes screen readers to read out all nested text, lacking clear context for the link's destination.
+**Action:** When wrapping extensive content in a single interactive element (like `<a>` or `<button>`), always provide a comprehensive `aria-label` that clearly describes the action or destination.
