@@ -19,6 +19,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
       rel="noopener noreferrer"
       className={styles.projectLink}
       variants={slideUpVariants}
+      aria-label={`Visit project site for ${title}`}
     >
       <article
         ref={ref}
