@@ -225,6 +225,17 @@ a, button, [role="button"], input, select, textarea {
     }
 }
 
+/* Keyboard Accessibility - Focus Visible Styles */
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
