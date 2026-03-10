@@ -12,27 +12,36 @@ import { HERO_CONTENT, FEATURES, PROJECTS, CONTACT_CTA } from "@/data/content";
 export default function Home() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:p-4 focus:bg-primary/90 focus:text-white focus:rounded-md focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       <div className="fixed inset-0 z-0">
         <DotMatrix />
       </div>
 
       <div className="relative z-10 w-full">
         <Header />
-        <div id="top">
-          <Hero content={HERO_CONTENT} />
-        </div>
-        <div id="services">
-          <Features items={FEATURES} />
-        </div>
-        <TechStack />
-        <div id="process">
-          <Process />
-        </div>
-        <div id="projects">
-          <Projects items={PROJECTS} />
-        </div>
-        <div id="contact">
-          <Contact cta={CONTACT_CTA} />
+        <div id="main-content">
+          <div id="top">
+            <Hero content={HERO_CONTENT} />
+          </div>
+          <div id="services">
+            <Features items={FEATURES} />
+          </div>
+          <TechStack />
+          <div id="process">
+            <Process />
+          </div>
+          <div id="projects">
+            <Projects items={PROJECTS} />
+          </div>
+          <div id="contact">
+            <Contact cta={CONTACT_CTA} />
+          </div>
         </div>
         <Footer />
       </div>
