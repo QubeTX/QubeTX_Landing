@@ -14,14 +14,14 @@ describe('ProjectCard', () => {
     href: 'https://example.com',
     image: '/test.png',
     alt: 'Test Project Image',
-    title: 'Test Project',
+    title: 'Test Project Title',
     tags: ['React', 'TypeScript', 'Next.js'],
     description: 'A test project description.',
   }
 
   it('renders the title', () => {
     render(<ProjectCard {...baseProps} />)
-    expect(screen.getByText('Test Project')).toBeInTheDocument()
+    expect(screen.getByText(/Test Project Title/i)).toBeInTheDocument()
   })
 
   it('renders the image with correct alt text', () => {
