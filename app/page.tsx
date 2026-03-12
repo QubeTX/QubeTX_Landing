@@ -18,6 +18,7 @@ export default function Home() {
 
       <div className="relative z-10 w-full">
         <Header />
+        <div id="main-content" tabIndex={-1} className="outline-none">
         <div id="top">
           <Hero content={HERO_CONTENT} />
         </div>
@@ -33,6 +34,7 @@ export default function Home() {
         </div>
         <div id="contact">
           <Contact cta={CONTACT_CTA} />
+        </div>
         </div>
         <Footer />
       </div>
