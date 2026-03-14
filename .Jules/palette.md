@@ -1,0 +1,4 @@
+
+## 2025-02-13 - Screen reader announcements for external links
+**Learning:** External links (`target="_blank"`) without context can confuse screen reader users who might not realize they are leaving the current application context. In a Next.js/Tailwind stack, adding a simple `<span className="sr-only"> (opens in a new tab)</span>` significantly improves accessibility without changing visual design. Wait, I should make sure my tests use `/text/i` regex matching, otherwise adding screen-reader text inside interactive elements breaks brittle `getByRole('link', { name: 'Exact Text' })` tests.
+**Action:** When creating or auditing external links, explicitly append `sr-only` text explaining the behavior, and ensure corresponding tests match names using regex (`/Pattern/i`) rather than exact strings.
