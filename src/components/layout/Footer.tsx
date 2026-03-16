@@ -21,7 +21,7 @@ export default function Footer() {
       <div className={styles.content}>
         {/* Logo section */}
         <div className={styles.brand}>
-          <a className={styles.brandLink} href="#top" aria-label="QubeTX - Back to top">
+          <a className={styles.brandLink} href="#main-content" aria-label="QubeTX - Back to top">
             <QubeTXLogo className={styles.brandLogo} />
             <span className={styles.brandName}>QubeTX</span>
           </a>

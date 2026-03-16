@@ -18,7 +18,7 @@ export default function Home() {
 
       <div className="relative z-10 w-full">
         <Header />
-        <div id="top">
+        <div id="main-content">
           <Hero content={HERO_CONTENT} />
         </div>
         <div id="services">

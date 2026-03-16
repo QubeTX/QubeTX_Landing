@@ -1,0 +1,3 @@
+## 2025-03-05 - Custom Cursor Accessibility
+**Learning:** When using custom cursors that hide the native pointer (`cursor: none`), visual interactive elements completely lose their native hover states. For keyboard-only users, this creates a severe accessibility issue where focus is invisible. Adding a global `:focus-visible` outline is a necessary and highly effective baseline fix for web apps relying on custom pointers. Adding a "Skip to Content" is also great for keyboard navigation and was received well.
+**Action:** Always ensure a global `:focus-visible` utility class or CSS variable exists when a custom pointer is used to preserve navigation for non-mouse users.
