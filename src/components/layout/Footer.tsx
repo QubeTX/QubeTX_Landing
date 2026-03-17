@@ -30,8 +30,8 @@ export default function Footer() {
 
         {/* Navigation columns */}
         <div className={styles.columns}>
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Navigation</h3>
+          <nav className={styles.column} aria-labelledby="footer-nav-title">
+            <h3 id="footer-nav-title" className={styles.columnTitle}>Navigation</h3>
             <ul className={styles.columnList}>
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -39,10 +39,10 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Connect</h3>
+          <nav className={styles.column} aria-labelledby="footer-connect-title">
+            <h3 id="footer-connect-title" className={styles.columnTitle}>Connect</h3>
             <ul className={styles.columnList}>
               {CONNECT_LINKS.map((link) => (
                 <li key={link.href}>
@@ -57,7 +57,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
       </div>
 
