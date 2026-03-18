@@ -1,0 +1,3 @@
+## 2024-03-18 - Semantic Navigation Tags in Footer
+**Learning:** For layout-focused sections like footers, explicitly defining navigation columns with `<nav>` tags rather than generic `<div>` elements improves screen-reader parseability. When doing so, coupling `<nav>` with `aria-labelledby` directed to an inherent `<h3>` heading ensures accurate context and titles for standard keyboard navigation elements.
+**Action:** When creating grouped internal or external links, default to using semantic `<nav>` elements structured around heading titles for explicit region identification over generic block wrappers.
