@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing global focus styles with custom cursors
+**Learning:** When using custom cursors that hide the native cursor (e.g. `cursor: none`), keyboard accessibility breaks entirely if explicit `:focus-visible` styles are not implemented, because the user has no visual indication of where focus currently is.
+**Action:** Always add strong, high-contrast `:focus-visible` outlines globally (e.g., `*:focus-visible`) whenever implementing custom cursor solutions that disable native interaction indicators.

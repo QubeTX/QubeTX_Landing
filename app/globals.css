@@ -217,6 +217,13 @@ a, button, [role="button"], input, select, textarea {
     min-width: var(--touch-target-min);
 }
 
+/* Global focus styles for keyboard accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
 /* Prevent horizontal scroll on mobile */
 @media (max-width: 768px) {
     html, body {
