@@ -1,0 +1,3 @@
+## 2025-02-13 - Wrapper Link aria-label Overrides Child Screen Reader Text
+**Learning:** Applying an `aria-label` to a parent wrapper link (e.g., `<a aria-label="...">`) completely overrides all nested content for screen readers, effectively hiding any embedded `.sr-only` context (such as "(opens in a new tab)").
+**Action:** Always include essential context like "(opens in a new tab)" directly inside the parent `aria-label` string if one is used, rather than relying on nested `.sr-only` spans. Alternatively, omit the wrapper `aria-label` if the nested text content combined with `.sr-only` spans already provides an optimal accessible name.
