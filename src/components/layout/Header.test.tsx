@@ -13,16 +13,23 @@ describe('Header', () => {
     expect(screen.getByText('QubeTX')).toBeInTheDocument()
   })
 
-  it('links to #top', () => {
+  it('links to #main-content', () => {
     render(<Header />)
-    const link = screen.getByRole('link', { name: /qubetx/i })
-    expect(link).toHaveAttribute('href', '#top')
+    const link = screen.getByRole('link', { name: /qubetx - back to top/i })
+    expect(link).toHaveAttribute('href', '#main-content')
   })
 
   it('has the correct aria-label', () => {
     render(<Header />)
     const link = screen.getByRole('link', { name: /qubetx - back to top/i })
     expect(link).toBeInTheDocument()
+  })
+
+  it('renders skip-to-content link', () => {
+    render(<Header />)
+    const skipLink = screen.getByRole('link', { name: /skip to content/i })
+    expect(skipLink).toHaveAttribute('href', '#main-content')
+    expect(skipLink).toHaveClass('sr-only')
   })
 
   it('renders the logo SVG', () => {

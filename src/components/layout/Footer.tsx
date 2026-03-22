@@ -21,7 +21,7 @@ export default function Footer() {
       <div className={styles.content}>
         {/* Logo section */}
         <div className={styles.brand}>
-          <a className={styles.brandLink} href="#top" aria-label="QubeTX - Back to top">
+          <a className={styles.brandLink} href="#main-content" aria-label="QubeTX - Back to top">
             <QubeTXLogo className={styles.brandLogo} />
             <span className={styles.brandName}>QubeTX</span>
           </a>
@@ -30,8 +30,8 @@ export default function Footer() {
 
         {/* Navigation columns */}
         <div className={styles.columns}>
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Navigation</h3>
+          <nav className={styles.column} aria-labelledby="footer-nav-title">
+            <h3 id="footer-nav-title" className={styles.columnTitle}>Navigation</h3>
             <ul className={styles.columnList}>
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -39,10 +39,10 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          <div className={styles.column}>
-            <h3 className={styles.columnTitle}>Connect</h3>
+          <nav className={styles.column} aria-labelledby="footer-connect-title">
+            <h3 id="footer-connect-title" className={styles.columnTitle}>Connect</h3>
             <ul className={styles.columnList}>
               {CONNECT_LINKS.map((link) => (
                 <li key={link.href}>
@@ -53,11 +53,14 @@ export default function Footer() {
                       : {})}
                   >
                     {link.label}
+                    {'external' in link && link.external && (
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    )}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
       </div>
 
@@ -67,6 +70,7 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} QubeTX &mdash; A Department of{' '}
           <a href="https://emmettshaughnessy.com" target="_blank" rel="noopener noreferrer">
             ES Development LLC
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </p>
       </div>
