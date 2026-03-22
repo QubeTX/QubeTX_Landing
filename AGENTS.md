@@ -11,7 +11,9 @@
 - `npm run dev` – Starts the Next dev server on http://localhost:3000 using Turbopack/HMR.
 - `npm run build` – Generates the production export into `out/`; required before deployments.
 - `npm run start` – Runs the production server against the artefacts from `npm run build`.
-- `npm run lint` – ESLint (React + TypeScript rules) is the current QA gate; run it alongside builds until a proper test suite exists.
+- `npm run lint` – ESLint (React + TypeScript rules); run alongside builds.
+- `npm test` – Vitest suite (65 tests, 12 files); run before submitting PRs.
+- `npm run test:watch` – Vitest in watch mode for active development.
 
 ## Coding Style & Naming Conventions
 - Use TypeScript everywhere. Default exports for components, PascalCase filenames (`Hero.tsx`, `DotMatrix.tsx`), camelCase hooks/utilities.
@@ -20,8 +22,10 @@
 - Keep Lenis/Framer hooks inside `use client` modules, and respect reduced-motion checks when adding new animations.
 
 ## Testing Guidelines
-- There is no automated test suite yet. Treat `npm run lint` + `npm run build` as the minimum verification combo before sharing work.
-- If you add tests later, colocate them under `src/__tests__/` and document the new commands in CODEX + this file.
+- The project uses Vitest with React Testing Library (65 tests across 12 files).
+- Test files are colocated with their components (e.g. `Header.test.tsx` lives alongside `Header.tsx`); data tests live in `src/data/`.
+- Run `npm test` before opening a PR; `npm run test:watch` during active development.
+- Treat `npm run lint` + `npm run build` + `npm test` as the full pre-PR verification combo.
 
 ## Commit & Pull Request Guidelines
 - Prefer Conventional Commit prefixes (`feat:`, `fix:`, `chore:`) with concise summaries.

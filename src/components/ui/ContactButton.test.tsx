@@ -5,7 +5,7 @@ import ContactButton from './ContactButton'
 describe('ContactButton', () => {
   it('renders children text', () => {
     render(<ContactButton href="https://example.com">Click Me</ContactButton>)
-    expect(screen.getByText('Click Me')).toBeInTheDocument()
+    expect(screen.getByText(/Click Me/i)).toBeInTheDocument()
   })
 
   it('link has correct href', () => {

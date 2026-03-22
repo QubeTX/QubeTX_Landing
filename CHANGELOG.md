@@ -5,6 +5,24 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-03-22
+
+### Added
+- **Global `:focus-visible` keyboard focus styles** — Added zero-specificity `:where(*):focus-visible` rule to `app/globals.css` with electric blue outline, ensuring keyboard users always see focus indicators (critical since the custom cursor hides the native pointer)
+- **Skip-to-content link** — Added a visually hidden "Skip to content" link as the first focusable element in `Header.tsx`; appears on keyboard focus with high-contrast blue styling and ring indicator
+- **Semantic `<nav>` footer columns** — Replaced generic `<div>` wrappers with `<nav aria-labelledby="...">` elements for the Navigation and Connect footer columns in `Footer.tsx`
+- **ProjectCard `aria-label`** — Added `aria-label="Visit project site for {title}"` to each project card link to give screen readers a clear destination label instead of reading all nested card text
+- **Screen-reader announcements for external links** — Added visually hidden "(opens in a new tab)" text to all `target="_blank"` links across `ContactButton.tsx`, `ProjectCard.tsx`, and `Footer.tsx`
+- **New tests** — Skip-to-content link test in `Header.test.tsx`; semantic nav assertion in `Footer.test.tsx`
+
+### Changed
+- Renamed anchor target from `id="top"` to `id="main-content"` in `app/page.tsx` with `tabIndex={-1}` for proper skip link focus management
+- Updated all `#top` references to `#main-content` in `Header.tsx` and `Footer.tsx`
+- Switched test assertions from exact string matching to regex patterns in `ContactButton.test.tsx`, `ProjectCard.test.tsx`, and `Footer.test.tsx` to accommodate sr-only text additions
+
+### Removed
+- **Closed 17 stale/duplicate PRs** — 16 auto-generated Jules (Google Gemini) "Palette" accessibility PRs and 1 stale ImgBot PR. All contained quality issues including `pnpm-lock.yaml` bloat (~5,600 lines each; project uses npm), `serve.pid` artifacts, `.Jules/palette.md` journal files, and massive duplication (same fix proposed 2–8 times). Best implementations were cherry-picked and consolidated into this single clean release. Deleted all 17 associated remote branches.
+
 ## [2.5.2] - 2026-03-09
 
 ### Fixed

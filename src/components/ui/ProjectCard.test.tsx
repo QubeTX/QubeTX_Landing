@@ -21,7 +21,7 @@ describe('ProjectCard', () => {
 
   it('renders the title', () => {
     render(<ProjectCard {...baseProps} />)
-    expect(screen.getByText('Test Project')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Test Project/i })).toBeInTheDocument()
   })
 
   it('renders the image with correct alt text', () => {

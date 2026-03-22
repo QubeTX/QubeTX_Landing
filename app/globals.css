@@ -248,3 +248,10 @@ a, button, [role="button"], input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
+
+/* Global keyboard focus state — essential since custom cursor hides native cursor */
+:where(*):focus-visible {
+  outline: 2px solid var(--color-electric-blue, #0066FF);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
