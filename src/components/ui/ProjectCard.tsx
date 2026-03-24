@@ -19,7 +19,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
       rel="noopener noreferrer"
       className={styles.projectLink}
       variants={slideUpVariants}
-      aria-label={`Visit project site for ${title}`}
+      aria-label={`Visit project site for ${title} (opens in a new tab)`}
     >
       <article
         ref={ref}
@@ -34,7 +34,6 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
         <div className={styles.projectContent}>
           <h3 className={`unbounded-heading ${styles.projectTitle}`}>
             {title}
-            <span className="sr-only"> (opens in a new tab)</span>
           </h3>
           <ul className={styles.projectTags} aria-label="Project tags">
             {tags.map((tag) => (
