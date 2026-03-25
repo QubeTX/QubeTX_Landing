@@ -1,0 +1,3 @@
+## 2024-03-25 - Semantic List Structures for Visually Stepped Content
+**Learning:** When displaying a series of ordered steps visually (like a process timeline) as a grid of `div`s, screen reader users miss the crucial context of sequence and total count. Using a semantic `<ol>` structure with `<li>` elements ensures the sequence, the position of the current item, and the total number of items are inherently communicated.
+**Action:** Always prefer semantic HTML lists (`<ol>` or `<ul>`) for recurring or sequenced visual blocks to provide built-in accessibility without relying heavily on custom ARIA attributes.
