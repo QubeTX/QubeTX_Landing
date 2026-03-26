@@ -27,21 +27,22 @@ export default function Process() {
         </p>
       </motion.div>
 
-      <motion.div 
+      <motion.ol
         ref={ref}
         className={styles.timeline}
         variants={container}
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
+        aria-label="Process steps"
       >
         {PROCESS.map((step) => (
-          <motion.div key={step.id} className={styles.step} variants={slideLeftVariants}>
-            <div className={styles.number}>{step.number}</div>
+          <motion.li key={step.id} className={styles.step} variants={slideLeftVariants}>
+            <div className={styles.number} aria-hidden="true">{step.number}</div>
             <h3 className={styles.title}>{step.title}</h3>
             <p className={styles.description}>{step.description}</p>
-          </motion.div>
+          </motion.li>
         ))}
-      </motion.div>
+      </motion.ol>
     </section>
   );
 }
