@@ -1,0 +1,3 @@
+## 2025-03-27 - Semantic HTML for Visual Timelines and Process Steps
+**Learning:** Generic wrappers (`<div>`s) used for process steps or visual timelines miss out on conveying sequence context to screen readers, whereas standard lists natively provide structure and count. Furthermore, large visual step numbers (e.g., '01', '02') are redundant for screen readers when semantically structured as a list.
+**Action:** Always replace generic `<div>` wrappers with semantic tags (`<ol>` and `<li>`) for process steps and visual sequences. When doing so, ensure purely visual number indicators within these list items are hidden from assistive technologies by adding `aria-hidden="true"` to prevent duplicate screen reader announcements.
