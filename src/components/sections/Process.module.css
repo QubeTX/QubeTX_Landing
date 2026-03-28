@@ -32,6 +32,8 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--space-xl);
   padding: var(--space-lg) 0;
+  margin: 0;
+  list-style-type: none;
 }
 
 .step {
