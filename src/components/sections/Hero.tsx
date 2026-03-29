@@ -4,6 +4,7 @@ import type { FC } from 'react'
 import { motion } from 'framer-motion'
 import type { HeroContent } from '@/data/content'
 import { createContainerVariants, heroItemVariants } from '@/utils/animations'
+import { PretextBlock } from '@/lib/pretext'
 import styles from './Hero.module.css'
 
 type HeroProps = {
@@ -16,7 +17,7 @@ const Hero: FC<HeroProps> = ({ content }) => {
   const { title, conjunction, highlight, subheadline, company } = content
 
   return (
-    <motion.div 
+    <motion.div
       className={styles.hero}
       variants={container}
       initial="hidden"
@@ -28,13 +29,17 @@ const Hero: FC<HeroProps> = ({ content }) => {
         <motion.span className={styles.highlight} variants={heroItemVariants}>{highlight}</motion.span>
       </motion.h1>
 
-      <motion.p className={styles.subtitle} variants={heroItemVariants}>
-        {subheadline}
-      </motion.p>
+      <PretextBlock text={subheadline} lineHeight={1.6} shrinkwrap className={styles.subtitle}>
+        <motion.p variants={heroItemVariants}>
+          {subheadline}
+        </motion.p>
+      </PretextBlock>
 
-      <motion.p className={styles.company} variants={heroItemVariants}>
-        {company}
-      </motion.p>
+      <PretextBlock text={company} lineHeight={1.6} className={styles.company}>
+        <motion.p variants={heroItemVariants}>
+          {company}
+        </motion.p>
+      </PretextBlock>
     </motion.div>
   )
 }

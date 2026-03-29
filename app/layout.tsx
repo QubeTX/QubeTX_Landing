@@ -3,6 +3,7 @@ import { Unbounded, Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
 import CustomCursor from "@/components/effects/CustomCursor";
+import { PretextProvider } from "@/lib/pretext";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -45,10 +46,12 @@ export default function RootLayout({
       <body
         className={`${unbounded.variable} ${spaceGrotesk.variable} ${spaceMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
       >
-        <SmoothScroll>
-          <CustomCursor />
-          {children}
-        </SmoothScroll>
+        <PretextProvider>
+          <SmoothScroll>
+            <CustomCursor />
+            {children}
+          </SmoothScroll>
+        </PretextProvider>
       </body>
     </html>
   );

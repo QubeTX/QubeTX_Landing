@@ -10,6 +10,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['@chenglou/pretext'],
   turbopack: {
     // Force Next.js to treat this directory as the workspace root to avoid
     // accidentally walking up to a parent directory that also has a lockfile.

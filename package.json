@@ -1,6 +1,6 @@
 {
   "name": "qubetx-landing",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "The official landing page for QubeTX, a department of ES Development LLC.",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@chenglou/pretext": "^0.0.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "@tailwindcss/postcss": "^4.1.17",

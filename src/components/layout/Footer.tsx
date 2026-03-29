@@ -2,6 +2,7 @@
 
 import styles from './Footer.module.css'
 import QubeTXLogo from '@/components/ui/QubeTXLogo'
+import { PretextBlock } from '@/lib/pretext'
 
 const NAV_LINKS = [
   { label: 'Services', href: '#services' },
@@ -25,7 +26,9 @@ export default function Footer() {
             <QubeTXLogo className={styles.brandLogo} />
             <span className={styles.brandName}>QubeTX</span>
           </a>
-          <p className={styles.tagline}>Web Development &amp; Digital Infrastructure</p>
+          <PretextBlock text="Web Development & Digital Infrastructure" lineHeight={1.6} as="p" className={styles.tagline}>
+            Web Development &amp; Digital Infrastructure
+          </PretextBlock>
         </div>
 
         {/* Navigation columns */}

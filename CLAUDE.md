@@ -15,6 +15,7 @@ QubeTX Landing Page - A modern Next.js website serving as the official landing p
 - **React Three Fiber** - 3D graphics with Three.js
 - **Framer Motion** - Animation library
 - **Lenis** - Smooth scroll implementation
+- **@chenglou/pretext** - Text measurement and responsive layout intelligence
 - **GitHub Pages** - Static export deployment via CI/CD
 
 ## Development Commands
@@ -69,6 +70,33 @@ src/components/
     ├── CustomCursor.tsx    # Magnetic cursor with bloom
     ├── SmoothScroll.tsx    # Lenis smooth scrolling
     └── DotMatrix.tsx       # R3F 3D dot grid background
+```
+
+### Pretext Integration (`src/lib/pretext/`)
+
+The site uses `@chenglou/pretext` for JS-driven text measurement beneath the CSS responsive design:
+
+```
+src/lib/pretext/
+├── resizeCoordinator.ts  # Single global window.resize listener + RAF gate
+├── useContainerWidth.ts  # Sync clientWidth measurement hook
+├── PretextProvider.tsx   # Font readiness context (document.fonts.ready)
+├── PretextBlock.tsx      # Drop-in wrapper: min-height + shrinkwrap max-width
+└── index.ts              # Barrel export
+```
+
+**Key Rules:**
+- **NEVER use ResizeObserver** with Pretext — causes text vibration/oscillation with shrinkwrap
+- PretextBlock reads font properties from `getComputedStyle()` to handle `next/font/google` rewritten names
+- `prepare()` is re-called only when resolved font size changes >0.5px (for `clamp()` values)
+- All enhancements are additive (`min-height`, narrower `max-width`) and gracefully degrade
+- Package ships raw `.ts` source — requires `transpilePackages` in next.config and `allowImportingTsExtensions` in tsconfig
+
+**PretextBlock usage:**
+```tsx
+<PretextBlock text={content} lineHeight={1.6} shrinkwrap as="p" className={styles.description}>
+  {content}
+</PretextBlock>
 ```
 
 ### Data Layer

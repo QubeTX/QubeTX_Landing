@@ -5,6 +5,35 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-03-29
+
+### Added
+- **@chenglou/pretext integration** for comprehensive responsive text intelligence — layout-shift prevention, orphan/widow control, and continuous container-aware scaling
+- `PretextProvider` context component with font readiness gating (`document.fonts.ready` + `document.fonts.check()`)
+- `PretextBlock` drop-in wrapper component applying `min-height` (layout-shift prevention) and `max-width` shrinkwrap (orphan/widow prevention)
+- `useContainerWidth` hook using sync `clientWidth` reads + `window.resize` coalesced through a single `requestAnimationFrame` gate (no ResizeObserver — prevents text vibration)
+- `resizeCoordinator` singleton module sharing one global resize listener across all PretextBlock instances
+- Core library at `src/lib/pretext/` with barrel export
+- Unit tests for `resizeCoordinator` and `PretextProvider`
+- Shared Pretext mock for component tests (`src/test/mocks/pretext.tsx`)
+- Auto-mock of `@/lib/pretext` in test setup for all component tests
+
+### Changed
+- Hero subtitle and company text wrapped with PretextBlock (shrinkwrap on subtitle)
+- FeatureCard titles and descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
+- Process section subtitle and step descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
+- TechStack section subtitle and tech names wrapped with PretextBlock (shrinkwrap on subtitle)
+- Projects section subtitle wrapped with PretextBlock (shrinkwrap)
+- ProjectCard titles and descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
+- Contact title and subtitle wrapped with PretextBlock (shrinkwrap on subtitle)
+- Footer tagline wrapped with PretextBlock
+- Contact section converted to client component for PretextBlock hook support
+
+### Configuration
+- `next.config.mjs`: Added `transpilePackages: ['@chenglou/pretext']` (package ships raw .ts source)
+- `tsconfig.json`: Added `allowImportingTsExtensions: true` and `ES2022.Intl` to lib array
+- Test setup: Auto-mocks `@/lib/pretext` for all component tests
+
 ## [2.6.0] - 2026-03-22
 
 ### Added

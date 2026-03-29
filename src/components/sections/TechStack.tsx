@@ -4,9 +4,12 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { TECH_STACK } from '@/data/content';
 import { createContainerVariants, slideUpVariants, sectionTitleAnimation } from '@/utils/animations';
+import { PretextBlock } from '@/lib/pretext';
 import styles from './TechStack.module.css';
 
 const container = createContainerVariants(0.1);
+
+const SECTION_SUBTITLE = 'Leveraging the latest tools for performance, scalability, and experience.';
 
 export default function TechStack() {
   const ref = useRef(null);
@@ -22,12 +25,12 @@ export default function TechStack() {
         <h2 id="tech-stack-title" className={`unbounded-heading ${styles.sectionTitle}`}>
           Built With Modern Tech
         </h2>
-        <p className={styles.sectionSubtitle}>
-          Leveraging the latest tools for performance, scalability, and experience.
-        </p>
+        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} shrinkwrap as="p" className={styles.sectionSubtitle}>
+          {SECTION_SUBTITLE}
+        </PretextBlock>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         ref={ref}
         className={styles.grid}
         variants={container}
@@ -37,7 +40,9 @@ export default function TechStack() {
         {TECH_STACK.map((tech) => (
           <motion.div key={tech.id} className={styles.item} variants={slideUpVariants} data-interactive="true">
             <div className={styles.icon}>{tech.icon}</div>
-            <span className={styles.name}>{tech.name}</span>
+            <PretextBlock text={tech.name} lineHeight={1.4} as="span" className={styles.name}>
+              {tech.name}
+            </PretextBlock>
           </motion.div>
         ))}
       </motion.div>
