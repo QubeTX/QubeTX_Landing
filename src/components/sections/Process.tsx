@@ -25,7 +25,7 @@ export default function Process() {
         <h2 id="process-title" className={`unbounded-heading ${styles.sectionTitle}`}>
           Our Process
         </h2>
-        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} shrinkwrap as="p" className={styles.sectionSubtitle}>
+        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} as="p" className={styles.sectionSubtitle}>
           {SECTION_SUBTITLE}
         </PretextBlock>
       </motion.div>

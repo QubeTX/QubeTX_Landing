@@ -30,7 +30,7 @@ const Projects: FC<ProjectsProps> = ({ items }) => {
         <h2 id="projects-heading" className={`unbounded-heading ${styles.sectionTitle}`}>
           Projects
         </h2>
-        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} shrinkwrap as="p" className={styles.sectionSubtitle}>
+        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} as="p" className={styles.sectionSubtitle}>
           {SECTION_SUBTITLE}
         </PretextBlock>
       </motion.div>

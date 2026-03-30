@@ -19,7 +19,7 @@ const Contact: FC<ContactProps> = ({ cta }) => {
         <PretextBlock text="Get In Touch" lineHeight={1.2} as="h2" className={`unbounded-heading ${styles.contactTitle}`}>
           Get In Touch
         </PretextBlock>
-        <PretextBlock text={CONTACT_SUBTITLE} lineHeight={1.6} shrinkwrap as="p" className={styles.contactSubtitle}>
+        <PretextBlock text={CONTACT_SUBTITLE} lineHeight={1.6} as="p" className={styles.contactSubtitle}>
           Ready to transform your digital presence? Let&apos;s discuss your project.
         </PretextBlock>
 

@@ -25,7 +25,7 @@ export default function TechStack() {
         <h2 id="tech-stack-title" className={`unbounded-heading ${styles.sectionTitle}`}>
           Built With Modern Tech
         </h2>
-        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} shrinkwrap as="p" className={styles.sectionSubtitle}>
+        <PretextBlock text={SECTION_SUBTITLE} lineHeight={1.6} as="p" className={styles.sectionSubtitle}>
           {SECTION_SUBTITLE}
         </PretextBlock>
       </motion.div>
