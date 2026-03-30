@@ -21,7 +21,7 @@
     min-width: 200px;
     justify-content: center;
     touch-action: manipulation;
-    white-space: nowrap;
+    text-align: center;
 }
 
 .contactButton::before {
