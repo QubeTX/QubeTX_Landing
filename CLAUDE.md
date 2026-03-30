@@ -46,7 +46,7 @@ npm run lint
 
 This project uses Next.js App Router (not Pages Router):
 
-- `app/layout.tsx` - Root layout with font configuration, metadata, and global effects (SmoothScroll, CustomCursor)
+- `app/layout.tsx` - Root layout with font configuration, metadata, PretextProvider, and global effects (SmoothScroll, CustomCursor)
 - `app/page.tsx` - Home page assembling all sections with DotMatrix background
 - `app/globals.css` - Global styles, Tailwind imports, CSS variables, and animations
 
@@ -60,12 +60,15 @@ src/components/
 ├── sections/        # Main content sections
 │   ├── Hero.tsx
 │   ├── Features.tsx
+│   ├── Process.tsx
+│   ├── TechStack.tsx
 │   ├── Projects.tsx
 │   └── Contact.tsx
 ├── ui/              # Reusable UI components
 │   ├── FeatureCard.tsx
 │   ├── ProjectCard.tsx
-│   └── ContactButton.tsx
+│   ├── ContactButton.tsx
+│   └── QubeTXLogo.tsx
 └── effects/         # Visual effects
     ├── CustomCursor.tsx    # Magnetic cursor with bloom
     ├── SmoothScroll.tsx    # Lenis smooth scrolling
@@ -74,30 +77,52 @@ src/components/
 
 ### Pretext Integration (`src/lib/pretext/`)
 
-The site uses `@chenglou/pretext` for JS-driven text measurement beneath the CSS responsive design:
+The site uses `@chenglou/pretext` for JS-driven text measurement beneath the CSS responsive design. Pretext provides two capabilities: **layout-shift prevention** (reserving exact text height via `min-height`) and **orphan/widow prevention** (narrowing `max-width` via binary-search shrinkwrap).
 
 ```
 src/lib/pretext/
 ├── resizeCoordinator.ts  # Single global window.resize listener + RAF gate
-├── useContainerWidth.ts  # Sync clientWidth measurement hook
+├── useContainerWidth.ts  # Sync clientWidth measurement hook (NO ResizeObserver)
 ├── PretextProvider.tsx   # Font readiness context (document.fonts.ready)
 ├── PretextBlock.tsx      # Drop-in wrapper: min-height + shrinkwrap max-width
-└── index.ts              # Barrel export
+├── index.ts              # Barrel export
+└── __tests__/            # Unit tests for coordinator and provider
 ```
 
-**Key Rules:**
-- **NEVER use ResizeObserver** with Pretext — causes text vibration/oscillation with shrinkwrap
-- PretextBlock reads font properties from `getComputedStyle()` to handle `next/font/google` rewritten names
+**Critical Rules:**
+- **NEVER use ResizeObserver** with Pretext — causes text vibration/oscillation with shrinkwrap. Confirmed across multiple projects after two failed attempts. The correct pattern: sync `clientWidth` reads + `window.resize` coalesced through a single RAF gate.
+- **NEVER use `shrinkwrap` on centered text** — shrinkwrap narrows `max-width`, which conflicts with `text-align: center` + `margin: 0 auto`, pulling text off-center. Centered elements (section subtitles) should use PretextBlock for `min-height` only.
+- PretextBlock reads font properties from `getComputedStyle()` to handle `next/font/google` rewritten names (e.g. `"__Unbounded_a1b2c3"`)
 - `prepare()` is re-called only when resolved font size changes >0.5px (for `clamp()` values)
-- All enhancements are additive (`min-height`, narrower `max-width`) and gracefully degrade
+- All enhancements are additive (`min-height`, narrower `max-width`) and gracefully degrade if fonts aren't loaded
 - Package ships raw `.ts` source — requires `transpilePackages` in next.config and `allowImportingTsExtensions` in tsconfig
 
-**PretextBlock usage:**
+**PretextBlock props:**
+- `text` (string) — plain text content to measure
+- `lineHeight` (number) — unitless ratio matching CSS `line-height`
+- `shrinkwrap` (boolean) — enable orphan/widow prevention via `max-width` narrowing (only for left-aligned text)
+- `as` (ElementType) — rendered HTML element (defaults to `div`)
+- `className`, `style` — pass-through styling
+
+**Usage patterns:**
 ```tsx
-<PretextBlock text={content} lineHeight={1.6} shrinkwrap as="p" className={styles.description}>
-  {content}
+{/* Left-aligned paragraph — use shrinkwrap for orphan prevention */}
+<PretextBlock text={description} lineHeight={1.65} shrinkwrap as="p" className={styles.description}>
+  {description}
+</PretextBlock>
+
+{/* Centered subtitle — NO shrinkwrap (conflicts with centering) */}
+<PretextBlock text={subtitle} lineHeight={1.6} as="p" className={styles.sectionSubtitle}>
+  {subtitle}
+</PretextBlock>
+
+{/* Short title — min-height only, no shrinkwrap needed */}
+<PretextBlock text={title} lineHeight={1.3} as="h3" className={styles.title}>
+  {title}
 </PretextBlock>
 ```
+
+**Testing:** All component tests auto-mock `@/lib/pretext` via `src/test/setup.ts`. Core library tests in `src/lib/pretext/__tests__/` unmock and test the real modules with mocked `@chenglou/pretext` (canvas unavailable in jsdom).
 
 ### Data Layer
 
@@ -234,3 +259,5 @@ Fonts are loaded via Next.js `next/font/google` in `app/layout.tsx`:
 5. **R3F type issues** - Use `// @ts-nocheck` for complex Three.js typing
 6. **Build output** - Goes to `out/` not `dist/` (some CI references still say `dist/`)
 7. **Port differences** - Dev server is port 3000 (Next.js default), not 8080
+8. **Pretext ships raw .ts** - Requires `transpilePackages` and `allowImportingTsExtensions` — see Pretext Integration section
+9. **Pretext shrinkwrap + centering** - Never use `shrinkwrap` on `text-align: center` elements — it breaks centering by narrowing `max-width`

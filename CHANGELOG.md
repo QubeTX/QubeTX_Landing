@@ -21,13 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Hero subtitle and company text wrapped with PretextBlock (shrinkwrap on subtitle)
 - FeatureCard titles and descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
-- Process section subtitle and step descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
-- TechStack section subtitle and tech names wrapped with PretextBlock (shrinkwrap on subtitle)
-- Projects section subtitle wrapped with PretextBlock (shrinkwrap)
+- Process step descriptions wrapped with PretextBlock (shrinkwrap)
 - ProjectCard titles and descriptions wrapped with PretextBlock (shrinkwrap on descriptions)
-- Contact title and subtitle wrapped with PretextBlock (shrinkwrap on subtitle)
+- Section subtitles (Process, TechStack, Projects, Contact) wrapped with PretextBlock for min-height only (no shrinkwrap — conflicts with `text-align: center`)
+- TechStack tech names wrapped with PretextBlock for min-height
 - Footer tagline wrapped with PretextBlock
 - Contact section converted to client component for PretextBlock hook support
+
+### Fixed
+- Removed `shrinkwrap` from centered section subtitles (Projects, Contact, Process, TechStack) — shrinkwrap `max-width` narrowing conflicts with `text-align: center` + `margin: 0 auto`, pulling text off-center
+- Added `text-align: center` to ContactButton so button text centers correctly when it wraps at narrow viewports
 
 ### Configuration
 - `next.config.mjs`: Added `transpilePackages: ['@chenglou/pretext']` (package ships raw .ts source)
