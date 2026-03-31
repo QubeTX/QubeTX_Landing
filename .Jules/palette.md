@@ -1,0 +1,3 @@
+## 2024-05-24 - Semantic Lists for Visual Timelines
+**Learning:** For visual timelines and process steps, changing generic wrappers (`<div>`s) to semantic list tags (`<ol>` and `<li>`) with appropriate `aria-label`s significantly improves screen reader comprehension of the sequence. It's critical to add `aria-hidden="true"` to any purely visual step numbers inside list items to prevent redundant dual announcements, since the `<ol>` naturally implies the list order to assistive technologies.
+**Action:** When creating sequential steps, grids, or timelines in the UI, prioritize using `<ol>`/`<ul>` instead of `<div>`. Ensure custom visual numbering markers get `aria-hidden="true"` to avoid repetitive reading.
