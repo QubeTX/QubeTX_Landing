@@ -30,25 +30,26 @@ export default function Process() {
         </PretextBlock>
       </motion.div>
 
-      <motion.div
+      <motion.ol
         ref={ref}
         className={styles.timeline}
         variants={container}
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
+        aria-label="Process steps"
       >
         {PROCESS.map((step) => (
-          <motion.div key={step.id} className={styles.step} variants={slideLeftVariants}>
-            <div className={styles.number}>{step.number}</div>
+          <motion.li key={step.id} className={styles.step} variants={slideLeftVariants}>
+            <div className={styles.number} aria-hidden="true">{step.number}</div>
             <PretextBlock text={step.title} lineHeight={1.3} as="h3" className={styles.title}>
               {step.title}
             </PretextBlock>
             <PretextBlock text={step.description} lineHeight={1.6} shrinkwrap as="p" className={styles.description}>
               {step.description}
             </PretextBlock>
-          </motion.div>
+          </motion.li>
         ))}
-      </motion.div>
+      </motion.ol>
     </section>
   );
 }
