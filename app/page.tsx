@@ -21,17 +21,17 @@ export default function Home() {
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Hero content={HERO_CONTENT} />
         </div>
-        <div id="services">
+        <div id="services" tabIndex={-1} className="outline-none">
           <Features items={FEATURES} />
         </div>
         <TechStack />
-        <div id="process">
+        <div id="process" tabIndex={-1} className="outline-none">
           <Process />
         </div>
-        <div id="projects">
+        <div id="projects" tabIndex={-1} className="outline-none">
           <Projects items={PROJECTS} />
         </div>
-        <div id="contact">
+        <div id="contact" tabIndex={-1} className="outline-none">
           <Contact cta={CONTACT_CTA} />
         </div>
         <Footer />
