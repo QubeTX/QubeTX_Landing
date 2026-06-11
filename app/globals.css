@@ -15,8 +15,31 @@
   --font-space-mono: var(--font-stack-mono);
   --font-unbounded: var(--font-stack-sans);
 
-  /* Legacy Variables from src/styles/global.css */
-  /* Colors */
+  /* ============================================================
+     Design tokens — QubeTX v3 (mockup blue/purple on deep navy,
+     structural standards from qube-machine-report-homepage)
+     ============================================================ */
+
+  /* Palette */
+  --color-void: #05070f;            /* page/hero/header background */
+  --color-surface-raised: #111827;  /* hovered cells, dropdown panel */
+  --color-border: #1a2236;          /* 1px hairlines, grid-cell gaps, pills */
+  --color-border-bright: #2c3a5c;   /* hovered borders */
+  --color-text-dim: #64748b;        /* mono labels, corner metadata */
+  --gradient-brand: linear-gradient(90deg, #2563eb, #7c3aed);
+  --glow-blue: rgba(37, 99, 235, 0.25);
+
+  /* Motion — THE easing for all CSS transitions (machine-report standard) */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Typography scale */
+  --text-display: clamp(2.4rem, 1rem + 7.5vw, 6.75rem);
+  --text-h2: clamp(1.75rem, 1rem + 3vw, 3rem);
+  --text-h3: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-mono-label: 0.7rem;
+  --text-body: clamp(0.9375rem, 0.875rem + 0.35vw, 1.0625rem);
+
+  /* Legacy aliases (phase out as modules are rewritten) */
   --primary-blue: #0066FF;
   --gradient-blue: #2563eb;
   --gradient-purple: #7c3aed;
@@ -56,14 +79,19 @@
 }
 
 @theme {
+  --color-void: #05070f;
   --color-background: #0a0f1c;
   --color-foreground: #ffffff;
   --color-primary: #0066FF;
   --color-secondary: #94a3b8;
   --color-card: #0d1117;
+  --color-surface: #0d1117;
+  --color-surface-raised: #111827;
+  --color-border-hairline: #1a2236;
   --color-electric-blue: #0066FF;
   --color-gradient-blue: #2563eb;
   --color-gradient-purple: #7c3aed;
+  --color-text-dim: #64748b;
   
   --font-sans: var(--font-stack-sans);
   --font-mono: var(--font-stack-mono);
@@ -78,14 +106,14 @@
 }
 
 html {
-    background: var(--dark-bg);
+    background: var(--color-void);
     min-height: 100%;
-    scroll-behavior: smooth;
+    /* No scroll-behavior: smooth — Lenis is the single scroll driver */
 }
 
 body {
     font-family: var(--font-sans);
-    background: linear-gradient(135deg, #0a0f1c 0%, #151b2e 50%, #0a0f1c 100%);
+    background: var(--color-void);
     color: var(--text-primary);
     min-height: 100vh;
     line-height: 1.6;
@@ -97,47 +125,19 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Static ambient layer: page-wide dot texture (continuity with the hero
+   DotGrid) + one corner glow echoing the mockup's bottom-right bloom.
+   Deliberately static — DotGrid and ScrollTrace own background motion. */
 body::before {
-    content: '';
-    position: fixed;
-    inset: -12%;
-    pointer-events: none;
-    background: radial-gradient(circle at 8% 28%, rgba(37, 99, 235, 0.35), transparent 65%),
-                radial-gradient(circle at 92% 26%, rgba(84, 112, 255, 0.3), transparent 68%),
-                radial-gradient(circle at 50% 88%, rgba(60, 80, 180, 0.22), transparent 70%);
-    filter: blur(80px) saturate(125%);
-    opacity: 0.62;
-    transform: scale(1.08);
-    animation: ambientPulse 16s ease-in-out infinite alternate;
-    z-index: -2;
-}
-
-body::after {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(circle at 50% -15%, rgba(124, 58, 237, 0.35), transparent 52%),
-                radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.3), transparent 60%),
-                linear-gradient(120deg, rgba(10, 17, 40, 0), rgba(46, 70, 160, 0.28), rgba(10, 17, 40, 0));
-    background-size: 140% 140%;
-    opacity: 0.68;
-    mix-blend-mode: screen;
-    animation: auroraShift 18s ease-in-out infinite alternate;
+    background:
+        radial-gradient(ellipse 60% 50% at 88% 92%, rgba(59, 47, 130, 0.28), transparent 70%),
+        radial-gradient(circle, rgba(0, 102, 255, 0.06) 1px, transparent 1px);
+    background-size: 100% 100%, 28px 28px;
     z-index: -1;
-}
-
-@keyframes ambientPulse {
-    0% { transform: scale(1.02) translate3d(0, 0, 0); opacity: 0.8; }
-    50% { transform: scale(1.08) translate3d(1.5%, -1.5%, 0); opacity: 0.95; }
-    100% { transform: scale(1.12) translate3d(-1%, 1%, 0); opacity: 0.85; }
-}
-
-
-@keyframes auroraShift {
-    0% { transform: translate3d(-3%, 2%, 0) scale(1); opacity: 0.7; }
-    50% { transform: translate3d(4%, -3%, 0) scale(1.06); opacity: 0.9; }
-    100% { transform: translate3d(-2%, 1%, 0) scale(1.02); opacity: 0.72; }
 }
 
 @keyframes pulseSlow {
@@ -214,10 +214,14 @@ body::after {
     }
 }
 
-/* Ensure touch targets meet accessibility guidelines */
-a, button, [role="button"], input, select, textarea {
-    min-height: var(--touch-target-min);
-    min-width: var(--touch-target-min);
+/* Ensure touch targets meet accessibility guidelines — enforced where touch
+   is the input. Fine-pointer layouts (compact mono nav, footer links) provide
+   ≥44px hit areas via padding instead of forced box minimums. */
+@media (pointer: coarse) {
+    a, button, [role="button"], input, select, textarea {
+        min-height: var(--touch-target-min);
+        min-width: var(--touch-target-min);
+    }
 }
 
 /* Prevent horizontal scroll on mobile */
