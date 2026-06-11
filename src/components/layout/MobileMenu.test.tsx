@@ -65,4 +65,13 @@ describe('MobileMenu', () => {
       screen.getByRole('link', { name: new RegExp(CONTACT_CTA.label, 'i') })
     ).toHaveAttribute('href', CONTACT_CTA.href)
   })
+
+  it('portals the overlay to document.body, outside the header subtree', () => {
+    // Header ancestors carry inline transforms (LoadSequence) and
+    // backdrop-filter (scrolled header); either re-bases position:fixed and
+    // shrinks the overlay to the ancestor's box. The overlay must escape.
+    renderMenu()
+    fireEvent.click(screen.getByRole('button', { name: /open menu/i }))
+    expect(screen.getByRole('dialog').parentElement).toBe(document.body)
+  })
 })

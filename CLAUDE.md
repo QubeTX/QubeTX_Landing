@@ -184,6 +184,16 @@ Unchanged core rules (confirmed across many projects):
     `resizeCoordinator` (window resize) — layout-driven width changes
     without a resize won't re-measure them. Column-count changes are
     media-query (resize) driven, so this holds; keep it that way.
+14. **Fullscreen `position: fixed` overlays must portal to `document.body`.**
+    Any ancestor with a transform (LoadSequence leaves inline
+    `translateY(0px)` on every `[data-load]` element — identity still
+    counts), `filter`, or `backdrop-filter` (the scrolled header) becomes
+    the overlay's containing block, shrinking `inset: 0` to that ancestor's
+    box. This silently broke the mobile menu (overlay collapsed to the
+    44px `.right` box — only the X showed). MobileMenu's `BodyPortal` is
+    the pattern: portal as an AnimatePresence *child* (a bare
+    `createPortal` return fails `isValidElement` and gets dropped), only
+    while open (no SSR `document` access).
 
 ## Common Gotchas
 
