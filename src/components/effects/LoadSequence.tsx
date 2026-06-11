@@ -1,34 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
-import { createTimeline, createTimer, stagger, utils } from '@/lib/motion/anime'
+import { createTimeline, stagger, utils } from '@/lib/motion/anime'
 import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
 import { EASE_ANIME } from '@/lib/motion/tokens'
+import { decode } from '@/lib/motion/decode'
 import { firePulse } from './DotGrid'
-
-const GLYPHS = '!<>-_\\/[]{}—=+*^?#'
-
-/** Scramble-decode: cycles random glyphs, resolving left → right. */
-function decode(el: HTMLElement, duration = 450) {
-  const original = el.textContent ?? ''
-  if (!original) return
-  const len = original.length
-  createTimer({
-    duration,
-    onUpdate: (self: { progress: number }) => {
-      const resolved = Math.floor(self.progress * len)
-      let out = original.slice(0, resolved)
-      for (let i = resolved; i < len; i++) {
-        const ch = original[i]
-        out += ch === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0]
-      }
-      el.textContent = out
-    },
-    onComplete: () => {
-      el.textContent = original
-    },
-  })
-}
 
 /**
  * The page-load timeline (single anime.js owner for header + hero entrance —

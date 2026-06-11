@@ -1,11 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
-
-vi.mock('framer-motion', async () => {
-  const mocks = await import('@/test/mocks/framer-motion')
-  return mocks
-})
-
+import { describe, it, expect } from 'vitest'
 import Hero from './Hero'
 import { HERO_CONTENT } from '@/data/content'
 
@@ -41,8 +35,9 @@ describe('Hero', () => {
     expect(link).toHaveAttribute('href', '#services')
   })
 
-  it('renders the company line', () => {
-    render(<Hero content={HERO_CONTENT} />)
+  it('renders the company line and the dot-field slot', () => {
+    const { container } = render(<Hero content={HERO_CONTENT} />)
     expect(screen.getByText(HERO_CONTENT.company)).toBeInTheDocument()
+    expect(container.querySelector('canvas')).toBeInTheDocument()
   })
 })

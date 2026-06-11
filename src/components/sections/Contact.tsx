@@ -1,7 +1,8 @@
 'use client';
 
 import type { FC } from 'react'
-import ContactButton from '../ui/ContactButton'
+import SectionHeading from '../ui/SectionHeading'
+import OutlineButton from '../ui/OutlineButton'
 import type { ContactCta } from '@/data/content'
 import { PretextBlock } from '@/lib/pretext'
 import styles from './Contact.module.css'
@@ -10,21 +11,31 @@ type ContactProps = {
   cta: ContactCta
 }
 
-const CONTACT_SUBTITLE = "Ready to transform your digital presence? Let's discuss your project."
+const CONTACT_SUBTITLE =
+  "Ready to transform your digital presence? Tell us what you're building and we'll take it from there."
 
+/** Terminal-panel CTA. Left-aligned (so the subtitle can shrinkwrap safely). */
 const Contact: FC<ContactProps> = ({ cta }) => {
   return (
-    <section className={styles.contact} aria-labelledby="contact-heading">
-      <div className={styles.contactCard}>
-        <PretextBlock text="Get In Touch" lineHeight={1.2} as="h2" className={`unbounded-heading ${styles.contactTitle}`}>
-          Get In Touch
+    <section className={styles.section} aria-label="Contact">
+      <div className={styles.panel}>
+        <SectionHeading label="06 // Contact" title="Start your project" />
+        <PretextBlock
+          text={CONTACT_SUBTITLE}
+          lineHeight={1.65}
+          shrinkwrap
+          as="p"
+          className={styles.subtitle}
+        >
+          {CONTACT_SUBTITLE}
         </PretextBlock>
-        <PretextBlock text={CONTACT_SUBTITLE} lineHeight={1.6} as="p" className={styles.contactSubtitle}>
-          Ready to transform your digital presence? Let&apos;s discuss your project.
-        </PretextBlock>
-
-        <div className={styles.contactButtonWrapper}>
-          <ContactButton href={cta.href}>{cta.label}</ContactButton>
+        <div className={styles.buttonRow}>
+          <OutlineButton href={cta.href} magnetic>
+            {cta.label}
+          </OutlineButton>
+          <span className={styles.prompt} aria-hidden="true">
+            response time: &lt; 24h <span className={styles.cursor}>▮</span>
+          </span>
         </div>
       </div>
     </section>

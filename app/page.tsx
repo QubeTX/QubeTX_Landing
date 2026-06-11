@@ -1,13 +1,16 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import Features from "@/components/sections/Features";
-import Process from "@/components/sections/Process";
-import TechStack from "@/components/sections/TechStack";
-import Projects from "@/components/sections/Projects";
+import Services from "@/components/sections/Services";
+import Products from "@/components/sections/Products";
+import Technologies from "@/components/sections/Technologies";
+import About from "@/components/sections/About";
+import Work from "@/components/sections/Work";
 import Contact from "@/components/sections/Contact";
 import LoadSequence from "@/components/effects/LoadSequence";
 import { HERO_CONTENT, SERVICES, PROJECTS, CONTACT_CTA } from "@/data/content";
+
+const SECTION_ANCHOR = "scroll-mt-[88px]";
 
 export default function Home() {
   return (
@@ -17,17 +20,26 @@ export default function Home() {
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Hero content={HERO_CONTENT} />
         </div>
-        <div id="services">
-          <Features items={SERVICES} />
+        <div id="services" className={SECTION_ANCHOR}>
+          <Services items={SERVICES} />
         </div>
-        <TechStack />
-        <div id="process">
-          <Process />
+        <div id="products" className={SECTION_ANCHOR}>
+          <Products />
         </div>
-        <div id="projects">
-          <Projects items={PROJECTS} />
+        <div id="technologies" className={SECTION_ANCHOR}>
+          <Technologies />
         </div>
-        <div id="contact">
+        <div id="about" className={SECTION_ANCHOR}>
+          {/* Alias for old deep links to the retired standalone section */}
+          <span id="process" aria-hidden="true" />
+          <About />
+        </div>
+        <div id="work" className={SECTION_ANCHOR}>
+          {/* Alias for old deep links */}
+          <span id="projects" aria-hidden="true" />
+          <Work items={PROJECTS} />
+        </div>
+        <div id="contact" className={SECTION_ANCHOR}>
           <Contact cta={CONTACT_CTA} />
         </div>
         <Footer />

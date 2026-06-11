@@ -1,0 +1,29 @@
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--color-void);
+}
+
+.value {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-variant-numeric: tabular-nums;
+}
+
+.label {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-label);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+}

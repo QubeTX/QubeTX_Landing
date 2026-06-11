@@ -1,0 +1,72 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: clamp(260px, 32vh, 340px);
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--color-void);
+    scroll-margin-top: 96px;
+    transition: background-color 0.3s var(--ease-out);
+}
+
+/* Cursor-proximity glow (vars set by the grid's pointermove in phase 9;
+   harmless static fallback until then) */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        240px circle at var(--mx, 50%) var(--my, 0%),
+        rgba(0, 102, 255, 0.1),
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+    pointer-events: none;
+}
+
+.card:hover {
+    background: var(--color-surface);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.icon {
+    display: inline-flex;
+    color: var(--color-text-dim);
+    transition:
+        color 0.25s var(--ease-out),
+        transform 0.25s var(--ease-out);
+}
+
+.card:hover .icon {
+    color: var(--primary-blue);
+    transform: scale(1.1);
+}
+
+.title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+}
+
+.description {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}

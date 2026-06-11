@@ -6,8 +6,10 @@ import { PretextBlock } from '@/lib/pretext'
 
 const NAV_LINKS = [
   { label: 'Services', href: '#services' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Process', href: '#process' },
+  { label: 'Products', href: '#products' },
+  { label: 'Technologies', href: '#technologies' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Work', href: '#work' },
   { label: 'Contact', href: '#contact' },
 ]
 

@@ -11,8 +11,10 @@ describe('Footer', () => {
   it('renders navigation links', () => {
     render(<Footer />)
     expect(screen.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '#services')
-    expect(screen.getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '#projects')
-    expect(screen.getByRole('link', { name: 'Process' })).toHaveAttribute('href', '#process')
+    expect(screen.getByRole('link', { name: 'Products' })).toHaveAttribute('href', '#products')
+    expect(screen.getByRole('link', { name: 'Technologies' })).toHaveAttribute('href', '#technologies')
+    expect(screen.getByRole('link', { name: 'About Us' })).toHaveAttribute('href', '#about')
+    expect(screen.getByRole('link', { name: 'Work' })).toHaveAttribute('href', '#work')
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '#contact')
   })
 
