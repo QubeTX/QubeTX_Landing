@@ -26,7 +26,7 @@ const Hero: FC<HeroProps> = ({ content }) => {
   const lastLine = headline.length - 1
 
   return (
-    <section className={styles.hero} aria-label="Introduction" data-dot-pointer-surface>
+    <section className={styles.hero} aria-label="Introduction">
       <div className={styles.content}>
         <div data-load="eyebrow">
           <LabelPill variant="bar">
