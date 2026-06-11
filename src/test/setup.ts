@@ -6,6 +6,17 @@ vi.mock('@/lib/pretext', async () => {
   return mocks
 })
 
+// Auto-mock the raw pretext package too (canvas measureText doesn't exist in
+// jsdom) — consumers degrade to their unrouted/unmeasured fallbacks
+vi.mock('@chenglou/pretext', () => ({
+  prepare: vi.fn(() => ({})),
+  layout: vi.fn(() => ({ height: 0, lineCount: 0 })),
+  prepareWithSegments: vi.fn(() => ({ segments: [] })),
+  layoutWithLines: vi.fn(() => ({ height: 0, lineCount: 0, lines: [] })),
+  layoutNextLine: vi.fn(() => null),
+  walkLineRanges: vi.fn(() => 0),
+}))
+
 // Auto-mock framer-motion (promoted from per-file mocks; those remain harmless duplicates)
 vi.mock('framer-motion', async () => {
   const mocks = await import('@/test/mocks/framer-motion')

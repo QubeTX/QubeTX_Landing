@@ -23,6 +23,10 @@
     color: var(--text-primary);
 }
 
+.manifestoCube {
+    opacity: 0.5;
+}
+
 .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
