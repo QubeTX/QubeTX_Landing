@@ -14,6 +14,8 @@ sells to clients.
 **Read `DESIGN_SYSTEM.md` first for any visual/motion/component work** — it is
 the exhaustive reference (tokens, component inventory, motion ownership rules,
 micro-interaction specs, gotchas). `EASTER_EGGS.md` is the egg answer key.
+`BOOT_SCREEN.md` documents the first-load boot overlay's architecture and
+decisions — read it before touching BootScreen/LoadSequence/the inline script.
 
 ## Technology Stack
 
