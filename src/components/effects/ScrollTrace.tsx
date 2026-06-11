@@ -43,7 +43,11 @@ export default function ScrollTrace() {
       }).filter((v): v is number => v !== null)
       if (offsets.length === 0) return
 
-      const wide = (window.innerWidth - 1440) / 2
+      const containerMax =
+        parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue('--container-max')
+        ) || 1440
+      const wide = (window.innerWidth - containerMax) / 2
       const gutterX = wide > 88 ? wide - 40 : 11
       const tight = gutterX < 40
 

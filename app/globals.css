@@ -32,6 +32,9 @@
   /* Motion — THE easing for all CSS transitions (machine-report standard) */
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
 
+  /* Content container cap — widens for TV-class glass (≥2560px) */
+  --container-max: 1440px;
+
   /* Typography scale */
   --text-display: clamp(2.4rem, 1rem + 7.5vw, 6.75rem);
   --text-h2: clamp(1.75rem, 1rem + 3vw, 3rem);
@@ -183,6 +186,13 @@ body::before {
 @media (hover: none) {
     body, * {
         cursor: auto !important;
+    }
+}
+
+/* TV-class glass: let the composition breathe */
+@media (min-width: 2560px) {
+    :root {
+        --container-max: 1800px;
     }
 }
 

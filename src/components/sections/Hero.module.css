@@ -6,7 +6,7 @@
     gap: clamp(24px, 4vw, 64px);
     min-height: 100svh;
     width: 100%;
-    max-width: 1440px;
+    max-width: var(--container-max);
     margin: 0 auto;
     padding: clamp(96px, 14vh, 160px) var(--container-padding-x) clamp(48px, 8vh, 96px);
 }
