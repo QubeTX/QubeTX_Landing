@@ -8,6 +8,8 @@ import About from "@/components/sections/About";
 import Work from "@/components/sections/Work";
 import Contact from "@/components/sections/Contact";
 import LoadSequence from "@/components/effects/LoadSequence";
+import ScrollTrace from "@/components/effects/ScrollTrace";
+import ScrollProgress from "@/components/effects/ScrollProgress";
 import { HERO_CONTENT, SERVICES, PROJECTS, CONTACT_CTA } from "@/data/content";
 
 const SECTION_ANCHOR = "scroll-mt-[88px]";
@@ -15,6 +17,8 @@ const SECTION_ANCHOR = "scroll-mt-[88px]";
 export default function Home() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden">
+      <ScrollTrace />
+      <ScrollProgress />
       <div className="relative z-10 w-full">
         <Header />
         <div id="main-content" tabIndex={-1} className="outline-none">
