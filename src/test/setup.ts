@@ -19,9 +19,17 @@ vi.mock('animejs', async () => {
   return mocks
 })
 
+// Auto-mock lenis/react — jsdom has no smooth-scroll engine; useLenis
+// consumers must handle undefined (native fallback path)
+vi.mock('lenis/react', () => ({
+  ReactLenis: ({ children }: { children?: unknown }) => children,
+  useLenis: () => undefined,
+}))
+
 /**
  * IntersectionObserver stub (jsdom lacks it). Tests can reach registered
- * instances via MockIntersectionObserver.instances and call .trigger().
+ * instances via MockIntersectionObserver.instances and call .trigger()
+ * (all elements) or .emit() (specific entries).
  */
 export class MockIntersectionObserver implements IntersectionObserver {
   static instances: MockIntersectionObserver[] = []
@@ -52,6 +60,10 @@ export class MockIntersectionObserver implements IntersectionObserver {
       (el) => ({ isIntersecting, target: el }) as IntersectionObserverEntry
     )
     this.callback(entries, this)
+  }
+
+  emit(entries: Array<{ target: Element; isIntersecting: boolean }>) {
+    this.callback(entries as IntersectionObserverEntry[], this)
   }
 }
 

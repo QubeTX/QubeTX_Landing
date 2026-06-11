@@ -12,19 +12,21 @@ type OutlineButtonProps = {
   className?: string
   /** Marks the element for the cursor's magnetic docking mode */
   magnetic?: boolean
+  /** 'sm' = compact header CTA, 'md' = default */
+  size?: 'sm' | 'md'
 }
 
 /**
  * The outlined GET STARTED → CTA from the mockup: 1px brand-blue border,
  * gradient sweep fill on hover (CSS), cash.app-style squash on press (FM).
  */
-const OutlineButton: FC<OutlineButtonProps> = ({ href, children, className, magnetic }) => {
+const OutlineButton: FC<OutlineButtonProps> = ({ href, children, className, magnetic, size = 'md' }) => {
   const isExternal = /^https?:\/\//.test(href)
 
   return (
     <motion.a
       href={href}
-      className={clsx(styles.button, className)}
+      className={clsx(styles.button, size === 'sm' && styles.sm, className)}
       data-interactive="true"
       data-magnetic={magnetic ? 'true' : undefined}
       whileTap={{ scaleX: 1.04, scaleY: 0.92 }}
