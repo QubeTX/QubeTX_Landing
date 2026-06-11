@@ -8,6 +8,7 @@ import { NAV_ITEMS, PRODUCTS } from '@/data/content'
 import { PretextBlock } from '@/lib/pretext'
 import { RevealText } from '@/lib/motion/RevealText'
 import RollingLabel from '@/components/ui/RollingLink'
+import SysStatus from './SysStatus'
 
 const NAV_LINKS = [
   { label: 'Services', href: '#services' },
@@ -140,6 +141,7 @@ export default function Footer() {
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </p>
+        <SysStatus />
         <span className={styles.konamiHint} aria-hidden="true" title="…the old codes still work">
           ↑↑↓↓←→←→BA
         </span>

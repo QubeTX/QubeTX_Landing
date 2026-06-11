@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { NAV_ITEMS, CONTACT_CTA } from '@/data/content'
+import { NAV_ITEMS, CONTACT_CTA, HERO_CONTENT } from '@/data/content'
 import { useScrolled } from '@/hooks/useScrolled'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useAnchorNav } from '@/hooks/useAnchorNav'
@@ -73,7 +73,13 @@ export default function Header() {
 
       <div className={styles.right} data-load="header">
         <Magnetic strength={5} className={styles.cta}>
-          <OutlineButton href={CONTACT_CTA.href} size="sm" magnetic>
+          {/* Same CTA as the hero primary — same hover teaser */}
+          <OutlineButton
+            href={CONTACT_CTA.href}
+            size="sm"
+            hoverLabel={HERO_CONTENT.primaryCta.hoverLabel}
+            magnetic
+          >
             Get Started
           </OutlineButton>
         </Magnetic>

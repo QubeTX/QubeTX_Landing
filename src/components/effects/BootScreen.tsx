@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
+import { attachSlotText, type SlotTextController } from '@/lib/motion/slotText'
 import styles from './BootScreen.module.css'
 
 /**
@@ -99,6 +100,21 @@ export default function BootScreen() {
     const timeouts: ReturnType<typeof setTimeout>[] = []
     const start = performance.now()
 
+    // Percent readout rolls per digit (slot roll, odometer-tuned): quiet
+    // ink-only — the 90ms tick outruns any color fade — counting up, so
+    // glyphs enter from below. Armed path only; the server-rendered 0%
+    // keeps the pre-hydration overlay intact.
+    let pctSlot: SlotTextController | null = null
+    if (pctRef.current) {
+      pctSlot = attachSlotText(pctRef.current, '0%', {
+        direction: 'up',
+        duration: 120,
+        stagger: 0,
+        bounce: 0,
+        color: null,
+      })
+    }
+
     // Log stream — cadence tuned so all lines land within MIN_BOOT_MS
     const addLog = (index: number) => {
       if (cancelled || index >= LOGS.length) return
@@ -123,7 +139,7 @@ export default function BootScreen() {
       const elapsed = performance.now() - start
       const pct = Math.min(99, Math.floor((elapsed / MIN_BOOT_MS) * 96 + Math.random() * 3))
       if (barRef.current) barRef.current.style.width = `${pct}%`
-      if (pctRef.current) pctRef.current.textContent = `${pct}%`
+      pctSlot?.set(`${pct}%`)
     }, 90)
 
     const minTime = new Promise((resolve) => timeouts.push(setTimeout(resolve, MIN_BOOT_MS)))
@@ -156,7 +172,7 @@ export default function BootScreen() {
       completed = true
       clearInterval(progressInterval)
       if (barRef.current) barRef.current.style.width = '100%'
-      if (pctRef.current) pctRef.current.textContent = '100%'
+      pctSlot?.set('100%')
       timeouts.push(
         setTimeout(() => {
           if (cancelled) return
@@ -172,6 +188,7 @@ export default function BootScreen() {
       cancelled = true
       clearInterval(progressInterval)
       timeouts.forEach(clearTimeout)
+      pctSlot?.destroy() // clears every roll timer (cancel contract)
     }
   }, [])
 

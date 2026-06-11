@@ -61,6 +61,22 @@
     gap: 8px;
 }
 
+/* Label stack: the rolling label and its invisible sizers share one grid
+   cell, so the button is always as wide as the widest label and a slot roll
+   never shifts layout. */
+.labelText {
+    display: inline-grid;
+    justify-items: center;
+}
+
+.labelText > * {
+    grid-area: 1 / 1;
+}
+
+.labelSizer {
+    visibility: hidden;
+}
+
 .arrow {
     display: inline-flex;
     align-items: center;

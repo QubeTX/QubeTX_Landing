@@ -17,7 +17,7 @@
  * NO ResizeObserver — resizes go through src/lib/pretext/resizeCoordinator.
  */
 export { animate, createTimeline, createTimer, createScope, createSpring, stagger, svg, utils, engine } from './anime'
-export { EASE, EASE_CSS, EASE_ANIME, DUR, MS, STAGGER_MS, SPRING } from './tokens'
+export { EASE, EASE_CSS, EASE_ANIME, EASE_SLOT_CSS, DUR, MS, STAGGER_MS, SPRING } from './tokens'
 export {
   createContainerVariants,
   slideUpVariants,
@@ -30,6 +30,19 @@ export { useInViewOnce } from './useInViewOnce'
 export { useAnimeScope } from './useAnimeScope'
 export { splitText, type SplitMode } from './splitText'
 export { RevealText } from './RevealText'
+export {
+  buildSlotText,
+  animateSlotText,
+  clearSlotText,
+  attachSlotText,
+  SLOT_TEXT_DEFAULTS,
+  type SlotTextOptions,
+  type SlotFlashOptions,
+  type SlotTextController,
+  type SlotDirection,
+  type SlotColor,
+} from './slotText'
+export { SlotRoll, useSlotRoll } from './SlotRoll'
 export { useMagnetic } from './useMagnetic'
 export { hexToRgb, buildColorRamp, rampIndex } from './colorRamp'
 export {

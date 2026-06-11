@@ -59,4 +59,17 @@ describe('BootScreen', () => {
     expect(container.textContent).toContain('BOOTSTRAPPING COMPLETE.')
     expect(container.textContent).toContain('ANIME.JS CORE LOADED SUCCESS.')
   })
+
+  it('armed path: the percent readout slot-rolls to 100%', async () => {
+    vi.useFakeTimers()
+    document.documentElement.setAttribute('data-boot', '')
+
+    const { container } = render(<BootScreen />)
+    // The odometer builds roll cells over the server-rendered 0%
+    expect(container.querySelector('[data-slot-cell]')).not.toBeNull()
+
+    await vi.advanceTimersByTimeAsync(7000)
+    // Accessible text lands on the completed value
+    expect(container.querySelector('[data-slot-sr]')?.textContent).toBe('100%')
+  })
 })

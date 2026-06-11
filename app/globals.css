@@ -21,6 +21,7 @@
   --color-border: #1a2236;          /* 1px hairlines, grid-cell gaps, pills */
   --color-border-bright: #2c3a5c;   /* hovered borders */
   --color-text-dim: #76869f; /* ≥4.5:1 on --color-void (AA) */        /* mono labels, corner metadata */
+  --color-arrival: #3385ff;  /* slot-roll arrival flash — ≈5.7:1 on void (AA); #0066FF is only ~4.3:1 */
   --gradient-brand: linear-gradient(90deg, #2563eb, #7c3aed);
   --glow-blue: rgba(37, 99, 235, 0.25);
 
@@ -90,7 +91,8 @@
   --color-gradient-blue: #2563eb;
   --color-gradient-purple: #7c3aed;
   --color-text-dim: #76869f; /* ≥4.5:1 on --color-void (AA) */
-  
+  --color-arrival: #3385ff;  /* slot-roll arrival flash — ≈5.7:1 on void (AA) */
+
   --font-sans: var(--font-stack-sans);
   --font-mono: var(--font-stack-mono);
   --font-display: var(--font-stack-sans);

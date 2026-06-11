@@ -37,6 +37,7 @@ and engineering care QubeTX sells to clients. When in doubt, match what exists.
 | `--text-primary` | `#ffffff` | Primary text |
 | `--text-secondary` | `#94a3b8` | Body secondary |
 | `--color-text-dim` | `#76869f` | Mono labels, metadata — **do not darken; this is tuned to ≥4.5:1 AA on void** |
+| `--color-arrival` | `#3385ff` | Slot-roll arrival flash (≈5.7:1 AA on void — `--primary-blue` is only ~4.3:1, too dim for transient text on void). Never persists: arrivals settle to ink in ~280ms. |
 | `--glow-blue` | `rgba(37,99,235,0.25)` | Button hover glow |
 | Status green | `#22c55e` | `[OK]` flashes, STABLE chips (hardcoded where used) |
 | Stripe alt | `#070a14` | Alternating row background (hardcoded in row modules) |
@@ -89,7 +90,8 @@ field) → static bottom-right corner glow → ScrollTrace SVG → content.
 | `Header` | Fixed, 3-zone grid. `useScrolled(24)` → `data-scrolled` (blur + hairline + 60px). Scroll-spy underline = FM `layoutId="nav-active"` fed by `useActiveSection`. Nav links carry CSS `[`bracket`]` hovers. CTA wrapped in `Magnetic`. Carries `data-load="header"` entrance targets. |
 | `NavDropdown` | SERVICES disclosure (not ARIA menu): `aria-expanded/controls`, hover/click/ArrowDown open, Escape (refocus) / outside / focus-out close, FM clip-path + item stagger. Items target `#service-{id}`. |
 | `MobileMenu` | <1024px full-screen overlay: oversized staggered links, flattened services sub-list, focus trap/restore, `data-menu-open` on `<html>`, Lenis stop/start. |
-| `Footer` | Nav/Products/Connect mono columns (letter-roll labels), stroked `QUBETX` wordmark (`RevealText mode="chars"`), back-to-top with FM `pathLength` progress ring → `lenis.scrollTo(0)`, Konami hint glyph (40% opacity). |
+| `Footer` | Nav/Products/Connect mono columns (letter-roll labels), stroked `QUBETX` wordmark (`RevealText mode="chars"`), back-to-top with FM `pathLength` progress ring → `lenis.scrollTo(0)`, `SysStatus` line, Konami hint glyph (40% opacity). |
+| `SysStatus` | Footer `SYS_STATUS:` terminal line — the slot roll's resident showcase. Status word cycles `NOMINAL → SCANNING → SECURE` every 7s with the full arrival-blue language; aria-hidden flavor; cycles ONLY in-view + tab-visible (continuous raw IO — `useInViewOnce` is fire-once); static under reduced motion; sizer stack reserves the widest word (zero CLS). |
 
 ### Sections (`src/components/sections/`) — page order & anchors
 `Hero` (`#main-content`) → `Services` (`#services`) → `Products` (`#products`)
@@ -105,7 +107,7 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 | `Services` | Grid cells of `ServiceCard` (pill index, lucide icon nudge, proximity glow via `useProximityGlow` + `data-glow`). Card ids `service-{id}` are the dropdown anchors. The leftover row space is filled by `MatrixDisplay` (`.filler` spans the remaining tracks — the grid uses explicit breakpoint column counts because `grid-column: auto / -1` with an auto start resolves to span 1, not "rest of row"). |
 | `Products` | `SectionHeading` with typed `$ qubetx --products` boot line (`[data-boot-char]` stagger) + blinking `▮`; `ProductCard` striped rows → reports.qubetx.com (CSS-only compound hover). |
 | `Technologies` | Mono glyph strip cells (`▲ ⚛ TS tw RS aj fm`). |
-| `About` | "Detail is the product." → `RoutedText` lead paragraph (Pretext obstacle routing around the cube) + Pretext paragraph → `StatValue` cells (count-up + re-verify hover) → process striped rows. |
+| `About` | "Detail is the product." → `RoutedText` lead paragraph (Pretext obstacle routing around the cube) + Pretext paragraph → `StatValue` cells (slot-machine entrance + re-verify hover) → process striped rows. |
 | `Work` | 7 client `ProjectCard`s (image, tags, pointer micro-tilt ≤3.5°). |
 | `Contact` | Terminal panel: heading, shrinkwrapped subtitle, `Magnetic` CTA, `response time: < 24h ▮` prompt, corner glow. |
 
@@ -113,11 +115,12 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 | Component | Props / contract |
 |---|---|
 | `LabelPill` | `variant: 'pill' \| 'bar'`. Letter-spaced — **never Pretext-measured**. |
-| `OutlineButton` | `href, size: 'sm'\|'md', magnetic` (sets `data-magnetic` for cursor docking). Gradient-sweep fill + arrow slide (CSS), FM `whileTap` squash. External links auto-get `target/rel` + sr-only note. |
-| `TextLink` | Mono link, growing underline, optional `glyph` (aria-hidden). |
+| `OutlineButton` | `href, size: 'sm'\|'md', magnetic` (sets `data-magnetic` for cursor docking), `hoverLabel` (external: slot-roll teaser on hover, mouse only), `flashLabel` (internal: click-flash + auto-revert). Gradient-sweep fill + arrow slide (CSS), FM `whileTap` squash. Slot rolls here are **quiet** (`color: null` — the hovered face is the brand gradient). A hidden sizer stack keeps the button at the widest label's width (zero CLS). External links auto-get `target/rel` + sr-only note. |
+| `TextLink` | Mono link, growing underline, optional `glyph` (aria-hidden), `flashLabel` (internal: slot-roll click-flash, arrival blue). With `flashLabel`, in-page hrefs also route through `useAnchorNav` (Lenis smooth scroll instead of the native hash jump). |
 | `Magnetic` | Pull wrapper (`useMagnetic`) — **owns its node's transform; never put FM/anime transforms on the same node**. Display via CSS class (so media queries can override). |
 | `SectionHeading` | `label, title, subtitle?, aside?, align?`. The one section-heading system. |
-| `ServiceCard` / `ProductCard` / `ProjectCard` / `StatValue` | See sections above. |
+| `ServiceCard` / `ProductCard` / `ProjectCard` | See sections above. |
+| `StatValue` | About stat. Slot-machine entrance on first view (3 scrambled quiet rolls ~300ms apart, landing on the real value with the arrival-blue flash); hover re-verify = 2 scrambles back to the same value + label `decode()` (decode stays on the LABEL node — never the same node as the roll). Prefix/digits/suffix parsing preserved (`"100%"`); reduced motion shows the server-rendered final value untouched. |
 | `RollingLabel` (`RollingLink.tsx`) | Letter-roll hover (stacked copies in masks, anime stagger 18ms). |
 | `RoutedText` | Pretext `layoutNextLine` obstacle routing; falls back to the plain paragraph (<1024px / fonts not ready / no JS). |
 | `QubeTXLogo` | Stroke-only SVG cube; `size/className/color`. Paths are `svg.createDrawable`-friendly (used by the logo egg). |
@@ -127,7 +130,7 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 | Component | Architecture |
 |---|---|
 | `DotGrid` | **Fully anime.js-driven** hero dot field. Canvas 2D is only the blitter; anime animates a flat array of dot objects. Geometry: `src/lib/motion/dotGridGeometry.ts` (TL→BR size/alpha/color ramp; feathered left edge + bottom band with true-invisible CULLING; ≤1400 dots via pitch widening). Channels are separated — idle loop owns `breathe`, ripples own `pulse`/`mix` — so they never fight. All delays are **distance functions**, not grid staggers (radially correct + cull-safe). Pointer ripples are **amplitude-attenuated** (`rippleFalloff`, smoothstep to 0 at 280px move / 460px tap) and only retarget the dots in reach — both halves are load-bearing: falloff keeps the swell local to the cursor, subset-scoped `utils.remove` lets the trail behind the cursor finish decaying instead of being cancelled into a frozen lit state on every pointer event (uniform full-field ripples saturated the whole grid while the pointer moved). Pointer listeners are **window-level** (the field shows behind the fixed header and past the hero, where events never bubble through the hero subtree — the radius bound makes out-of-reach moves no-ops); the layer itself is `pointer-events:none` (it extends ~26vh past the hero). External ripples via the **`qubetx:pulse`** CustomEvent (`firePulse`) stay **field-wide** (radius ∞ — the load beat/eggs sweep the whole field). IO pauses offscreen; resize via `resizeCoordinator`; reduced motion = static ramp. |
-| `BootScreen` | First-load SYSTEM_INITIALIZER overlay (covers hydration/font jank): server-rendered so it paints pre-hydration (cursor/dot/first-line alive via pure CSS), timestamped log stream + progress driven post-hydration, completion fully dynamic = max(5s minimum, fonts loaded, window `load`, double-rAF painted frame) with an AWAITING RENDERER SYNC log line if readiness outlasts the minimum. Armed pre-paint by the layout inline script via `html[data-boot]` — only when `sessionStorage['qubetx:booted']` is absent and motion isn't reduced (return visits/reduced-motion/no-JS never see it; 10s failsafe). On completion: flag set, attribute lifted, `qubetx:boot-complete` fires and LoadSequence's entrance plays behind the 700ms fade. |
+| `BootScreen` | First-load SYSTEM_INITIALIZER overlay (covers hydration/font jank): server-rendered so it paints pre-hydration (cursor/dot/first-line alive via pure CSS), timestamped log stream + progress driven post-hydration, completion fully dynamic = max(5s minimum, fonts loaded, window `load`, double-rAF painted frame) with an AWAITING RENDERER SYNC log line if readiness outlasts the minimum. Armed pre-paint by the layout inline script via `html[data-boot]` — only when `sessionStorage['qubetx:booted']` is absent and motion isn't reduced (return visits/reduced-motion/no-JS never see it; 10s failsafe). On completion: flag set, attribute lifted, `qubetx:boot-complete` fires and LoadSequence's entrance plays behind the 700ms fade. The percent readout is a slot-roll odometer (`attachSlotText`, armed path only: up / 120ms / 0 stagger / 0 bounce / quiet — the 90ms tick outruns any color fade); the controller is destroyed in the effect cleanup and the server-rendered `0%` keeps the pre-hydration overlay intact. |
 | `LoadSequence` | Single anime timeline owner of header+hero entrance via `data-load` attributes (no FM on those nodes). Waits for `qubetx:boot-complete` while `html[data-boot]` is armed. Order: header (y/opacity, stagger 60) → eyebrow + scramble-decode → masked line rises (stagger 90) → gradient `background-position` sweep → description → CTAs → company → bottom-right `qubetx:pulse`. FOUC guard: inline `<script>` in layout sets `html[data-loading]` (CSS hides `[data-load]`), 3s failsafe, `suppressHydrationWarning` on `<html>`; LoadSequence sets real initial states, lifts the attr, plays. |
 | `ScrollTrace` | Scroll-scrubbed circuit trace + isometric cube junctions (`scrollTracePath.ts`, pure). Paused timeline of `svg.createDrawable` segments **seek()ed from Lenis progress** (draws down, reverses up; native-scroll fallback). Gutter = true outer margin when `(vw − --container-max)/2 > 88`, else hairline lane at x≈11. Hidden <1024px. No SVG filters ever (glow = second wider stroke at 0.06). |
 | `MatrixDisplay` | LED dot-matrix word board (Services filler): anime.js sweeps words (`QUBETX/BUILD/SHIP/SECURE/SCALE`) across a coarse dot grid via per-dot `lit` channels, column-staggered, endless loop. Board pitch derives from the longest word (`src/lib/motion/dotFont.ts` 5×7 bitmap font, pure + tested) so glyphs always span ~the full cell. IO-paused, resizeCoordinator rebuilds, reduced motion = static first word. |
@@ -138,9 +141,10 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 ## 5. Motion system (`src/lib/motion/`)
 
 ### Ownership rules (load-bearing — violating these causes fighting animations)
-- **anime.js v4**: DotGrid values, ScrollTrace timeline, text reveals/decode/typewriter/counters/letter-rolls, logo redraw, Konami boot.
+- **anime.js v4**: DotGrid values, ScrollTrace timeline, text reveals/decode/typewriter/letter-rolls, logo redraw, Konami boot.
 - **Framer Motion**: AnimatePresence exits, `layoutId` indicators, `whileInView` card entrances, `whileTap` squash, `useScroll` MotionValues.
 - **raw rAF**: cursor engine, `useMagnetic`, ProjectCard tilt.
+- **slotText engine**: per-character label changes — it owns its cells' inline transitions entirely (zero deps, no anime/FM). Never point another owner at a slot container's children.
 - **CSS only**: every simple hover (brackets, underlines, sweeps, blink, scanlines).
 - **One owner per element property.** An FM-variant element is never an anime target — anime targets live one level down (split spans, SVG paths).
 - **Lenis** is the single scroll driver (window-native, so IO and FM `useScroll` just work). Anchor nav goes through `useAnchorNav` → `lenis.scrollTo`. Overlays call `stop()/start()`.
@@ -148,14 +152,91 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 - Reduced motion = **skip to final state** (`useMotionPreference` / `prefersReducedMotion()`), never slower versions.
 
 ### Primitives
-`tokens.ts` (EASE in FM/CSS forms + `EASE_ANIME` **function** — anime 4.4 removed string cubic-bezier; DUR/MS/STAGGER_MS/SPRING presets) ·
+`tokens.ts` (EASE in FM/CSS forms + `EASE_ANIME` **function** — anime 4.4 removed string cubic-bezier; `EASE_SLOT_CSS` overshoot for the slot roll; DUR/MS/STAGGER_MS/SPRING presets) ·
 `anime.ts` (sole animejs import seam — also the test mock seam) ·
 `variants.ts` (FM variants; `src/utils/animations.ts` is a re-export shim) ·
 `useMotionPreference` · `useInViewOnce` (**initial state must stay false — deriving it from `typeof IntersectionObserver` breaks SSR hydration**) ·
 `useAnimeScope` · `splitText`/`RevealText` (server-rendered visible splitter; hidden states applied client-side; `aria-label` carries the unsplit text) ·
+`slotText`/`SlotRoll` (the slot roll — see below) ·
 `useMagnetic` · `useProximityGlow` (--mx/--my vars; gradient falloff does the distance math) ·
 `decode` (glyph scramble) · `colorRamp` (LUT; alpha via `ctx.globalAlpha`) ·
 `dotGridGeometry` · `scrollTracePath`.
+
+### The slot roll (`slotText.ts` / `SlotRoll.tsx`)
+
+**The house micro-interaction for short text that changes in place** — a
+button label caught mid-action, a counter, a status word. Each character
+sits in its own clipped cell; the new glyph rolls in while the old rolls
+out, landing with a small spring overshoot and per-glyph wobble; incoming
+glyphs arrive in `--color-arrival` blue and settle to ink in ~280ms.
+
+**Provenance.** Adapted from `slot-text` v0.2.2 (MIT · textmotion.dev) via
+the Millis design system kit. Vendored, not installed: the upstream React
+wrapper SSR-renders an *empty* span (violates the server-HTML-shows-final-
+state rule), the npm name was repurposed mid-2026 (supply-chain caution),
+and an in-repo copy carries the QubeTX defaults. Pure CSS transforms +
+timers — zero dependencies, no anime.js, no FM.
+
+**API** (all exported through `src/lib/motion`):
+
+```
+buildSlotText(el, text)                      build cells (sr name + aria-hidden cells)
+animateSlotText(el, text, options?)          roll a built container to new text
+clearSlotText(el, text?)                     tear down to a plain text node
+attachSlotText(el, text, options?)           controller: set / flash (auto-revert) / destroy
+<SlotRoll text as? className? options?>      declarative — rolls on `text` prop change
+useSlotRoll(restingText, options?)           → [refCallback, { set, flash }] for event-driven labels
+```
+
+| Option | Default | Meaning |
+|---|---|---|
+| `direction` | `'down'` | `'up'` for forward/advance travel (counters up, next-period) |
+| `stagger` | `40` | ms between adjacent cells |
+| `duration` | `240` | ms per glyph roll |
+| `exitOffset` | `50` | ms head start for the outgoing glyph |
+| `easing` | `EASE_SLOT_CSS` | `cubic-bezier(0.34, 1.56, 0.64, 1)` overshoot |
+| `bounce` | `0.3` | per-glyph speed/stagger jitter + settle tilt |
+| `color` | `var(--color-arrival)` | arrival tint: string, `(i,total)=>string`, or `null` = quiet ink roll |
+| `colorFade` | `280` | ms for arrival → ink settle |
+| `skipUnchanged` | `true` | unchanged characters hold still (a 7-digit value changing one digit rolls one cell) |
+| `interrupt` | `true` | a new roll fast-forwards a running one; `false` queues the latest (flash uses this — spam coalesces) |
+
+**The rules (normative):**
+
+1. **Labels only.** A word or two — buttons, counters, status words.
+   Sentences/headings belong to `RevealText`; scrambles to `decode`.
+2. **The destination rule (QubeTX, supersedes Millis "never on hover"):**
+   links that *leave the site* roll on **hover** to a teaser label
+   (`hoverLabel` — announce the departure before the click); links *within
+   the site* roll on **interaction** (`flashLabel` click-flash). Mouse
+   pointers only — coarse pointers never hover-roll.
+3. **Blue on arrival, ink at rest.** The arrival color never persists. Pass
+   `color: null` (quiet roll) on gradient surfaces — the hovered
+   OutlineButton face is the brand gradient, where the blue vanishes.
+4. **Direction follows travel.** Counting up / advancing = `'up'`;
+   reverting / going back = `'down'` (hover-roll enters up, leaves down).
+5. **Reduced motion snaps.** The engine consults `prefersReducedMotion()`
+   at animate time and rebuilds final state instantly. No opt-out.
+6. **Meaningful change only** (the footer `SysStatus` cycle is the one
+   sanctioned showcase — and it pays for itself by pausing offscreen,
+   in hidden tabs, and under reduced motion).
+7. **The engine owns the container's children.** Never hand-author cells,
+   never let React reconcile them (render the initial text once — `SlotRoll`
+   does this via a `useState`-captured initial), never point `decode()`/
+   Pretext/anime/FM at the same node. Never wrap a slot container in
+   `PretextBlock`.
+8. **Reserve the width.** A label changing width eases smoothly, but
+   hover/auto-driven layout shifts COUNT toward CLS (input exemption covers
+   taps/keys only). Every shipped surface holds max width via an invisible
+   sizer stack (`grid-area: 1/1` siblings).
+
+**A11y model:** a visually-hidden `[data-slot-sr]` span carries the
+accessible name (updated immediately on every roll — assistive tech never
+waits out the animation); the per-character cells are `aria-hidden`. DOM:
+`[data-slot-text] > [data-slot-sr] + [data-slot-cell]*`, each cell =
+`[data-slot-sizer]` (invisible, owns the width) + `[data-slot-face]`
+(absolute, animates). Structural styles are inline (the splitText pattern) —
+no global CSS, no Tailwind-scanner dependency.
 
 ## 6. Pretext rules (text intelligence)
 
@@ -176,7 +257,12 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 | Letter roll | stacked copies, y −100%, 420ms `out(4)`, stagger 18ms | Footer links |
 | Proximity glow | `--mx/--my` radial gradient, reacts before hover | Service cards |
 | Micro-tilt | ≤3.5° rotateX/Y from cached rect, rAF-gated vars | Project cards |
-| Re-verify | numeral re-rolls (550ms count) + label decode on hover | About stats |
+| CTA hover teaser | slot roll up to `hoverLabel`, down on leave (quiet/ink, mouse only) | Hero + header "Get Started", Contact CTA (external destinations) |
+| CTA click flash | slot-roll `flash()` to `flashLabel`, auto-revert 1.4s; TextLink also smooth-scrolls via `useAnchorNav` | "Explore Our Services" (internal destinations) |
+| Boot odometer | per-digit slot roll: up / 120ms / 0 stagger / quiet, interrupt churn at the 90ms tick | BootScreen percent readout |
+| Stat slot-machine | 3 scrambled quiet rolls (~300ms apart) → arrival-blue landing on the real value | About stats, first view |
+| Re-verify | 2 scrambled rolls back to the same value + label decode on hover | About stats |
+| Status cycle | slot roll up, arrival blue, every 7s — in-view + tab-visible only | Footer `SYS_STATUS` |
 | Pointer ripple | elastic swell around the cursor: distance-delayed, amplitude falls to 0 at 280px (tap 460px); `qubetx:pulse` events sweep the full field | Hero dot field (move + tap) |
 | Decode | glyph scramble resolving L→R, 450ms | Eyebrow, section pills, stat labels |
 | Boot type | per-char opacity stagger 28ms + CSS blink cursor | Products heading |
@@ -195,7 +281,8 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 - Vitest + RTL, jsdom. `src/test/setup.ts` auto-mocks: `@/lib/pretext`, raw `@chenglou/pretext`, `framer-motion`, `animejs`, `lenis/react`; stubs `IntersectionObserver` (`.trigger()`/`.emit()` helpers on `MockIntersectionObserver`) and `matchMedia`.
 - Components must render **correct final-state DOM with all mocks active** (the splitter renders real text server-side — that's why).
 - Pure modules get real unit tests: `dotGridGeometry`, `colorRamp`, `scrollTracePath`, `cursorEngine` (manual `tick(dt)` → assert transform strings), `splitText`, `useKeySequence`, hooks.
-- jsdom event quirks: React `onMouseEnter` ← `fireEvent.mouseOver`; `onFocus` ← `fireEvent.focusIn`. (Or prefer CSS `:hover` so there's nothing to simulate.)
+- jsdom event quirks: React `onMouseEnter` ← `fireEvent.mouseOver`; `onPointerEnter` ← `fireEvent.pointerOver` (pass `{ pointerType: 'mouse' }`); `onFocus` ← `fireEvent.focusIn`. (Or prefer CSS `:hover` so there's nothing to simulate.)
+- Slot-roll tests: jsdom never fires `transitionend` and rects are 0 — the engine's **safety-net rebuild** is what makes final states reachable; assert after `vi.runAllTimers()`/`advanceTimersByTime`, and assert the accessible text via `[data-slot-sr]` (it updates immediately). React/RTL hold internal timers under fake timers — assert cell absence (`[data-slot-cell]`), not `vi.getTimerCount() === 0`, for "engine did nothing" cases.
 - CI: lint → `npm test` → build. All three must pass before merge; **push to `main` deploys via Vercel**.
 
 ## 10. Hard-won gotchas (read before touching motion/text)
@@ -208,3 +295,6 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 6. **Container queries** are how the headline fits its column exactly (`8cqw` vs the longest line's 12.2em) — vw clamps can't know column width.
 7. Dot tween channels must be **separated by property** (`breathe` vs `pulse`) — `utils.remove(targets, undefined, prop)` then only clears the ripple channel.
 8. SVG `<g>` elements with attribute matrices: never write transforms onto them (CSS transform replaces the matrix) — animate strokes (`createDrawable`) or the root `<svg>` instead.
+9. **Windows/macOS case-insensitive module resolution**: `slotText.ts` and `SlotText.tsx` in one folder resolve to the SAME module specifier — the React layer is named `SlotRoll.tsx` for exactly this reason. Never add a file differing only in case.
+10. **Slot roll × gradient-clip text**: `StatValue`'s `.value` is `background-clip: text` + `color: transparent`. The engine's rest color resolves to `transparent`, so the arrival blue crossfades into the gradient showing through — container-level clip applies to descendant glyphs. If a browser ever drops clip on transformed faces, the fallbacks are (in order): per-face `background: inherit` + clip chain, solid ink during rolls, solid brand blue.
+11. **Slot roll × letter-spacing**: sizers inherit tracking so each cell carries its glyph + trailing track; total width is preserved but faces center within the tracked cell. Verified visually on the 0.12em mono labels — check again before using on wider tracking.

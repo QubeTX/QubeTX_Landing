@@ -66,10 +66,11 @@ src/data/content.ts       ALL copy/data: NAV_ITEMS, SERVICES, PRODUCTS, ABOUT_CO
                           PROCESS, PROJECTS, TECH_STACK, HERO_CONTENT, CONTACT_CTA
 src/fonts/                woff2 + next/font/local declarations
 src/lib/motion/           motion system: tokens, anime seam, preference store, IO trigger,
-                          scopes, splitText/RevealText, magnetic, proximity glow, decode,
-                          colorRamp, dotGridGeometry, scrollTracePath (pure, unit-tested)
+                          scopes, splitText/RevealText, slotText/SlotRoll (slot roll),
+                          magnetic, proximity glow, decode, colorRamp, dotGridGeometry,
+                          scrollTracePath (pure, unit-tested)
 src/lib/pretext/          Pretext integration (provider, block, resizeCoordinator)
-src/components/layout/    Header, NavDropdown, MobileMenu, Footer
+src/components/layout/    Header, NavDropdown, MobileMenu, Footer, SysStatus
 src/components/sections/  Hero, Services, Products, Technologies, About, Work, Contact
 src/components/ui/        LabelPill, OutlineButton, TextLink, Magnetic, SectionHeading,
                           ServiceCard, ProductCard, ProjectCard, StatValue, RollingLink,
@@ -102,6 +103,15 @@ Full specs in `DESIGN_SYSTEM.md` §5. The short version every change must obey:
 6. Server HTML always shows FINAL state (visible text); hidden/initial states
    are applied client-side (LoadSequence/RevealText), guarded against FOUC by
    the `html[data-loading]` inline script (3s failsafe).
+7. **Short text that changes in place goes through the slot roll**
+   (`src/lib/motion/slotText.ts` + `SlotRoll.tsx`; DESIGN_SYSTEM §5 "The
+   slot roll"). Destination rule: external links roll on HOVER to a teaser
+   (`hoverLabel`), internal links roll on INTERACTION (`flashLabel`).
+   Arrival `--color-arrival` blue settles to ink; `color: null` (quiet) on
+   gradient surfaces; reduced motion snaps; the engine owns its container's
+   children (never decode/Pretext/anime/FM on the same node). NB: the React
+   layer is `SlotRoll.tsx` because `SlotText.tsx` would collide with
+   `slotText.ts` on case-insensitive filesystems.
 
 ## Pretext Integration (`src/lib/pretext/`)
 

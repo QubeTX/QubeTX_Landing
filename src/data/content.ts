@@ -67,6 +67,8 @@ export type Stat = {
 
 export const CONTACT_CTA = {
   label: 'Start Your Project',
+  /** Slot-roll hover teaser — external destination, rolls on hover */
+  hoverLabel: 'Tell us your idea',
   href: 'https://app.youform.com/forms/3lbykv4l'
 } as const
 
@@ -75,8 +77,8 @@ export const HERO_CONTENT = {
   headline: ['Solid code.', 'Stronger systems.', 'Limitless possibilities.'],
   description:
     'High-performance web solutions and scalable infrastructure that power your business today—and expand your potential for tomorrow.',
-  primaryCta: { label: 'Get Started', href: CONTACT_CTA.href },
-  secondaryCta: { label: 'Explore Our Services', href: '#services' },
+  primaryCta: { label: 'Get Started', hoverLabel: 'Open the form', href: CONTACT_CTA.href },
+  secondaryCta: { label: 'Explore Our Services', flashLabel: 'Navigating…', href: '#services' },
   company: 'A Department of ES Development LLC'
 } as const
 
