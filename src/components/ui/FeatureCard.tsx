@@ -2,40 +2,34 @@
 
 import type { FC } from 'react'
 import { motion } from 'framer-motion'
-import type { Feature } from '@/data/content'
+import type { Service } from '@/data/content'
+import { SERVICE_ICONS } from './icons'
 import { slideUpVariants } from '@/utils/animations'
 import { PretextBlock } from '@/lib/pretext'
 import styles from './FeatureCard.module.css'
 
-type FeatureCardProps = Feature
+type FeatureCardProps = Service
 
-const FeatureCard: FC<FeatureCardProps> = ({ icon, title, lineBreak, description }) => {
-  const fullTitle = lineBreak ? `${title} ${lineBreak}` : title
+const FeatureCard: FC<FeatureCardProps> = ({ id, icon, title, description }) => {
+  const Icon = SERVICE_ICONS[icon]
 
   return (
     <motion.article
+      id={`service-${id}`}
       className={styles.featureCard}
       data-interactive="true"
       variants={slideUpVariants}
     >
       <div className={styles.icon} aria-hidden="true">
-        <span>
-          {icon}
-        </span>
+        {Icon && <Icon size={28} strokeWidth={1.5} />}
       </div>
       <PretextBlock
-        text={fullTitle}
+        text={title}
         lineHeight={1.3}
         as="h2"
         className={`unbounded-heading ${styles.title}`}
       >
         {title}
-        {lineBreak && (
-          <>
-            <br />
-            {lineBreak}
-          </>
-        )}
       </PretextBlock>
       <PretextBlock
         text={description}

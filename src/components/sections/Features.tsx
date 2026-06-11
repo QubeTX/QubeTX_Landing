@@ -3,12 +3,12 @@
 import { useRef, type FC } from 'react'
 import { motion, useInView } from 'framer-motion'
 import FeatureCard from '../ui/FeatureCard'
-import type { Feature } from '@/data/content'
+import type { Service } from '@/data/content'
 import { createContainerVariants } from '@/utils/animations'
 import styles from './Features.module.css'
 
 type FeaturesProps = {
-  items: Feature[]
+  items: Service[]
 }
 
 const container = createContainerVariants(0.15)

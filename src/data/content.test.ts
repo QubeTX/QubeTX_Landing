@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import {
   HERO_CONTENT,
-  FEATURES,
+  SERVICES,
+  NAV_ITEMS,
+  PRODUCTS,
+  ABOUT_CONTENT,
   PROJECTS,
   TECH_STACK,
   PROCESS,
@@ -10,45 +13,121 @@ import {
 
 describe('HERO_CONTENT', () => {
   it('has all required fields', () => {
-    expect(HERO_CONTENT.title).toBeDefined()
-    expect(HERO_CONTENT.conjunction).toBeDefined()
-    expect(HERO_CONTENT.highlight).toBeDefined()
-    expect(HERO_CONTENT.subheadline).toBeDefined()
+    expect(HERO_CONTENT.eyebrow).toBeDefined()
+    expect(HERO_CONTENT.headline).toBeDefined()
+    expect(HERO_CONTENT.description).toBeDefined()
+    expect(HERO_CONTENT.primaryCta).toBeDefined()
+    expect(HERO_CONTENT.secondaryCta).toBeDefined()
     expect(HERO_CONTENT.company).toBeDefined()
   })
 
-  it('fields are non-empty strings', () => {
-    expect(HERO_CONTENT.title.length).toBeGreaterThan(0)
-    expect(HERO_CONTENT.conjunction.length).toBeGreaterThan(0)
-    expect(HERO_CONTENT.highlight.length).toBeGreaterThan(0)
-    expect(HERO_CONTENT.subheadline.length).toBeGreaterThan(0)
-    expect(HERO_CONTENT.company.length).toBeGreaterThan(0)
+  it('headline is exactly three non-empty lines (mockup composition)', () => {
+    expect(HERO_CONTENT.headline).toHaveLength(3)
+    for (const line of HERO_CONTENT.headline) {
+      expect(line.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('primary CTA points at the contact form, secondary at services', () => {
+    expect(HERO_CONTENT.primaryCta.href).toBe(CONTACT_CTA.href)
+    expect(HERO_CONTENT.secondaryCta.href).toBe('#services')
   })
 })
 
-describe('FEATURES', () => {
-  it('is a non-empty array', () => {
-    expect(FEATURES.length).toBeGreaterThan(0)
+describe('SERVICES', () => {
+  it('has five services', () => {
+    expect(SERVICES).toHaveLength(5)
   })
 
-  it('each feature has required fields', () => {
-    for (const feature of FEATURES) {
-      expect(feature.id).toBeDefined()
-      expect(feature.icon).toBeDefined()
-      expect(feature.title).toBeDefined()
-      expect(feature.description).toBeDefined()
+  it('each service has required fields', () => {
+    for (const service of SERVICES) {
+      expect(service.id).toBeDefined()
+      expect(service.icon).toBeDefined()
+      expect(service.title.length).toBeGreaterThan(0)
+      expect(service.description.length).toBeGreaterThan(0)
     }
   })
 
   it('has unique IDs', () => {
-    const ids = FEATURES.map((f) => f.id)
+    const ids = SERVICES.map((s) => s.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })
 
+describe('NAV_ITEMS', () => {
+  it('matches the mockup nav (five items)', () => {
+    expect(NAV_ITEMS.map((n) => n.label)).toEqual([
+      'Services',
+      'Technologies',
+      'About Us',
+      'Work',
+      'Contact',
+    ])
+  })
+
+  it('all hrefs are page anchors', () => {
+    for (const item of NAV_ITEMS) {
+      expect(item.href).toMatch(/^#/)
+    }
+  })
+
+  it('Services children map to service card anchors', () => {
+    const services = NAV_ITEMS.find((n) => n.id === 'services')
+    expect(services?.children).toHaveLength(SERVICES.length)
+    for (const child of services?.children ?? []) {
+      const serviceId = child.href.replace('#service-', '')
+      expect(SERVICES.some((s) => s.id === serviceId)).toBe(true)
+    }
+  })
+})
+
+describe('PRODUCTS', () => {
+  it('has the five-product line', () => {
+    expect(PRODUCTS.map((p) => p.code)).toEqual([
+      'TR-300',
+      'SD-300',
+      'ND-300',
+      'WB-300',
+      'SHAUGHVOS',
+    ])
+  })
+
+  it('every product lives under reports.qubetx.com', () => {
+    for (const product of PRODUCTS) {
+      expect(product.href).toMatch(/^https:\/\/reports\.qubetx\.com/)
+    }
+  })
+
+  it('each product has required fields and unique IDs', () => {
+    for (const product of PRODUCTS) {
+      expect(product.id).toBeDefined()
+      expect(product.name.length).toBeGreaterThan(0)
+      expect(product.tagline.length).toBeGreaterThan(0)
+      expect(product.description.length).toBeGreaterThan(0)
+      expect(product.tags.length).toBeGreaterThan(0)
+      expect(['STABLE', 'ACTIVE']).toContain(product.status)
+    }
+    const ids = PRODUCTS.map((p) => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+describe('ABOUT_CONTENT', () => {
+  it('has a title, manifesto paragraphs, and stats', () => {
+    expect(ABOUT_CONTENT.title.length).toBeGreaterThan(0)
+    expect(ABOUT_CONTENT.manifesto.length).toBeGreaterThan(0)
+    expect(ABOUT_CONTENT.stats.length).toBeGreaterThan(0)
+    for (const stat of ABOUT_CONTENT.stats) {
+      expect(stat.value.length).toBeGreaterThan(0)
+      expect(stat.label.length).toBeGreaterThan(0)
+    }
+  })
+})
+
 describe('PROJECTS', () => {
-  it('is a non-empty array', () => {
-    expect(PROJECTS.length).toBeGreaterThan(0)
+  it('does not contain the System Reports project (lives in PRODUCTS now)', () => {
+    expect(PROJECTS.some((p) => p.id === 'system-reports')).toBe(false)
+    expect(PROJECTS).toHaveLength(7)
   })
 
   it('each project has required fields', () => {

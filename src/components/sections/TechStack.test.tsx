@@ -20,7 +20,8 @@ describe('TechStack', () => {
     expect(screen.getByText('React 19')).toBeInTheDocument()
     expect(screen.getByText('TypeScript')).toBeInTheDocument()
     expect(screen.getByText('Tailwind CSS')).toBeInTheDocument()
-    expect(screen.getByText('Three.js')).toBeInTheDocument()
+    expect(screen.getByText('Rust')).toBeInTheDocument()
+    expect(screen.getByText('Anime.js')).toBeInTheDocument()
     expect(screen.getByText('Framer Motion')).toBeInTheDocument()
   })
 

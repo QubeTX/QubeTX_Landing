@@ -7,7 +7,7 @@ import TechStack from "@/components/sections/TechStack";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import { DotMatrix } from "@/components/effects/DotMatrix";
-import { HERO_CONTENT, FEATURES, PROJECTS, CONTACT_CTA } from "@/data/content";
+import { HERO_CONTENT, SERVICES, PROJECTS, CONTACT_CTA } from "@/data/content";
 
 export default function Home() {
   return (
@@ -22,7 +22,7 @@ export default function Home() {
           <Hero content={HERO_CONTENT} />
         </div>
         <div id="services">
-          <Features items={FEATURES} />
+          <Features items={SERVICES} />
         </div>
         <TechStack />
         <div id="process">

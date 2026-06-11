@@ -1,214 +1,106 @@
 .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 64px);
+    min-height: calc(100svh - 72px);
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(96px, 14vh, 160px) var(--container-padding-x) clamp(48px, 8vh, 96px);
+}
+
+.content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: clamp(24px, 4vw, 32px);
-    padding-top: clamp(64px, 10vw, 128px);
-    padding-bottom: clamp(32px, 8vw, 64px);
-    padding-left: clamp(16px, 3vw, 32px);
-    padding-right: clamp(16px, 3vw, 32px);
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    align-items: flex-start;
+    gap: clamp(24px, 3.5vw, 40px);
 }
 
-.title {
-    font-size: clamp(32px, calc(2rem + 5vw), 64px);
+.headline {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-display);
     line-height: 0.95;
-    margin-bottom: clamp(20px, 4vw, 32px);
     letter-spacing: -0.02em;
-    text-align: center;
-    width: 100%;
+    text-transform: uppercase;
+    color: var(--text-primary);
 }
 
-.title span {
+.headline span {
     display: block;
 }
 
-.title span:nth-child(2) {
-    font-size: clamp(24px, calc(1.5rem + 4vw), 48px);
-    margin-left: 0;
-    padding-left: clamp(20px, 5vw, 60px);
-}
-
-.title .highlight {
-    background: linear-gradient(to right, var(--gradient-blue), var(--gradient-purple));
+.gradientLine {
+    background: var(--gradient-brand);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin-left: 0;
-    padding-left: clamp(40px, 8vw, 120px);
-    font-size: clamp(28px, calc(1.75rem + 4.5vw), 56px);
 }
 
-.subtitle {
+.description {
     font-family: var(--font-mono);
-    font-size: clamp(14px, calc(0.875rem + 0.75vw), 20px);
+    font-size: clamp(0.8125rem, 0.75rem + 0.4vw, 0.9375rem);
     color: var(--text-secondary);
-    max-width: 800px;
-    margin: 0 auto;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
-    padding-left: clamp(16px, 4vw, 48px);
-    line-height: 1.6;
-    opacity: 0.9;
-    text-align: left;
+    line-height: 1.65;
+    border-left: 2px solid rgba(255, 255, 255, 0.12);
+    padding-left: clamp(16px, 2vw, 24px);
+    max-width: 52ch;
+}
+
+.ctaRow {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 40px);
+    flex-wrap: wrap;
 }
 
 .company {
-    font-size: clamp(10px, calc(0.625rem + 0.5vw), 12px);
-    color: var(--text-secondary);
-    margin: 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: clamp(24px, 6vh, 64px);
     font-family: var(--font-mono);
-    opacity: 0.75;
-    letter-spacing: 0.4px;
+    font-size: var(--text-mono-label);
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-align: center;
+    color: var(--color-text-dim);
 }
 
-/* Enhanced mobile breakpoints */
-@media (max-width: 768px) {
+.companyMark {
+    height: 20px;
+    width: auto;
+    opacity: 0.7;
+}
+
+.visual {
+    position: relative;
+    align-self: stretch;
+    min-height: 320px;
+}
+
+@media (max-width: 1023px) {
     .hero {
-        padding: 24px 20px 40px;
-        margin-left: 0;
+        grid-template-columns: 1fr;
+        min-height: calc(100svh - 64px);
+        padding-top: clamp(80px, 12vh, 120px);
     }
 
-    .title {
-        font-size: clamp(28px, 8vw, 36px);
-        margin-bottom: 24px;
-    }
-
-    .title span:nth-child(2) {
-        font-size: clamp(20px, 6vw, 28px);
-        margin-left: clamp(16px, 5vw, 32px);
-    }
-
-    .title .highlight {
-        font-size: clamp(24px, 7vw, 32px);
-        margin-left: clamp(24px, 8vw, 64px);
-    }
-
-    .subtitle {
-        font-size: clamp(14px, 3.5vw, 16px);
-        margin-left: 24px;
-        padding-left: 20px;
+    /* Dot field treatment for small screens lands with DotGrid (phase 6) */
+    .visual {
+        display: none;
     }
 }
 
-@media (max-width: 414px) {
-    .hero {
-        padding: 20px 16px 32px;
-        gap: 20px;
-    }
-
-    .title,
-    .title span:nth-child(2),
-    .title .highlight {
-        margin-left: 0;
-        text-align: left;
-    }
-
-    .title {
-        font-size: 24px;
-        line-height: 1;
-    }
-
-    .title span:nth-child(2) {
-        font-size: 18px;
-        margin-top: 8px;
-    }
-
-    .title .highlight {
-        font-size: 20px;
-        margin-top: 8px;
-    }
-
-    .subtitle {
-        margin-left: 16px;
-        padding-left: 16px;
-        transform: none;
-        border-left-width: 2px;
-        font-size: 14px;
-        line-height: 1.5;
+@media (max-width: 480px) {
+    .ctaRow {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
     }
 
     .company {
-        margin-left: 16px;
-        font-size: 10px;
-    }
-}
-
-@media (max-width: 600px) and (orientation: portrait) {
-    .hero {
-        align-items: flex-start;
-    }
-
-    .title {
-        text-align: left;
-        font-size: clamp(22px, 6vw, 26px);
-        line-height: 1.05;
-    }
-
-    .title span:nth-child(2) {
-        font-size: clamp(16px, 5vw, 20px);
-        padding-left: 10px;
-        margin-left: 0;
-    }
-
-    .title .highlight {
-        font-size: clamp(18px, 5.5vw, 21px);
-        padding-left: 10px;
-        margin-left: 0;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-    }
-}
-
-@media (max-width: 390px) {
-    .hero {
-        padding: 18px 14px 30px;
-    }
-
-    .title {
-        font-size: 22px;
-    }
-
-    .title span:nth-child(2) {
-        font-size: 16px;
-    }
-
-    .title .highlight {
-        font-size: 18px;
-    }
-}
-
-@media (max-width: 375px) {
-    .hero {
-        padding: 16px 12px 28px;
-        gap: 18px;
-    }
-
-    .title {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .title span:nth-child(2) {
-        font-size: 17px;
-        margin-top: 6px;
-    }
-
-    .title .highlight {
-        font-size: 20px;
-        margin-top: 6px;
-    }
-
-    .subtitle {
-        margin-left: 12px;
-        padding-left: 12px;
-        font-size: 13px;
-    }
-
-    .company {
-        margin-left: 12px;
+        margin-top: 16px;
     }
 }

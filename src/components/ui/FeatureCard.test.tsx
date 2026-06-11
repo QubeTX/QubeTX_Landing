@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import type { Service } from '@/data/content'
 
 vi.mock('framer-motion', async () => {
   const mocks = await import('@/test/mocks/framer-motion')
@@ -9,36 +10,32 @@ vi.mock('framer-motion', async () => {
 import FeatureCard from './FeatureCard'
 
 describe('FeatureCard', () => {
-  const baseProps = {
-    id: 'test-feature',
-    icon: '🎨',
-    title: 'Test Feature',
-    description: 'A test description for this feature.',
+  const baseProps: Service = {
+    id: 'test-service',
+    icon: 'code',
+    title: 'Test Service',
+    description: 'A test description for this service.',
   }
 
-  it('renders the icon', () => {
-    render(<FeatureCard {...baseProps} />)
-    expect(screen.getByText('🎨')).toBeInTheDocument()
+  it('renders a lucide icon from the registry key', () => {
+    const { container } = render(<FeatureCard {...baseProps} />)
+    expect(container.querySelector('svg')).toBeInTheDocument()
   })
 
   it('renders the title', () => {
     render(<FeatureCard {...baseProps} />)
-    expect(screen.getByText('Test Feature')).toBeInTheDocument()
+    expect(screen.getByText('Test Service')).toBeInTheDocument()
   })
 
   it('renders the description', () => {
     render(<FeatureCard {...baseProps} />)
-    expect(screen.getByText('A test description for this feature.')).toBeInTheDocument()
+    expect(screen.getByText('A test description for this service.')).toBeInTheDocument()
   })
 
-  it('renders lineBreak text when provided', () => {
-    render(<FeatureCard {...baseProps} lineBreak="Extra Line" />)
-    expect(screen.getByText(/Extra Line/)).toBeInTheDocument()
-  })
-
-  it('does not render lineBreak when not provided', () => {
-    const { container } = render(<FeatureCard {...baseProps} />)
-    expect(container.querySelector('br')).toBeNull()
+  it('carries the service anchor id for the nav dropdown', () => {
+    render(<FeatureCard {...baseProps} />)
+    const article = screen.getByRole('article')
+    expect(article).toHaveAttribute('id', 'service-test-service')
   })
 
   it('has data-interactive attribute', () => {

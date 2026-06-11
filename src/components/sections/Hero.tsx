@@ -5,6 +5,10 @@ import { motion } from 'framer-motion'
 import type { HeroContent } from '@/data/content'
 import { createContainerVariants, heroItemVariants } from '@/utils/animations'
 import { PretextBlock } from '@/lib/pretext'
+import LabelPill from '@/components/ui/LabelPill'
+import OutlineButton from '@/components/ui/OutlineButton'
+import TextLink from '@/components/ui/TextLink'
+import QubeTXLogo from '@/components/ui/QubeTXLogo'
 import styles from './Hero.module.css'
 
 type HeroProps = {
@@ -14,33 +18,59 @@ type HeroProps = {
 const container = createContainerVariants(0.1, 0.3)
 
 const Hero: FC<HeroProps> = ({ content }) => {
-  const { title, conjunction, highlight, subheadline, company } = content
+  const { eyebrow, headline, description, primaryCta, secondaryCta, company } = content
 
   return (
-    <motion.div
+    <motion.section
       className={styles.hero}
+      aria-label="Introduction"
       variants={container}
       initial="hidden"
       animate="show"
     >
-      <motion.h1 className={`${styles.title} unbounded-title`}>
-        <motion.span variants={heroItemVariants}>{title}</motion.span>
-        <motion.span variants={heroItemVariants}>{conjunction}</motion.span>
-        <motion.span className={styles.highlight} variants={heroItemVariants}>{highlight}</motion.span>
-      </motion.h1>
+      <div className={styles.content}>
+        <motion.div variants={heroItemVariants}>
+          <LabelPill variant="bar">{eyebrow}</LabelPill>
+        </motion.div>
 
-      <PretextBlock text={subheadline} lineHeight={1.6} shrinkwrap className={styles.subtitle}>
-        <motion.p variants={heroItemVariants}>
-          {subheadline}
-        </motion.p>
-      </PretextBlock>
+        <motion.h1 className={styles.headline} variants={heroItemVariants}>
+          {headline.map((line, i) => (
+            <span
+              key={line}
+              className={i === headline.length - 1 ? styles.gradientLine : undefined}
+            >
+              {line}
+            </span>
+          ))}
+        </motion.h1>
 
-      <PretextBlock text={company} lineHeight={1.6} className={styles.company}>
-        <motion.p variants={heroItemVariants}>
-          {company}
-        </motion.p>
-      </PretextBlock>
-    </motion.div>
+        <PretextBlock
+          text={description}
+          lineHeight={1.65}
+          shrinkwrap
+          className={styles.description}
+        >
+          <motion.p variants={heroItemVariants}>{description}</motion.p>
+        </PretextBlock>
+
+        <motion.div className={styles.ctaRow} variants={heroItemVariants}>
+          <OutlineButton href={primaryCta.href} magnetic>
+            {primaryCta.label}
+          </OutlineButton>
+          <TextLink href={secondaryCta.href} glyph="⠿">
+            {secondaryCta.label}
+          </TextLink>
+        </motion.div>
+
+        <motion.div className={styles.company} variants={heroItemVariants}>
+          <QubeTXLogo className={styles.companyMark} />
+          <span>{company}</span>
+        </motion.div>
+      </div>
+
+      {/* Right-side dot field — DotGrid mounts here (phase 6) */}
+      <div className={styles.visual} data-hero-visual aria-hidden="true" />
+    </motion.section>
   )
 }
 
