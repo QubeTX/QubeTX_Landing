@@ -43,6 +43,9 @@ npm run build      # static export → out/
 npm run lint
 npm test           # vitest run (33 files / 144 tests at v3.0.0)
 npx tsc --noEmit
+
+# Full gate — run before EVERY commit (CI enforces the same three):
+npm run lint; npm test; npm run build
 ```
 
 ## Architecture
@@ -129,6 +132,12 @@ Unchanged core rules (confirmed across many projects):
 - jsdom/React-19 event quirks: `onMouseEnter` fires via `fireEvent.mouseOver`,
   `onFocus` via `fireEvent.focusIn` — or prefer CSS `:hover` so there is
   nothing to simulate.
+- **jsdom cannot exercise canvas/anime/Lenis paths** — verify all motion work
+  in a real Chrome session (DevTools MCP) before calling it done; this is how
+  every real bug in the v3 build was caught. For widths <500px use device
+  emulation (browser windows won't resize smaller).
+- Lighthouse "navigation" CLS on the dev server can be spurious — confirm with
+  a buffered PerformanceObserver layout-shift trace in a real navigation.
 
 ## Project Learnings & Decisions (v3 redesign — keep these)
 
@@ -185,6 +194,11 @@ Unchanged core rules (confirmed across many projects):
    machine-level issue.
 7. R3F/three types: `src/r3f.d.ts` + `// @ts-nocheck` only inside
    `WallpaperMatrix`.
+8. CSS-module HMR does not remount components — canvas boards (DotGrid,
+   MatrixDisplay) keep stale dimensions after CSS-only edits. Hard-reload
+   before judging a visual bug in dev.
+9. Deploys are Vercel-only. Legacy GitHub Pages was disabled 2026-06 (API
+   verified 404) — don't re-enable it.
 
 ## Design System
 
