@@ -164,6 +164,14 @@ Unchanged core rules (confirmed across many projects):
     DotGrid.
 11. Lighthouse at ship: 100 a11y / 100 best-practices / 100 SEO;
     real-navigation CLS 0.000. Keep it that way.
+12. **`grid-column: auto / -1` does NOT mean "span the rest of the row"** —
+    with an auto start it resolves to a span of 1 ending at -1. To fill
+    leftover tracks (Services' MatrixDisplay filler), use explicit
+    breakpoint column counts + a matching `span N`.
+13. Canvas boards (DotGrid/MatrixDisplay) rebuild only via
+    `resizeCoordinator` (window resize) — layout-driven width changes
+    without a resize won't re-measure them. Column-count changes are
+    media-query (resize) driven, so this holds; keep it that way.
 
 ## Common Gotchas
 
