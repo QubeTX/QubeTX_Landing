@@ -23,10 +23,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    // suppressHydrationWarning: the inline FOUC-guard script adds data-loading
+    // to <html> before hydration (same pattern as theme scripts)
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${makira.variable} ${plexMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
       >
+        {/* FOUC guard for the load sequence: hide [data-load] targets before
+            first paint; LoadSequence lifts it; 3s failsafe; no-JS never sets it */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.setAttribute('data-loading','');setTimeout(function(){document.documentElement.removeAttribute('data-loading')},3000);",
+          }}
+        />
         <PretextProvider>
           <SmoothScroll>
             <CustomCursor />

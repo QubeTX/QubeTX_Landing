@@ -29,6 +29,7 @@ export default function Header() {
 
       <a
         className={styles.logo}
+        data-load="header"
         href="#main-content"
         aria-label="QubeTX - Back to top"
         onClick={(e) => {
@@ -40,7 +41,7 @@ export default function Header() {
         <span className={styles.logoText}>QubeTX</span>
       </a>
 
-      <nav className={styles.nav} aria-label="Primary">
+      <nav className={styles.nav} aria-label="Primary" data-load="header">
         {NAV_ITEMS.map((item) =>
           item.children ? (
             <NavDropdown
@@ -69,7 +70,7 @@ export default function Header() {
         )}
       </nav>
 
-      <div className={styles.right}>
+      <div className={styles.right} data-load="header">
         <OutlineButton href={CONTACT_CTA.href} size="sm" magnetic className={styles.cta}>
           Get Started
         </OutlineButton>

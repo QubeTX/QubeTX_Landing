@@ -38,6 +38,29 @@ describe('computeGrid', () => {
       expect(dot.mix).toBe(0)
     }
   })
+
+  it('feather culls the invisible left-edge dots and fades the bottom band', () => {
+    const plain = computeGrid(1120, 840, 28)
+    const feathered = computeGrid(1120, 840, 28, 10_000, true)
+
+    // Culling removes the true-invisibles (the fade itself stays gradual)
+    expect(feathered.dots.length).toBeLessThan(plain.dots.length)
+    expect(feathered.dots.length).toBeGreaterThan(0)
+
+    // No dot survives at near-zero alpha, and none in the far-left column
+    const minX = Math.min(...feathered.dots.map((d) => d.x))
+    expect(minX).toBeGreaterThan(1120 * 0.05)
+    for (const dot of feathered.dots) {
+      expect(dot.baseA).toBeGreaterThanOrEqual(0.012)
+    }
+
+    // Bottom band fades: a bright-column dot near the bottom is dimmer than
+    // the same column's dot in the field's core
+    const right = feathered.dots.filter((d) => d.x > 1120 * 0.9)
+    const core = right.find((d) => d.y > 840 * 0.5 && d.y < 840 * 0.7)!
+    const lowest = right.reduce((a, b) => (b.y > a.y ? b : a))
+    expect(lowest.baseA).toBeLessThan(core.baseA)
+  })
 })
 
 describe('nearestDotIndex', () => {

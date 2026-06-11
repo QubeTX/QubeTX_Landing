@@ -6,10 +6,13 @@
  * indecisive), effortless (smooth, flowing), organic (anchored to physics).
  */
 
+import { cubicBezier } from './anime'
+
 /** The house easing — identical curve in all three notations. */
 export const EASE = [0.25, 1, 0.5, 1] as const
 export const EASE_CSS = 'cubic-bezier(0.25, 1, 0.5, 1)'
-export const EASE_ANIME = 'cubicBezier(0.25, 1, 0.5, 1)'
+/** anime.js 4.4 removed the string syntax — this is the easing *function*. */
+export const EASE_ANIME = cubicBezier(0.25, 1, 0.5, 1)
 
 /** Durations in seconds (Framer Motion). */
 export const DUR = {

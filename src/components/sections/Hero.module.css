@@ -1,9 +1,10 @@
 .hero {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     align-items: center;
     gap: clamp(24px, 4vw, 64px);
-    min-height: calc(100svh - 72px);
+    min-height: 100svh;
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
@@ -11,28 +12,45 @@
 }
 
 .content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: clamp(24px, 3.5vw, 40px);
+    container-type: inline-size;
 }
 
 .headline {
     font-family: var(--font-display);
     font-weight: 900;
+    /* Longest line ("Limitless possibilities.") measures ~12.2em in Makira
+       Black — 8cqw keeps it on a single line at any column width (mockup
+       composition). vw clamp below is the no-container-query fallback. */
     font-size: var(--text-display);
+    font-size: clamp(2.25rem, 8cqw, 5.75rem);
     line-height: 0.95;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--text-primary);
 }
 
-.headline span {
+/* Masked line-rise: LoadSequence animates .line from y 112% → 0 */
+.lineMask {
     display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em; /* keep descenders inside the mask */
+    margin-bottom: -0.08em;
+}
+
+.line {
+    display: inline-block;
 }
 
 .gradientLine {
-    background: var(--gradient-brand);
+    background-image: var(--gradient-brand);
+    background-size: 220% 100%;
+    background-position: 0% 0%; /* final state; LoadSequence sweeps from 120% */
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -55,6 +73,10 @@
     flex-wrap: wrap;
 }
 
+.ctaItem {
+    display: inline-flex;
+}
+
 .company {
     display: inline-flex;
     align-items: center;
@@ -74,22 +96,64 @@
     opacity: 0.7;
 }
 
+/* Full-bleed feathered dot field: spans the whole hero and continues ~26vh
+   past it, dissolving into the next section (geometry culls the invisible
+   left-side dots). pointer-events disabled on the layer itself — the hero
+   section is the pointer surface. */
 .visual {
-    position: relative;
-    align-self: stretch;
-    min-height: 320px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(100% + 26vh);
+    z-index: 0;
+    overflow: hidden;
+}
+
+.scrollCue {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    transition: opacity 0.4s var(--ease-out);
+    animation: cueIn 0.6s 1.9s var(--ease-out) backwards;
+}
+
+.scrollCue[data-hidden] {
+    opacity: 0;
+}
+
+@keyframes cueIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 8px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scrollCue {
+        animation: none;
+    }
 }
 
 @media (max-width: 1023px) {
     .hero {
         grid-template-columns: 1fr;
-        min-height: calc(100svh - 64px);
-        padding-top: clamp(80px, 12vh, 120px);
+        align-items: center;
     }
 
-    /* Dot field treatment for small screens lands with DotGrid (phase 6) */
     .visual {
-        display: none;
+        opacity: 0.45;
     }
 }
 
@@ -98,6 +162,14 @@
         flex-direction: column;
         align-items: stretch;
         gap: 16px;
+    }
+
+    .ctaItem {
+        display: flex;
+    }
+
+    .ctaItem > * {
+        flex: 1;
     }
 
     .company {

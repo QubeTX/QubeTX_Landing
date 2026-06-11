@@ -40,6 +40,7 @@ export const createTimeline = vi.fn(() => {
 
 export const stagger = vi.fn(() => () => 0)
 export const createSpring = vi.fn(() => ({}))
+export const cubicBezier = vi.fn(() => (t: number) => t)
 
 export const createScope = vi.fn(() => {
   const scope: AnyRecord = { matches: {}, methods: {} }

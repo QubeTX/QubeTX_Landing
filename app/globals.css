@@ -238,6 +238,13 @@ body::before {
   }
 }
 
+/* Load-sequence FOUC guard: an inline script sets html[data-loading] before
+   first paint; LoadSequence applies real initial transforms, removes the
+   attribute, and plays. No-JS never sets the attribute → always visible. */
+html[data-loading] [data-load] {
+  opacity: 0;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

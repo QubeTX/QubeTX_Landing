@@ -12,6 +12,7 @@ export {
   createTimer,
   createScope,
   createSpring,
+  cubicBezier,
   stagger,
   svg,
   utils,
