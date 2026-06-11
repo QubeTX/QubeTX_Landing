@@ -166,10 +166,15 @@ Unchanged core rules (confirmed across many projects):
 4. **Container queries** size the hero headline (`8cqw`, longest line is
    ~12.2em of Makira Black) — the only way to guarantee single-line fit to a
    column. `--text-display` (vw clamp) is kept as the no-CQ fallback.
-5. **DotGrid optimization model**: anime animates plain JS objects; canvas
-   only blits. Feathered geometry CULLS invisible dots; all delays are
-   distance functions (not grid staggers) so culling is safe; idle vs ripple
-   tweens live on separate channels (`breathe` vs `pulse`/`mix`).
+5. **DotGrid optimization model**: anime animates plain JS objects (idle
+   `breathe`, entrance) and canvas only blits; **ripples are wave objects**
+   (`makeRippleWave`/`applyRippleWaves`, pure + unit-tested) evaluated per
+   frame into `pulse`/`mix` — one owner per channel. Per-dot anime tween
+   bursts for ripples cost ~8–36ms of synchronous pointer-handler time
+   (anime instance creation; v4 'replace' composition was even slower) —
+   never go back to per-event tween creation at this scale. Feathered
+   geometry CULLS invisible dots; all delays are distance functions; waves
+   are index-aligned to the dot array, so clear them on every rebuild.
 6. **CSS animations beat inline styles** — never animate a property an engine
    writes inline on the same node. **Inline `display` beats media queries** —
    wrappers (Magnetic) set display via class.
