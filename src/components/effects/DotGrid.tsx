@@ -3,9 +3,14 @@
 import { useEffect, useRef, type FC } from 'react'
 import { animate, utils } from '@/lib/motion/anime'
 import { buildColorRamp, rampIndex } from '@/lib/motion/colorRamp'
-import { computeGrid, rippleFalloff, type Dot, type DotGridGeometry } from '@/lib/motion/dotGridGeometry'
+import {
+  applyRippleWaves,
+  computeGrid,
+  makeRippleWave,
+  type DotGridGeometry,
+  type RippleWave,
+} from '@/lib/motion/dotGridGeometry'
 import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
-import { EASE_ANIME } from '@/lib/motion/tokens'
 import { subscribe as subscribeResize } from '@/lib/pretext/resizeCoordinator'
 
 /**
@@ -58,6 +63,8 @@ const ENTRANCE_SPEED = 0.22
 const MOVE_RADIUS = 280
 /** px reach of a tap splash */
 const TAP_RADIUS = 460
+/** Active-wave cap — beyond this the oldest wave is dropped. */
+const MAX_WAVES = 24
 
 type DotGridProps = {
   className?: string
@@ -91,11 +98,23 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
     let visible = true
     let idleAnim: ReturnType<typeof animate> | null = null
     let disposed = false
+    let waves: RippleWave[] = []
 
     const distDelay = (speed: number, ox: number, oy: number) => (_t: unknown, i: number) =>
       Math.hypot(geo.dots[i].x - ox, geo.dots[i].y - oy) * speed
 
     const draw = () => {
+      // Live ripple waves write the pulse/mix channels (pure math, ~0.02ms
+      // per wave); the final evaluation that reports 0 live waves also
+      // resets both channels to baseline, after which the pass is skipped.
+      if (waves.length > 0) {
+        const live = applyRippleWaves(geo.dots, waves, performance.now())
+        if (live === 0) waves = []
+        else if (live < waves.length) {
+          const now = performance.now()
+          waves = waves.filter((w) => now - w.start <= w.lifespan)
+        }
+      }
       ctx.clearRect(0, 0, geo.width, geo.height)
       for (const dot of geo.dots) {
         const r = dot.baseR * dot.breathe * dot.pulse * dot.scale
@@ -153,6 +172,7 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
     const build = (withEntrance: boolean) => {
       utils.remove(geo.dots)
       idleAnim = null
+      waves = [] // wave arrays are index-aligned to the old dot array
       const rect = sizeCanvas()
       geo = computeGrid(rect.width, rect.height, undefined, undefined, true)
       if (geo.dots.length === 0) return
@@ -179,50 +199,32 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
       })
     }
 
-    // A ripple's amplitude falls off with distance from the origin (to 0 at
-    // `radius`) and only the dots inside the radius are (re)targeted. Both
-    // halves matter: falloff keeps the swell local to the cursor, and
-    // subset-scoped removal lets dots behind the cursor finish decaying to
-    // baseline instead of being cancelled mid-flight on every pointer event
-    // (the old full-field version saturated the whole grid while moving).
+    // A ripple is ONE wave object (single O(dots) distance scan, ~0.1ms) —
+    // the blitter evaluates pulse/mix from the wave list each frame via
+    // applyRippleWaves (same falloff, distance delay, and rise/elastic
+    // envelopes as ever, in pure unit-tested math). Ripples used to be
+    // per-dot anime tween bursts: ~600 keyframed tween creations per
+    // pointer event cost ~8ms (taps 36ms+) of synchronous handler time —
+    // THE interaction lag. anime still owns breathe/entrance; waves own
+    // pulse/mix (one owner per channel, as always).
     const ripple = (ox: number, oy: number, strength = 1, radius = Infinity) => {
       if (reduced || geo.dots.length === 0) return
-      const dist = new Map<Dot, number>()
-      for (const dot of geo.dots) {
-        const d = Math.hypot(dot.x - ox, dot.y - oy)
-        if (d < radius) dist.set(dot, d)
-      }
-      if (dist.size === 0) return
-      const targets = [...dist.keys()]
-      const amp = (dot: unknown) => rippleFalloff(dist.get(dot as Dot)!, radius)
-      utils.remove(targets, undefined, 'pulse')
-      utils.remove(targets, undefined, 'mix')
-      animate(targets, {
-        pulse: [
-          { to: (dot: unknown) => 1 + 1.2 * strength * amp(dot), duration: 160, ease: 'out(2)' },
-          { to: 1, duration: 520, ease: 'outElastic(1, .6)' },
-        ],
-        mix: [
-          {
-            to: (dot: unknown) => Math.min(1, 0.8 * strength) * amp(dot),
-            duration: 160,
-            ease: EASE_ANIME,
-          },
-          { to: 0, duration: 600, ease: EASE_ANIME },
-        ],
-        delay: (dot: unknown) => dist.get(dot as Dot)! * RIPPLE_SPEED,
-      })
+      waves.push(makeRippleWave(geo.dots, ox, oy, radius, RIPPLE_SPEED, strength, performance.now()))
+      if (waves.length > MAX_WAVES) waves.shift()
     }
 
-    // Pointer → ripple, throttled by distance (≥24px) or time (≥90ms).
-    // lastPoint is in client coords so the throttle runs before any
-    // getBoundingClientRect (the handler sees every window pointermove).
+    // Pointer → ripple, throttled by distance (≥16px) or time (≥45ms).
+    // The old 24px/90ms gate existed because each ripple cost ~8ms of
+    // tween churn; waves are ~0.1ms, so the swell can afford to track the
+    // cursor twice as densely — this is what makes it feel attached
+    // instead of trailing. lastPoint is in client coords so the throttle
+    // runs before any getBoundingClientRect.
     const lastPoint = { x: -9999, y: -9999, t: 0 }
     const onPointer = (e: PointerEvent) => {
       const now = performance.now()
       const dx = e.clientX - lastPoint.x
       const dy = e.clientY - lastPoint.y
-      if (e.type === 'pointermove' && dx * dx + dy * dy < 576 && now - lastPoint.t < 90) return
+      if (e.type === 'pointermove' && dx * dx + dy * dy < 256 && now - lastPoint.t < 45) return
       lastPoint.x = e.clientX
       lastPoint.y = e.clientY
       lastPoint.t = now
