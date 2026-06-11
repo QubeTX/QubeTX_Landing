@@ -41,7 +41,7 @@ describe('BootScreen', () => {
     expect(onDone).not.toHaveBeenCalled()
     expect(document.documentElement).toHaveAttribute('data-boot')
 
-    await vi.advanceTimersByTimeAsync(4000)
+    await vi.advanceTimersByTimeAsync(7000)
     window.removeEventListener(BOOT_DONE_EVENT, onDone)
 
     expect(onDone).toHaveBeenCalledTimes(1)
@@ -54,7 +54,7 @@ describe('BootScreen', () => {
     document.documentElement.setAttribute('data-boot', '')
 
     const { container } = render(<BootScreen />)
-    await vi.advanceTimersByTimeAsync(4000)
+    await vi.advanceTimersByTimeAsync(7000)
 
     expect(container.textContent).toContain('BOOTSTRAPPING COMPLETE.')
     expect(container.textContent).toContain('ANIME.JS CORE LOADED SUCCESS.')

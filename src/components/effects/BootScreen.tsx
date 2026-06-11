@@ -18,8 +18,12 @@ import styles from './BootScreen.module.css'
  * - The overlay is server-rendered so it paints before hydration; the
  *   blinking cursor, pulsing dot, and first log line are pure CSS and run
  *   pre-JS. After hydration, the log stream + progress are driven here.
- * - Completion = max(MIN_BOOT_MS, document.fonts.ready). On completion:
- *   sessionStorage flag is set, `data-boot` is lifted, and the
+ * - Completion is fully dynamic: max(MIN_BOOT_MS, fonts loaded, window
+ *   `load`, and a double-rAF painted-frame confirmation) — the minimum
+ *   clock also only starts once hydration reaches this effect, so slow
+ *   networks/devices extend the boot automatically (progress parks at 99%
+ *   and an AWAITING RENDERER SYNC line appears while waiting). On
+ *   completion: sessionStorage flag is set, `data-boot` is lifted, and the
  *   `qubetx:boot-complete` event fires — LoadSequence waits for it, so the
  *   hero entrance plays while the overlay fades (seamless handoff).
  * - Failsafe: the inline script force-lifts `data-boot` after 10s so a
@@ -29,7 +33,7 @@ import styles from './BootScreen.module.css'
 export const BOOT_DONE_EVENT = 'qubetx:boot-complete'
 export const BOOT_FLAG = 'qubetx:booted'
 
-const MIN_BOOT_MS = 2700
+const MIN_BOOT_MS = 5000
 const EXIT_MS = 700
 
 const LOGS: { text: string; accent?: boolean }[] = [
@@ -45,6 +49,22 @@ const LOGS: { text: string; accent?: boolean }[] = [
 
 function timestamp(): string {
   return `[${new Date().toLocaleTimeString('en-GB', { hour12: false })}]`
+}
+
+/** Resolves once every critical subresource has loaded (immediate if past). */
+function windowLoaded(): Promise<void> {
+  if (document.readyState === 'complete') return Promise.resolve()
+  return new Promise((resolve) =>
+    window.addEventListener('load', () => resolve(), { once: true })
+  )
+}
+
+/** Resolves after the renderer has actually produced a frame (double rAF). */
+function framePainted(): Promise<void> {
+  if (typeof requestAnimationFrame === 'undefined') return Promise.resolve()
+  return new Promise((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  )
 }
 
 export default function BootScreen() {
@@ -93,9 +113,9 @@ export default function BootScreen() {
         stream.appendChild(entry)
         stream.scrollTop = stream.scrollHeight
       }
-      timeouts.push(setTimeout(() => addLog(index + 1), 160 + Math.random() * 200))
+      timeouts.push(setTimeout(() => addLog(index + 1), 320 + Math.random() * 280))
     }
-    timeouts.push(setTimeout(() => addLog(0), 300))
+    timeouts.push(setTimeout(() => addLog(0), 400))
 
     // Progress — tracks elapsed time, parks at 99% until actually ready
     const progressInterval = setInterval(() => {
@@ -109,8 +129,31 @@ export default function BootScreen() {
     const minTime = new Promise((resolve) => timeouts.push(setTimeout(resolve, MIN_BOOT_MS)))
     const fontsReady = document.fonts?.ready ?? Promise.resolve()
 
-    Promise.all([minTime, fontsReady]).then(() => {
+    // If the renderer outlasts the minimum, say so (terminal honesty)
+    let completed = false
+    timeouts.push(
+      setTimeout(() => {
+        if (cancelled || completed) return
+        const stream = streamRef.current
+        if (!stream) return
+        const entry = document.createElement('div')
+        entry.className = styles.entry
+        const ts = document.createElement('span')
+        ts.className = styles.timestamp
+        ts.textContent = timestamp()
+        entry.append(ts, ' AWAITING RENDERER SYNC...')
+        stream.appendChild(entry)
+        stream.scrollTop = stream.scrollHeight
+      }, MIN_BOOT_MS + 700)
+    )
+
+    // Dynamic completion: minimum hold + fonts + every critical subresource,
+    // then confirmation that the renderer has actually painted a frame
+    Promise.all([minTime, fontsReady, windowLoaded()])
+      .then(() => framePainted())
+      .then(() => {
       if (cancelled) return
+      completed = true
       clearInterval(progressInterval)
       if (barRef.current) barRef.current.style.width = '100%'
       if (pctRef.current) pctRef.current.textContent = '100%'
