@@ -4,260 +4,181 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-QubeTX Landing Page - A modern Next.js website serving as the official landing page for QubeTX, a department of ES Development LLC. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS v4, featuring 3D interactive effects via React Three Fiber.
+QubeTX Landing Page **v3** — the official landing page for QubeTX, a department
+of ES Development LLC. Single-page site (plus `/wallpaper`), ground-up redesign
+shipped 2026-06: deep-void aesthetic, heavy Anime.js v4 + Framer Motion
+choreography, terminal/diagnostic flavor, themed easter eggs. The site is
+itself the portfolio piece — it demonstrates the attention to detail QubeTX
+sells to clients.
+
+**Read `DESIGN_SYSTEM.md` first for any visual/motion/component work** — it is
+the exhaustive reference (tokens, component inventory, motion ownership rules,
+micro-interaction specs, gotchas). `EASTER_EGGS.md` is the egg answer key.
 
 ## Technology Stack
 
-- **Next.js 16** - React framework with App Router
-- **React 19** - Component-based UI framework
-- **TypeScript** - Type-safe development
-- **Tailwind CSS v4** - Utility-first CSS framework (new @theme syntax)
-- **React Three Fiber** - 3D graphics with Three.js
-- **Framer Motion** - Animation library
-- **Lenis** - Smooth scroll implementation
-- **@chenglou/pretext** - Text measurement and responsive layout intelligence
-- **GitHub Pages** - Static export deployment via CI/CD
+- **Next.js 16** (App Router, `output: 'export'` static export to `out/`)
+- **React 19**, **TypeScript** (strict), **Tailwind CSS v4** (`@theme` in CSS; components use CSS Modules)
+- **anime.js v4** (`animejs@4.4+`) — imperative motion engine (DotGrid, ScrollTrace, text reveals)
+- **Framer Motion 12** — presence/layout/scroll MotionValues/tap springs
+- **Lenis** — the single scroll driver (`SmoothScroll` ReactLenis root)
+- **@chenglou/pretext** — text measurement (min-height, shrinkwrap, obstacle routing)
+- **Local fonts** — Makira Sans + IBM Plex Mono via `next/font/local` (`src/fonts/`)
+- **lucide-react** — stroked icons (registry in `src/components/ui/icons.ts`)
+- React Three Fiber remains ONLY on `/wallpaper` (`WallpaperMatrix`); the index route has no three.js
+
+## Deployment
+
+- **Vercel.** Push to `main` ⇒ production deploy. Work on feature branches;
+  merge only after the full gate (lint + test + build) and visual QA pass.
+- Static export still builds to `out/` (`next build`); CI (`.github/workflows/ci.yml`)
+  runs lint → `npm test` → build on pushes/PRs.
 
 ## Development Commands
 
 ```bash
-# Install dependencies
 npm install
-
-# Development server (default Next.js port 3000)
-npm run dev
-
-# Production build (outputs to out/ directory)
-npm run build
-
-# Production preview
-npm run start
-
-# Type checking
-npx tsc --noEmit
-
-# Linting
+npm run dev        # port 3000
+npm run build      # static export → out/
 npm run lint
+npm test           # vitest run (33 files / 144 tests at v3.0.0)
+npx tsc --noEmit
 ```
 
 ## Architecture
 
-### App Router Structure
+### Page assembly (`app/page.tsx`)
+`ScrollTrace` + `ScrollProgress` (background/overlay) → `Header` →
+`#main-content Hero` → `#services Services` → `#products Products` →
+`#technologies Technologies` → `#about About` (hidden `#process` alias) →
+`#work Work` (hidden `#projects` alias) → `#contact Contact` → `Footer` →
+`LoadSequence` + `EasterEggProvider`. Section wrappers carry `scroll-mt-[88px]`.
 
-This project uses Next.js App Router (not Pages Router):
-
-- `app/layout.tsx` - Root layout with font configuration, metadata, PretextProvider, and global effects (SmoothScroll, CustomCursor)
-- `app/page.tsx` - Home page assembling all sections with DotMatrix background
-- `app/globals.css` - Global styles, Tailwind imports, CSS variables, and animations
-
-### Component Organization
-
+### Directory map
 ```
-src/components/
-├── layout/          # Page structure components
-│   ├── Header.tsx
-│   └── Footer.tsx
-├── sections/        # Main content sections
-│   ├── Hero.tsx
-│   ├── Features.tsx
-│   ├── Process.tsx
-│   ├── TechStack.tsx
-│   ├── Projects.tsx
-│   └── Contact.tsx
-├── ui/              # Reusable UI components
-│   ├── FeatureCard.tsx
-│   ├── ProjectCard.tsx
-│   ├── ContactButton.tsx
-│   └── QubeTXLogo.tsx
-└── effects/         # Visual effects
-    ├── CustomCursor.tsx    # Magnetic cursor with bloom
-    ├── SmoothScroll.tsx    # Lenis smooth scrolling
-    └── DotMatrix.tsx       # R3F 3D dot grid background
+app/                      layout (fonts, FOUC-guard inline script), page, globals.css (tokens)
+src/data/content.ts       ALL copy/data: NAV_ITEMS, SERVICES, PRODUCTS, ABOUT_CONTENT,
+                          PROCESS, PROJECTS, TECH_STACK, HERO_CONTENT, CONTACT_CTA
+src/fonts/                woff2 + next/font/local declarations
+src/lib/motion/           motion system: tokens, anime seam, preference store, IO trigger,
+                          scopes, splitText/RevealText, magnetic, proximity glow, decode,
+                          colorRamp, dotGridGeometry, scrollTracePath (pure, unit-tested)
+src/lib/pretext/          Pretext integration (provider, block, resizeCoordinator)
+src/components/layout/    Header, NavDropdown, MobileMenu, Footer
+src/components/sections/  Hero, Services, Products, Technologies, About, Work, Contact
+src/components/ui/        LabelPill, OutlineButton, TextLink, Magnetic, SectionHeading,
+                          ServiceCard, ProductCard, ProjectCard, StatValue, RollingLink,
+                          RoutedText, QubeTXLogo, icons
+src/components/effects/   DotGrid, LoadSequence, ScrollTrace, ScrollProgress,
+                          CustomCursor + cursorEngine, SmoothScroll, easter-eggs/,
+                          WallpaperMatrix (wallpaper page only)
+src/hooks/                useScrolled, useActiveSection, useAnchorNav
+src/test/                 setup.ts (global mocks) + mocks/ (framer-motion, animejs, pretext)
 ```
 
-### Pretext Integration (`src/lib/pretext/`)
+## Motion System — LOAD-BEARING RULES
 
-The site uses `@chenglou/pretext` for JS-driven text measurement beneath the CSS responsive design. Pretext provides two capabilities: **layout-shift prevention** (reserving exact text height via `min-height`) and **orphan/widow prevention** (narrowing `max-width` via binary-search shrinkwrap).
+Full specs in `DESIGN_SYSTEM.md` §5. The short version every change must obey:
 
-```
-src/lib/pretext/
-├── resizeCoordinator.ts  # Single global window.resize listener + RAF gate
-├── useContainerWidth.ts  # Sync clientWidth measurement hook (NO ResizeObserver)
-├── PretextProvider.tsx   # Font readiness context (document.fonts.ready)
-├── PretextBlock.tsx      # Drop-in wrapper: min-height + shrinkwrap max-width
-├── index.ts              # Barrel export
-└── __tests__/            # Unit tests for coordinator and provider
-```
+1. **One animation owner per element property.** anime.js owns dot values,
+   timelines, text reveals; Framer Motion owns presence/layout/whileTap/
+   useScroll; raw rAF owns cursor/magnetic/tilt; CSS owns simple hovers.
+   An FM-variant element is never also an anime target.
+2. **NO ResizeObserver anywhere** (Pretext law — causes shrinkwrap
+   oscillation). Resizes go through `src/lib/pretext/resizeCoordinator`.
+   Scroll triggers = IntersectionObserver (`useInViewOnce`); scrubbing =
+   Lenis callbacks. anime's `onScroll` is banned.
+3. **Reduced motion = skip to final state**, never slower
+   (`useMotionPreference` / `prefersReducedMotion()`).
+4. anime.js is imported ONLY via `src/lib/motion/anime.ts` (the test-mock seam).
+5. Anchor navigation goes through `useAnchorNav` (Lenis scrollTo); CSS
+   `scroll-behavior: smooth` is intentionally absent.
+6. Server HTML always shows FINAL state (visible text); hidden/initial states
+   are applied client-side (LoadSequence/RevealText), guarded against FOUC by
+   the `html[data-loading]` inline script (3s failsafe).
 
-**Critical Rules:**
-- **NEVER use ResizeObserver** with Pretext — causes text vibration/oscillation with shrinkwrap. Confirmed across multiple projects after two failed attempts. The correct pattern: sync `clientWidth` reads + `window.resize` coalesced through a single RAF gate.
-- **NEVER use `shrinkwrap` on centered text** — shrinkwrap narrows `max-width`, which conflicts with `text-align: center` + `margin: 0 auto`, pulling text off-center. Centered elements (section subtitles) should use PretextBlock for `min-height` only.
-- PretextBlock reads font properties from `getComputedStyle()` to handle `next/font/google` rewritten names (e.g. `"__Unbounded_a1b2c3"`)
-- `prepare()` is re-called only when resolved font size changes >0.5px (for `clamp()` values)
-- All enhancements are additive (`min-height`, narrower `max-width`) and gracefully degrade if fonts aren't loaded
-- Package ships raw `.ts` source — requires `transpilePackages` in next.config and `allowImportingTsExtensions` in tsconfig
+## Pretext Integration (`src/lib/pretext/`)
 
-**PretextBlock props:**
-- `text` (string) — plain text content to measure
-- `lineHeight` (number) — unitless ratio matching CSS `line-height`
-- `shrinkwrap` (boolean) — enable orphan/widow prevention via `max-width` narrowing (only for left-aligned text)
-- `as` (ElementType) — rendered HTML element (defaults to `div`)
-- `className`, `style` — pass-through styling
+Unchanged core rules (confirmed across many projects):
 
-**Usage patterns:**
-```tsx
-{/* Left-aligned paragraph — use shrinkwrap for orphan prevention */}
-<PretextBlock text={description} lineHeight={1.65} shrinkwrap as="p" className={styles.description}>
-  {description}
-</PretextBlock>
+- **NEVER use ResizeObserver** with Pretext — sync `clientWidth` reads +
+  `window.resize` coalesced through one RAF gate (`resizeCoordinator`).
+- **NEVER `shrinkwrap` centered text** (narrowed `max-width` breaks centering).
+  Left-aligned text: `shrinkwrap` welcome. Centered: `min-height` only.
+- **Never measure letter-spaced text** (mono pills/eyebrows/nav) — canvas
+  measurement ignores `letter-spacing`.
+- Pretext-wrapped text animates as whole blocks only (opacity/transform).
+- `PretextBlock` reads `getComputedStyle()` (handles next/font rewritten
+  names). `PretextProvider` resolves **computed** family names for its
+  readiness check — literal names never match under next/font.
+- Advanced APIs in play: `RoutedText` uses `prepareWithSegments` +
+  `layoutNextLine` to flow the About lead paragraph around the cube.
+- Package ships raw `.ts` → `transpilePackages` in next.config +
+  `allowImportingTsExtensions` in tsconfig.
 
-{/* Centered subtitle — NO shrinkwrap (conflicts with centering) */}
-<PretextBlock text={subtitle} lineHeight={1.6} as="p" className={styles.sectionSubtitle}>
-  {subtitle}
-</PretextBlock>
+## Testing
 
-{/* Short title — min-height only, no shrinkwrap needed */}
-<PretextBlock text={title} lineHeight={1.3} as="h3" className={styles.title}>
-  {title}
-</PretextBlock>
-```
+- Vitest 4 + RTL + jsdom. `src/test/setup.ts` auto-mocks `@/lib/pretext`,
+  raw `@chenglou/pretext`, `framer-motion`, `animejs`, `lenis/react`, and
+  stubs `IntersectionObserver` (exported `MockIntersectionObserver` with
+  `.trigger()`/`.emit()`) and `matchMedia`.
+- Components must render correct **final-state DOM with all mocks active**.
+- Pure modules (geometry, ramps, cursor engine, splitters, key sequences)
+  get real unit tests — `cursorEngine` is tested by calling `tick(dt)`
+  manually and asserting transform strings.
+- jsdom/React-19 event quirks: `onMouseEnter` fires via `fireEvent.mouseOver`,
+  `onFocus` via `fireEvent.focusIn` — or prefer CSS `:hover` so there is
+  nothing to simulate.
 
-**Testing:** All component tests auto-mock `@/lib/pretext` via `src/test/setup.ts`. Core library tests in `src/lib/pretext/__tests__/` unmock and test the real modules with mocked `@chenglou/pretext` (canvas unavailable in jsdom).
+## Project Learnings & Decisions (v3 redesign — keep these)
 
-### Data Layer
-
-- `src/data/content.ts` - Centralized content data with TypeScript types
-  - Export typed constants: `HERO_CONTENT`, `FEATURES`, `PROJECTS`, `CONTACT_CTA`
-  - Single source of truth for all copy and content
-  - Types: `Feature`, `Project`, `HeroContent`, `ContactCta`
-
-### Styling Architecture
-
-**Tailwind CSS v4 with @theme syntax:**
-
-- Global styles in `app/globals.css` using `@import "tailwindcss"`
-- Theme configuration via `@theme` directive (not traditional config file)
-- Custom CSS variables defined in `:root` for backward compatibility
-- Font variables injected from Next.js font optimization
-- No separate `tailwind.config.ts` - configuration in CSS via `@theme`
-
-**Key styling patterns:**
-- Utility-first with Tailwind classes
-- CSS variables for legacy design system values
-- Custom animations defined in globals.css (`ambientPulse`, `auroraShift`)
-- Responsive design with Tailwind breakpoints
-- Custom cursor hidden via CSS on touch devices (`@media (pointer: fine)`)
-
-### React Three Fiber Integration
-
-`DotMatrix.tsx` creates an interactive 3D dot grid:
-- Uses `@react-three/fiber` Canvas and hooks
-- Instanced mesh rendering for performance (2500 dots)
-- Mouse interaction via `useThree` hook
-- Wave animation with `useFrame`
-- Wrapped in Suspense for progressive loading
-
-**Important:** R3F components use `// @ts-nocheck` due to type complexity. Type definitions in `src/r3f.d.ts`.
-
-## Build Configuration
-
-### next.config.mjs
-
-```javascript
-output: 'export'           // Static export for GitHub Pages
-images: { unoptimized: true }  // No Next.js image optimization
-```
-
-### TypeScript Configuration
-
-- **Module Resolution**: `bundler` (Next.js 16 default)
-- **JSX**: `react-jsx` (automatic runtime)
-- **Path Alias**: `@/*` → `./src/*`
-- **Target**: ES2017
-- **Strict mode enabled**
-
-### PostCSS Configuration
-
-Uses Tailwind CSS v4 PostCSS plugin:
-```javascript
-"@tailwindcss/postcss": {}
-```
-
-## Design System
-
-Follows specifications in `QubeTX_Design_System.md`:
-
-### Typography
-- **Unbounded**: Headlines and titles (next/font/google)
-- **Space Grotesk**: Body text (next/font/google)
-- **Space Mono**: Technical text and tags (next/font/google)
-
-### Color System
-- Primary Blue: `#0066FF`
-- Dark Background: `#0a0f1c`
-- Card Background: `#0d1117`
-- Gradient Blue: `#2563eb`
-- Gradient Purple: `#7c3aed`
-
-### Grid System
-- 8px base unit (`--grid-unit`)
-- Responsive spacing with CSS clamp() functions
-- Mobile-first breakpoints: 375px, 390px, 414px, 768px, 1200px
-- Touch target minimum: 44px
-
-## CI/CD Pipeline
-
-GitHub Actions workflow (`.github/workflows/ci.yml`):
-
-1. **build-and-test** - Type check, run tests, build, upload artifacts
-2. **deploy-preview** - Preview deployments for PRs
-3. **deploy-production** - Auto-deploy to GitHub Pages on main branch push
-4. **code-quality** - Security audit, bundle size reporting
-5. **notify** - Build status notifications
-
-**Important:** The build outputs to `out/` directory (not `dist/`). CI uses `npm test` which must be configured.
-
-## Deployment
-
-- **Platform**: GitHub Pages
-- **Trigger**: Push to main branch
-- **Process**: Automated via GitHub Actions
-- **Custom Domain**: Configured via `public/CNAME`
-- **Build Artifacts**: Static export in `out/` directory
-
-## Key Implementation Details
-
-### Font Loading
-Fonts are loaded via Next.js `next/font/google` in `app/layout.tsx`:
-- Creates CSS variables (`--font-unbounded`, `--font-space-grotesk`, `--font-space-mono`)
-- Applied to body via className with `.variable`
-- Optimized with `display: "swap"`
-
-### Custom Cursor
-- Only active on devices with `pointer: fine` (non-touch)
-- Global cursor disabled via CSS in globals.css
-- Magnetic attraction to interactive elements
-- Respects `prefers-reduced-motion`
-- Layered design with bloom, ring, and core elements
-
-### Smooth Scrolling
-- Implemented via Lenis library
-- Client component wrapping app content
-- Disabled on touch devices for native feel
-
-### Static Assets
-- Located in `public/` directory
-- Referenced as `/filename.png` in code
-- Includes: logos, project images, favicon, CNAME
+1. **anime.js 4.4 removed string cubic-bezier easings** — import the
+   `cubicBezier` function (wrapped as `EASE_ANIME` in `lib/motion/tokens`).
+   The old string form silently warned 1300×/load and fell back to default.
+2. **Hydration**: never initialize React state from browser-API presence
+   (`typeof IntersectionObserver === 'undefined'` is TRUE in Node → server
+   HTML diverges). The FOUC-guard attribute on `<html>` requires
+   `suppressHydrationWarning`.
+3. **react-hooks v7 lint**: no sync `setState` inside effects (defer via
+   rAF); no ref reads during render (`useMemo` instead).
+4. **Container queries** size the hero headline (`8cqw`, longest line is
+   ~12.2em of Makira Black) — the only way to guarantee single-line fit to a
+   column. `--text-display` (vw clamp) is kept as the no-CQ fallback.
+5. **DotGrid optimization model**: anime animates plain JS objects; canvas
+   only blits. Feathered geometry CULLS invisible dots; all delays are
+   distance functions (not grid staggers) so culling is safe; idle vs ripple
+   tweens live on separate channels (`breathe` vs `pulse`/`mix`).
+6. **CSS animations beat inline styles** — never animate a property an engine
+   writes inline on the same node. **Inline `display` beats media queries** —
+   wrappers (Magnetic) set display via class.
+7. **SVG groups with attribute matrices** must not receive transforms
+   (CSS transform replaces the matrix) — animate strokes via
+   `svg.createDrawable` or the root `<svg>`.
+8. **`--color-text-dim` (#76869f) is contrast-tuned** (≥4.5:1 AA on void) —
+   don't darken. Touch-target 44px minimums apply under
+   `@media (pointer: coarse)` only.
+9. **TV tier**: `--container-max` 1440px → 1800px at ≥2560px; everything
+   (sections, cqw headline, ScrollTrace gutter) derives from the token.
+10. **`qubetx:pulse` CustomEvent** is the dot-field's external trigger bus
+    (load beat, typing egg, logo egg) — reuse it rather than reaching into
+    DotGrid.
+11. Lighthouse at ship: 100 a11y / 100 best-practices / 100 SEO;
+    real-navigation CLS 0.000. Keep it that way.
 
 ## Common Gotchas
 
-1. **This is NOT a Vite project** - It's Next.js with App Router
-2. **Tailwind v4 syntax** - Uses `@theme` directive, not traditional config
-3. **Static export mode** - Some Next.js features unavailable (ISR, API routes)
-4. **Images unoptimized** - Next.js Image component works but without optimization
-5. **R3F type issues** - Use `// @ts-nocheck` for complex Three.js typing
-6. **Build output** - Goes to `out/` not `dist/` (some CI references still say `dist/`)
-7. **Port differences** - Dev server is port 3000 (Next.js default), not 8080
-8. **Pretext ships raw .ts** - Requires `transpilePackages` and `allowImportingTsExtensions` — see Pretext Integration section
-9. **Pretext shrinkwrap + centering** - Never use `shrinkwrap` on `text-align: center` elements — it breaks centering by narrowing `max-width`
+1. This is **NOT** a Vite project — Next.js App Router, static export.
+2. Tailwind v4 `@theme` lives in `app/globals.css` (no config file); most
+   styling is CSS Modules with the `--ease-out` / token vars.
+3. Static export: no ISR/API routes; images unoptimized.
+4. Build output is `out/` (Vercel serves it; no GitHub Pages anymore).
+5. Display text is stored in sentence case — UPPERCASE is `text-transform`.
+6. The dev server may warn about a stray lockfile workspace root — harmless,
+   machine-level issue.
+7. R3F/three types: `src/r3f.d.ts` + `// @ts-nocheck` only inside
+   `WallpaperMatrix`.
+
+## Design System
+
+`DESIGN_SYSTEM.md` (v3) is authoritative. `QubeTX_Design_System.md` is the
+retired v2 spec, kept for history.

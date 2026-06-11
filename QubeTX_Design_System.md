@@ -1,3 +1,6 @@
+> **SUPERSEDED (v3, 2026-06):** This is the retired v2 design spec, kept for history.
+> The authoritative reference is now [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md).
+
 # QubeTX Design System
 
 ## Brand Identity
