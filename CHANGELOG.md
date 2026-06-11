@@ -5,6 +5,35 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-06-11
+
+Complete ground-up redesign ("v3"), driven by the new hero mockup and the
+component standards of qube-machine-report-homepage. Deployed via Vercel.
+
+### Added
+- **Brand fonts**: self-hosted Makira Sans (display + body) and IBM Plex Mono via `next/font/local` (`src/fonts/`)
+- **Anime.js v4 motion system** (`src/lib/motion/`): tokens, reduced-motion store, IO triggers, anime scopes, server-rendered text splitter + masked reveals, magnetic pull, proximity glow — with strict per-element ownership rules (anime / Framer Motion / raw rAF / CSS)
+- **DotGrid**: fully anime.js-driven interactive hero dot field (Canvas 2D blitter; breathe/pulse channels; distance-delay ripples; feathered edges dissolving into the next section; `qubetx:pulse` event bus)
+- **LoadSequence**: single page-load timeline (header rise → eyebrow scramble-decode → masked headline rises → gradient sweep → CTAs → "system online" pulse) with an inline-script FOUC guard
+- **ScrollTrace**: scroll-scrubbed circuit trace with isometric cube junctions — draws scrolling down, reverses scrolling up (paused timeline + Lenis seek)
+- **New sections**: Products ("Terminal-grade tooling" — TR-300/SD-300/ND-300/WB-300/shaughvOS striped rows linking to reports.qubetx.com), About ("Detail is the product." — manifesto, count-up stats with re-verify hover, process rows)
+- **Header**: fixed 3-zone nav with SERVICES disclosure dropdown, IO scroll-spy underline, terminal bracket hovers, full-screen mobile menu
+- **Footer**: product/nav/connect columns, stroked oversized wordmark, scroll-progress back-to-top ring, letter-roll links
+- **CursorEngine**: rebuilt cursor physics (dt-normalized lerp, settle-cancelled rAF, velocity squash/stretch, magnetic docking, press states)
+- **RoutedText**: Pretext `layoutNextLine` obstacle routing — the About lead paragraph flows around a wireframe cube
+- **Easter eggs** (+ `EASTER_EGGS.md` answer key): console signature, "qubetx" shockwave, Konami TR-300 WEB REPORT terminal, logo de-render/redraw
+- **TV tier**: `--container-max` widens to 1800px at ≥2560px; container-query headline sizing scales with it
+
+### Changed
+- Palette to deep void (`#05070f`) with brand blue→purple gradient accents; machine-report visual standards (1px hairline grids, mono label pills, striped rows, version-badge chips, `cubic-bezier(0.25,1,0.5,1)` easing everywhere)
+- Hero copy to the mockup: "Solid code. / Stronger systems. / Limitless possibilities."
+- `#projects` → `#work`, `#process` → inside `#about` (hidden alias anchors preserved)
+- CI now runs `npm test` between lint and build
+- PretextProvider readiness resolves computed font names (fixes a permanent 3s degradation timeout under next/font)
+
+### Removed
+- R3F DotMatrix background on the index route (the `/wallpaper` page keeps its R3F effect), Unbounded/Space Grotesk/Space Mono Google fonts, aurora background layers, unused deps (`sass`, `tailwind-merge`, `@react-three/drei`)
+
 ## [2.7.0] - 2026-03-29
 
 ### Added

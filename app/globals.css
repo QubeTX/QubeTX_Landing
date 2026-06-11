@@ -10,11 +10,6 @@
   --font-stack-sans: var(--font-makira), ui-sans-serif, system-ui, sans-serif;
   --font-stack-mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
 
-  /* Legacy aliases (phase out): old var names now resolve to the new stacks */
-  --font-space-grotesk: var(--font-stack-sans);
-  --font-space-mono: var(--font-stack-mono);
-  --font-unbounded: var(--font-stack-sans);
-
   /* ============================================================
      Design tokens — QubeTX v3 (mockup blue/purple on deep navy,
      structural standards from qube-machine-report-homepage)
@@ -25,7 +20,7 @@
   --color-surface-raised: #111827;  /* hovered cells, dropdown panel */
   --color-border: #1a2236;          /* 1px hairlines, grid-cell gaps, pills */
   --color-border-bright: #2c3a5c;   /* hovered borders */
-  --color-text-dim: #64748b;        /* mono labels, corner metadata */
+  --color-text-dim: #76869f; /* ≥4.5:1 on --color-void (AA) */        /* mono labels, corner metadata */
   --gradient-brand: linear-gradient(90deg, #2563eb, #7c3aed);
   --glow-blue: rgba(37, 99, 235, 0.25);
 
@@ -94,7 +89,7 @@
   --color-electric-blue: #0066FF;
   --color-gradient-blue: #2563eb;
   --color-gradient-purple: #7c3aed;
-  --color-text-dim: #64748b;
+  --color-text-dim: #76869f; /* ≥4.5:1 on --color-void (AA) */
   
   --font-sans: var(--font-stack-sans);
   --font-mono: var(--font-stack-mono);
@@ -164,22 +159,6 @@ body::before {
     a, button, [role="button"] {
         cursor: none !important;
     }
-}
-
-/* Typography Utilities */
-.unbounded-title {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-style: normal;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-}
-
-.unbounded-heading {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-style: normal;
-    letter-spacing: -0.02em;
 }
 
 /* Hide cursor on touch devices */

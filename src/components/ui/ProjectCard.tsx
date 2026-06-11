@@ -60,7 +60,6 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
       rel="noopener noreferrer"
       className={styles.projectLink}
       variants={slideUpVariants}
-      aria-label={`Visit project site for ${title}`}
       onPointerEnter={onPointerEnter}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
@@ -73,7 +72,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ id, href, image, alt, title, tags, 
           </div>
         </div>
         <div className={styles.projectContent}>
-          <PretextBlock text={title} lineHeight={1.3} as="h3" className={`unbounded-heading ${styles.projectTitle}`}>
+          <PretextBlock text={title} lineHeight={1.3} as="h3" className={styles.projectTitle}>
             {title}
             <span className="sr-only"> (opens in a new tab)</span>
           </PretextBlock>
