@@ -6,6 +6,7 @@ import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
 import { EASE_ANIME } from '@/lib/motion/tokens'
 import { decode } from '@/lib/motion/decode'
 import { firePulse } from './DotGrid'
+import { BOOT_DONE_EVENT } from './BootScreen'
 
 /**
  * The page-load timeline (single anime.js owner for header + hero entrance —
@@ -26,7 +27,28 @@ export default function LoadSequence() {
       return
     }
 
-    const q = (sel: string) => Array.from(document.querySelectorAll<HTMLElement>(sel))
+    // While the BootScreen overlay is armed, hold the entrance — it starts
+    // on boot completion so the hero plays as the overlay fades
+    let cleanup: (() => void) | undefined
+    const startEntrance = () => {
+      cleanup = run()
+    }
+    if (html.hasAttribute('data-boot')) {
+      window.addEventListener(BOOT_DONE_EVENT, startEntrance, { once: true })
+      return () => {
+        window.removeEventListener(BOOT_DONE_EVENT, startEntrance)
+        cleanup?.()
+        finish()
+      }
+    }
+    startEntrance()
+    return () => {
+      cleanup?.()
+      finish() // never leave content hidden, whatever unmounts us
+    }
+
+    function run(): () => void {
+      const q = (sel: string) => Array.from(document.querySelectorAll<HTMLElement>(sel))
     const header = q('[data-load="header"]')
     const eyebrow = q('[data-load="eyebrow"]')
     const decodeTarget = document.querySelector<HTMLElement>('[data-load-decode]')
@@ -74,9 +96,9 @@ export default function LoadSequence() {
       })
     }, 1200)
 
-    return () => {
-      tl.pause()
-      finish() // never leave content hidden, whatever unmounts us
+      return () => {
+        tl.pause()
+      }
     }
   }, [])
 

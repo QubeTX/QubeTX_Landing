@@ -7,6 +7,7 @@ import Technologies from "@/components/sections/Technologies";
 import About from "@/components/sections/About";
 import Work from "@/components/sections/Work";
 import Contact from "@/components/sections/Contact";
+import BootScreen from "@/components/effects/BootScreen";
 import LoadSequence from "@/components/effects/LoadSequence";
 import ScrollTrace from "@/components/effects/ScrollTrace";
 import ScrollProgress from "@/components/effects/ScrollProgress";
@@ -18,6 +19,8 @@ const SECTION_ANCHOR = "scroll-mt-[88px]";
 export default function Home() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden">
+      {/* First in the stream: paints before hydration on first visits */}
+      <BootScreen />
       <ScrollTrace />
       <ScrollProgress />
       <div className="relative z-10 w-full">

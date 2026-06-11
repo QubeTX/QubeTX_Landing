@@ -29,12 +29,19 @@ export default function RootLayout({
       <body
         className={`${makira.variable} ${plexMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
       >
-        {/* FOUC guard for the load sequence: hide [data-load] targets before
-            first paint; LoadSequence lifts it; 3s failsafe; no-JS never sets it */}
+        {/* Pre-paint guards (no-JS never sets either attribute):
+            - data-loading hides [data-load] entrance targets; LoadSequence
+              lifts it; 3s failsafe.
+            - data-boot arms the BootScreen overlay — only on the first visit
+              of the session (sessionStorage flag) and never under reduced
+              motion; 10s failsafe so a hydration failure can't trap anyone. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "document.documentElement.setAttribute('data-loading','');setTimeout(function(){document.documentElement.removeAttribute('data-loading')},3000);",
+              "(function(){var d=document.documentElement;d.setAttribute('data-loading','');" +
+              "try{if(!sessionStorage.getItem('qubetx:booted')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-boot','')}}catch(e){}" +
+              "setTimeout(function(){d.removeAttribute('data-loading')},3000);" +
+              "setTimeout(function(){d.removeAttribute('data-boot')},10000);})();",
           }}
         />
         <PretextProvider>

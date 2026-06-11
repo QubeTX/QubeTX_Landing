@@ -72,9 +72,10 @@ src/components/sections/  Hero, Services, Products, Technologies, About, Work, C
 src/components/ui/        LabelPill, OutlineButton, TextLink, Magnetic, SectionHeading,
                           ServiceCard, ProductCard, ProjectCard, StatValue, RollingLink,
                           RoutedText, QubeTXLogo, icons
-src/components/effects/   DotGrid, LoadSequence, ScrollTrace, ScrollProgress,
-                          CustomCursor + cursorEngine, SmoothScroll, easter-eggs/,
-                          WallpaperMatrix (wallpaper page only)
+src/components/effects/   BootScreen (first-load terminal overlay; sessionStorage-
+                          gated, arms via html[data-boot]), DotGrid, LoadSequence,
+                          ScrollTrace, ScrollProgress, CustomCursor + cursorEngine,
+                          SmoothScroll, easter-eggs/, WallpaperMatrix (wallpaper only)
 src/hooks/                useScrolled, useActiveSection, useAnchorNav
 src/test/                 setup.ts (global mocks) + mocks/ (framer-motion, animejs, pretext)
 ```
