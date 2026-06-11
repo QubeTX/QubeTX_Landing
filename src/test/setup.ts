@@ -5,3 +5,75 @@ vi.mock('@/lib/pretext', async () => {
   const mocks = await import('@/test/mocks/pretext')
   return mocks
 })
+
+// Auto-mock framer-motion (promoted from per-file mocks; those remain harmless duplicates)
+vi.mock('framer-motion', async () => {
+  const mocks = await import('@/test/mocks/framer-motion')
+  return mocks
+})
+
+// Auto-mock anime.js — no rAF engine in jsdom; components must render
+// correct final-state DOM with animations stubbed out
+vi.mock('animejs', async () => {
+  const mocks = await import('@/test/mocks/animejs')
+  return mocks
+})
+
+/**
+ * IntersectionObserver stub (jsdom lacks it). Tests can reach registered
+ * instances via MockIntersectionObserver.instances and call .trigger().
+ */
+export class MockIntersectionObserver implements IntersectionObserver {
+  static instances: MockIntersectionObserver[] = []
+  readonly root: Element | Document | null = null
+  readonly rootMargin: string = '0px'
+  readonly thresholds: ReadonlyArray<number> = [0]
+  elements = new Set<Element>()
+  private callback: IntersectionObserverCallback
+
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback
+    MockIntersectionObserver.instances.push(this)
+  }
+
+  observe = (el: Element) => {
+    this.elements.add(el)
+  }
+  unobserve = (el: Element) => {
+    this.elements.delete(el)
+  }
+  disconnect = () => {
+    this.elements.clear()
+  }
+  takeRecords = (): IntersectionObserverEntry[] => []
+
+  trigger(isIntersecting = true) {
+    const entries = [...this.elements].map(
+      (el) => ({ isIntersecting, target: el }) as IntersectionObserverEntry
+    )
+    this.callback(entries, this)
+  }
+}
+
+vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
+
+beforeEach(() => {
+  MockIntersectionObserver.instances = []
+})
+
+// matchMedia stub (jsdom lacks it) — defaults to non-matching
+if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(() => false),
+    }))
+  )
+}
