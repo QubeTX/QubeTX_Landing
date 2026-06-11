@@ -5,10 +5,15 @@
   --background-start-rgb: 10, 15, 28;
   --background-end-rgb: 10, 15, 28;
   
-  /* Custom Theme Variables for Tailwind v4 compatibility */
-  --font-space-grotesk: "Space Grotesk", sans-serif;
-  --font-space-mono: "Space Mono", monospace;
-  --font-unbounded: "Unbounded", sans-serif;
+  /* Font stacks — built on next/font/local variables injected in app/layout.tsx.
+     Never reference font families by literal name (next/font rewrites them). */
+  --font-stack-sans: var(--font-makira), ui-sans-serif, system-ui, sans-serif;
+  --font-stack-mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
+
+  /* Legacy aliases (phase out): old var names now resolve to the new stacks */
+  --font-space-grotesk: var(--font-stack-sans);
+  --font-space-mono: var(--font-stack-mono);
+  --font-unbounded: var(--font-stack-sans);
 
   /* Legacy Variables from src/styles/global.css */
   /* Colors */
@@ -60,9 +65,9 @@
   --color-gradient-blue: #2563eb;
   --color-gradient-purple: #7c3aed;
   
-  --font-sans: var(--font-space-grotesk), sans-serif;
-  --font-mono: var(--font-space-mono), monospace;
-  --font-display: var(--font-unbounded), sans-serif;
+  --font-sans: var(--font-stack-sans);
+  --font-mono: var(--font-stack-mono);
+  --font-display: var(--font-stack-sans);
 }
 
 * {
@@ -79,7 +84,7 @@ html {
 }
 
 body {
-    font-family: 'Space Grotesk', monospace;
+    font-family: var(--font-sans);
     background: linear-gradient(135deg, #0a0f1c 0%, #151b2e 50%, #0a0f1c 100%);
     color: var(--text-primary);
     min-height: 100vh;
@@ -160,18 +165,16 @@ body::after {
 
 /* Typography Utilities */
 .unbounded-title {
-    font-family: "Unbounded", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: 900;
     font-style: normal;
     text-transform: uppercase;
     letter-spacing: -0.02em;
 }
 
 .unbounded-heading {
-    font-family: "Unbounded", serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-weight: 700;
     font-style: normal;
     letter-spacing: -0.02em;
 }

@@ -21,11 +21,31 @@ const PretextContext = createContext<PretextContextValue>({
   layout,
 })
 
-const REQUIRED_FONTS = [
-  '16px Unbounded',
-  '16px "Space Grotesk"',
-  '16px "Space Mono"',
-]
+/**
+ * The font CSS variables whose resolved families Pretext measures against.
+ * next/font rewrites family names (e.g. "__makira_a1b2c3"), so readiness
+ * checks must resolve the *computed* names at runtime — literal family
+ * names can never match and would force the degradation timeout.
+ */
+const FONT_VARS = ['--font-display', '--font-mono', '--font-sans']
+
+function resolveRequiredFonts(): string[] {
+  const probe = document.createElement('span')
+  probe.style.position = 'absolute'
+  probe.style.visibility = 'hidden'
+  document.body.appendChild(probe)
+
+  const families = new Set<string>()
+  for (const cssVar of FONT_VARS) {
+    probe.style.fontFamily = `var(${cssVar})`
+    const first = getComputedStyle(probe).fontFamily.split(',')[0]?.trim()
+    const name = first?.replace(/^['"]|['"]$/g, '')
+    if (name) families.add(name)
+  }
+  probe.remove()
+
+  return [...families].map((name) => `16px "${name}"`)
+}
 
 export function PretextProvider({ children }: { children: ReactNode }) {
   const [isReady, setIsReady] = useState(false)
@@ -35,8 +55,9 @@ export function PretextProvider({ children }: { children: ReactNode }) {
 
     document.fonts.ready.then(() => {
       if (cancelled) return
-      const allLoaded = REQUIRED_FONTS.every((f) => document.fonts.check(f))
-      if (allLoaded) {
+      const requiredFonts = resolveRequiredFonts()
+      const allLoaded = () => requiredFonts.every((f) => document.fonts.check(f))
+      if (allLoaded()) {
         setIsReady(true)
       } else {
         // Fonts may still be loading — poll briefly
@@ -45,7 +66,7 @@ export function PretextProvider({ children }: { children: ReactNode }) {
             clearInterval(interval)
             return
           }
-          if (REQUIRED_FONTS.every((f) => document.fonts.check(f))) {
+          if (allLoaded()) {
             setIsReady(true)
             clearInterval(interval)
           }

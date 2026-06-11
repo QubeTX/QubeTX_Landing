@@ -2,7 +2,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: calc(var(--grid-unit) * 8);
     padding: calc(var(--grid-unit) * 6) var(--container-padding-x) calc(var(--grid-unit) * 4);
-    font-family: 'Space Mono', monospace;
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--text-secondary);
     background: rgba(13, 17, 23, 0.75);
@@ -40,7 +40,7 @@
 }
 
 .brandName {
-    font-family: "Unbounded", serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 18px;
     text-transform: uppercase;
@@ -49,7 +49,7 @@
 }
 
 .tagline {
-    font-family: 'Space Mono', monospace;
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--text-secondary);
     margin: 0;
@@ -66,7 +66,7 @@
 }
 
 .columnTitle {
-    font-family: "Unbounded", serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: var(--text-sm);
     color: var(--text-primary);

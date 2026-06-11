@@ -42,7 +42,7 @@
 }
 
 .subtitle {
-    font-family: 'Space Mono', monospace;
+    font-family: var(--font-mono);
     font-size: clamp(14px, calc(0.875rem + 0.75vw), 20px);
     color: var(--text-secondary);
     max-width: 800px;
@@ -58,7 +58,7 @@
     font-size: clamp(10px, calc(0.625rem + 0.5vw), 12px);
     color: var(--text-secondary);
     margin: 0 auto;
-    font-family: 'Space Mono', monospace;
+    font-family: var(--font-mono);
     opacity: 0.75;
     letter-spacing: 0.4px;
     text-transform: uppercase;
