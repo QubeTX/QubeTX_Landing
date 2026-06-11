@@ -1,3 +1,9 @@
+/* Same visual identity as v2 (dot / ring / bloom), engineered properly:
+   - transforms only (the engine writes translate3d + scale; no width/height)
+   - NO backdrop-filter on the ring (was resampling the backdrop every frame)
+   - the bloom's blur is STATIC; only opacity animates (was animating filter)
+   - will-change on exactly these three layers */
+
 .cursorBloom,
 .cursorDot,
 .cursorRing {
@@ -9,7 +15,6 @@
     z-index: 9999;
     opacity: 0;
     transition: opacity 0.3s ease;
-    transform-origin: center;
     will-change: transform;
     mix-blend-mode: screen;
 }
@@ -17,92 +22,46 @@
 .cursorBloom {
     width: 140px;
     height: 140px;
-    margin-left: -70px;
-    margin-top: -70px;
     background: radial-gradient(circle at 35% 35%, rgba(124, 58, 237, 0.55), transparent 70%),
                 radial-gradient(circle at 65% 60%, rgba(37, 99, 235, 0.45), transparent 75%);
+    /* static blur — never animated; opacity belongs to the engine */
     filter: blur(80px) saturate(140%);
-    box-shadow: 0 0 120px rgba(37, 99, 235, 0.35);
-    animation: bloomOrbit 16s ease-in-out infinite alternate;
 }
 
 .cursorDot {
     width: 14px;
     height: 14px;
-    margin-left: -7px;
-    margin-top: -7px;
     background: radial-gradient(circle, rgba(147, 70, 255, 0.95) 0%, rgba(89, 104, 255, 0.8) 45%, rgba(37, 99, 235, 0.2) 100%);
     box-shadow: 0 0 18px rgba(137, 89, 255, 0.9), 0 0 36px rgba(43, 123, 255, 0.6);
-    transition: opacity 0.3s ease;
-    animation: dotPulse 4s ease-in-out infinite;
 }
 
 .cursorRing {
     width: 42px;
     height: 42px;
-    margin-left: -21px;
-    margin-top: -21px;
     border: 2px solid rgba(180, 198, 255, 0.45);
     background: radial-gradient(circle, rgba(37, 99, 235, 0.28) 0%, rgba(37, 99, 235, 0.08) 55%, transparent 85%);
-    backdrop-filter: blur(6px);
     box-shadow: 0 0 28px rgba(67, 130, 255, 0.45);
-    transition: opacity 0.4s ease;
-    animation: ringGlow 9s ease-in-out infinite;
+    transition: opacity 0.4s ease, border-color 0.3s ease, border-radius 0.3s ease;
 }
 
-.cursorDot.enlarged {
-    width: 18px;
-    height: 18px;
-    margin-left: -9px;
-    margin-top: -9px;
-    box-shadow: 0 0 24px rgba(165, 92, 255, 0.95), 0 0 42px rgba(65, 138, 255, 0.75);
-}
-
-.cursorRing.enlarged {
-    width: 64px;
-    height: 64px;
-    margin-left: -32px;
-    margin-top: -32px;
-    border-width: 2.5px;
+/* Mode looks (size comes from the engine's transform scale) */
+.cursorRing[data-mode='interactive'] {
     border-color: rgba(199, 142, 255, 0.55);
     box-shadow: 0 0 42px rgba(140, 130, 255, 0.55);
 }
 
-.cursorBloom.enlarged {
-    width: 190px;
-    height: 190px;
-    margin-left: -95px;
-    margin-top: -95px;
-    opacity: 0.5;
+.cursorRing[data-mode='magnetic'] {
+    border-color: rgba(0, 102, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 0 42px rgba(0, 102, 255, 0.5);
 }
 
-@keyframes dotPulse {
-    0%, 100% {
-        box-shadow: 0 0 18px rgba(137, 89, 255, 0.85), 0 0 32px rgba(43, 123, 255, 0.55);
-    }
-    50% {
-        box-shadow: 0 0 26px rgba(180, 120, 255, 0.95), 0 0 46px rgba(86, 165, 255, 0.7);
-    }
+.cursorRing[data-mode='text'] {
+    border-color: rgba(180, 198, 255, 0.25);
+    box-shadow: none;
 }
 
-@keyframes ringGlow {
-    0%, 100% {
-        border-color: rgba(180, 198, 255, 0.45);
-        box-shadow: 0 0 28px rgba(67, 130, 255, 0.45);
-    }
-    50% {
-        border-color: rgba(202, 160, 255, 0.6);
-        box-shadow: 0 0 36px rgba(140, 130, 255, 0.55);
-    }
-}
-
-@keyframes bloomOrbit {
-    0%   { filter: blur(75px) saturate(130%); }
-    50%  { filter: blur(90px) saturate(160%); }
-    100% { filter: blur(82px) saturate(145%); }
-}
-
-@media (hover: none) {
+@media (hover: none), (prefers-reduced-motion: reduce) {
     .cursorBloom,
     .cursorDot,
     .cursorRing {

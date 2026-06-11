@@ -4,6 +4,7 @@ import type { FC } from 'react'
 import type { HeroContent } from '@/data/content'
 import { PretextBlock } from '@/lib/pretext'
 import LabelPill from '@/components/ui/LabelPill'
+import Magnetic from '@/components/ui/Magnetic'
 import OutlineButton from '@/components/ui/OutlineButton'
 import TextLink from '@/components/ui/TextLink'
 import QubeTXLogo from '@/components/ui/QubeTXLogo'
@@ -60,9 +61,11 @@ const Hero: FC<HeroProps> = ({ content }) => {
 
         <div className={styles.ctaRow}>
           <span data-load="cta" className={styles.ctaItem}>
-            <OutlineButton href={primaryCta.href} magnetic>
-              {primaryCta.label}
-            </OutlineButton>
+            <Magnetic strength={6}>
+              <OutlineButton href={primaryCta.href} magnetic>
+                {primaryCta.label}
+              </OutlineButton>
+            </Magnetic>
           </span>
           <span data-load="cta" className={styles.ctaItem}>
             <TextLink href={secondaryCta.href} glyph="⠿">

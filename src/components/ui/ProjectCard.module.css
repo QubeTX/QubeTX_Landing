@@ -3,6 +3,7 @@
     color: inherit;
     display: block;
     height: 100%;
+    perspective: 900px;
 }
 
 .projectCard {
@@ -37,7 +38,7 @@
 }
 
 .projectLink:hover .projectCard {
-    transform: translateY(-5px);
+    transform: translateY(-5px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }

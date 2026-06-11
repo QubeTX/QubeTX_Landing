@@ -1,197 +1,96 @@
 "use client";
 
-import { useEffect, useRef, useState, type FC } from 'react'
+import { useEffect, useRef, type FC } from 'react'
+import { CursorEngine, type CursorMode } from './cursorEngine'
 import styles from './CustomCursor.module.css'
 
 const INTERACTIVE_SELECTOR = 'a, button, [role="button"], [data-interactive="true"]'
+const TEXT_SELECTOR = 'p, h1, h2, h3, h4, h5, h6, li, [data-cursor="text"]'
 
-type Position = {
-  x: number
-  y: number
-}
-
-const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor
-
-const createInitialPosition = (): Position => ({
-  x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
-  y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0
-})
-
+/**
+ * Thin React mount for the cursor. The three layers render unconditionally
+ * (CSS hides them on touch / reduced motion); CursorEngine owns all physics
+ * and writes. No React state — media-query flips rebind via plain listeners.
+ */
 const CustomCursor: FC = () => {
-  const cursorDotRef = useRef<HTMLDivElement | null>(null)
-  const cursorRingRef = useRef<HTMLDivElement | null>(null)
-  const cursorBloomRef = useRef<HTMLDivElement | null>(null)
-
-  const pointerRef = useRef<Position>(createInitialPosition())
-  const ringPositionRef = useRef<Position>(createInitialPosition())
-  const bloomPositionRef = useRef<Position>(createInitialPosition())
-
-  const animationFrameRef = useRef<number | null>(null)
-  const enlargedRef = useRef(false)
-  const isVisibleRef = useRef(false)
-
-  const [isPointerFine, setIsPointerFine] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const dotRef = useRef<HTMLDivElement | null>(null)
+  const ringRef = useRef<HTMLDivElement | null>(null)
+  const bloomRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
+    const dot = dotRef.current
+    const ring = ringRef.current
+    const bloom = bloomRef.current
+    if (!dot || !ring || !bloom || typeof window.matchMedia !== 'function') return
 
-    const pointerQuery = window.matchMedia('(pointer: fine)')
+    const fineQuery = window.matchMedia('(pointer: fine)')
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
 
-    const handlePointerChange = () => setIsPointerFine(pointerQuery.matches)
-    const handleMotionChange = () => setPrefersReducedMotion(motionQuery.matches)
+    let engine: CursorEngine | null = null
 
-    handlePointerChange()
-    handleMotionChange()
+    const resolveMode = (target: EventTarget | null): { mode: CursorMode; el: Element | null } => {
+      if (!(target instanceof Element)) return { mode: 'default', el: null }
+      const magnetic = target.closest('[data-magnetic]')
+      if (magnetic) return { mode: 'magnetic', el: magnetic }
+      const interactive = target.closest(INTERACTIVE_SELECTOR)
+      if (interactive) return { mode: 'interactive', el: interactive }
+      if (target.closest(TEXT_SELECTOR)) return { mode: 'text', el: null }
+      return { mode: 'default', el: null }
+    }
 
-    pointerQuery.addEventListener('change', handlePointerChange)
-    motionQuery.addEventListener('change', handleMotionChange)
+    const onMove = (e: PointerEvent) => engine?.move(e.clientX, e.clientY)
+    const onOver = (e: PointerEvent) => {
+      const { mode, el } = resolveMode(e.target)
+      engine?.setMode(mode, el)
+    }
+    const onDown = () => engine?.press(true)
+    const onUp = () => engine?.press(false)
+    const onLeave = () => engine?.hide()
+
+    const setup = () => {
+      if (engine || !fineQuery.matches || motionQuery.matches) return
+      engine = new CursorEngine(dot, ring, bloom)
+      window.addEventListener('pointermove', onMove, { passive: true })
+      document.addEventListener('pointerover', onOver, { passive: true })
+      document.addEventListener('pointerdown', onDown, { passive: true })
+      document.addEventListener('pointerup', onUp, { passive: true })
+      document.addEventListener('mouseleave', onLeave)
+      window.addEventListener('blur', onLeave)
+    }
+
+    const teardown = () => {
+      if (!engine) return
+      window.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerover', onOver)
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('pointerup', onUp)
+      document.removeEventListener('mouseleave', onLeave)
+      window.removeEventListener('blur', onLeave)
+      engine.destroy()
+      engine = null
+    }
+
+    const reevaluate = () => {
+      teardown()
+      setup()
+    }
+
+    setup()
+    fineQuery.addEventListener('change', reevaluate)
+    motionQuery.addEventListener('change', reevaluate)
 
     return () => {
-      pointerQuery.removeEventListener('change', handlePointerChange)
-      motionQuery.removeEventListener('change', handleMotionChange)
+      fineQuery.removeEventListener('change', reevaluate)
+      motionQuery.removeEventListener('change', reevaluate)
+      teardown()
     }
   }, [])
 
-  const isCursorEnabled = isPointerFine && !prefersReducedMotion
-
-  useEffect(() => {
-    if (!isCursorEnabled || typeof window === 'undefined') {
-      return
-    }
-
-    const cursorDot = cursorDotRef.current
-    const cursorRing = cursorRingRef.current
-    const cursorBloom = cursorBloomRef.current
-
-    if (!cursorDot || !cursorRing || !cursorBloom) {
-      return
-    }
-
-    // Ensure we don't start at 0,0 if window is available
-    if (pointerRef.current.x === 0 && pointerRef.current.y === 0) {
-      pointerRef.current = {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
-      }
-    }
-
-    ringPositionRef.current = { ...pointerRef.current }
-    bloomPositionRef.current = { ...pointerRef.current }
-
-    const setCursorVisibility = (visible: boolean) => {
-      if (isVisibleRef.current === visible) {
-        return
-      }
-
-      isVisibleRef.current = visible
-      cursorDot.style.opacity = visible ? '1' : '0'
-      cursorRing.style.opacity = visible ? '1' : '0'
-      cursorBloom.style.opacity = visible ? '0.4' : '0'
-    }
-
-    const updateCursorVisuals = () => {
-      const target = pointerRef.current
-
-      cursorDot.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`
-
-      const ringPosition = ringPositionRef.current
-      ringPosition.x = lerp(ringPosition.x, target.x, 0.32)
-      ringPosition.y = lerp(ringPosition.y, target.y, 0.32)
-      cursorRing.style.transform = `translate3d(${ringPosition.x}px, ${ringPosition.y}px, 0)`
-
-      const bloomPosition = bloomPositionRef.current
-      bloomPosition.x = lerp(bloomPosition.x, target.x, 0.22)
-      bloomPosition.y = lerp(bloomPosition.y, target.y, 0.22)
-      cursorBloom.style.transform = `translate3d(${bloomPosition.x}px, ${bloomPosition.y}px, 0)`
-
-      animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
-    }
-
-    animationFrameRef.current = requestAnimationFrame(updateCursorVisuals)
-
-    const toggleCursorState = (isEnlarged: boolean) => {
-      if (enlargedRef.current === isEnlarged) {
-        return
-      }
-
-      enlargedRef.current = isEnlarged
-      cursorDot.classList.toggle(styles.enlarged, isEnlarged)
-      cursorRing.classList.toggle(styles.enlarged, isEnlarged)
-      cursorBloom.classList.toggle(styles.enlarged, isEnlarged)
-    }
-
-    const handlePointerMove = (event: PointerEvent) => {
-      pointerRef.current = {
-        x: event.clientX,
-        y: event.clientY
-      }
-
-      if (!isVisibleRef.current) {
-        setCursorVisibility(true)
-      }
-    }
-
-    const handleWindowLeave = () => {
-      setCursorVisibility(false)
-      toggleCursorState(false)
-    }
-
-    const isInteractive = (target: EventTarget | null): boolean => {
-      if (!(target instanceof Element)) return false
-      return target.closest(INTERACTIVE_SELECTOR) !== null
-    }
-
-    const handlePointerOver = (event: PointerEvent) => {
-      if (isInteractive(event.target)) {
-        setCursorVisibility(true)
-        toggleCursorState(true)
-      }
-    }
-
-    const handlePointerOut = (event: PointerEvent) => {
-      if (isInteractive(event.target)) {
-        if (!isInteractive(event.relatedTarget)) {
-          toggleCursorState(false)
-        }
-      }
-    }
-
-    document.body.addEventListener('pointerover', handlePointerOver, { passive: true })
-    document.body.addEventListener('pointerout', handlePointerOut, { passive: true })
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true })
-    window.addEventListener('blur', handleWindowLeave)
-    document.addEventListener('mouseleave', handleWindowLeave)
-
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
-
-      window.removeEventListener('pointermove', handlePointerMove)
-      window.removeEventListener('blur', handleWindowLeave)
-      document.removeEventListener('mouseleave', handleWindowLeave)
-      document.body.removeEventListener('pointerover', handlePointerOver)
-      document.body.removeEventListener('pointerout', handlePointerOut)
-
-      setCursorVisibility(false)
-      toggleCursorState(false)
-    }
-  }, [isCursorEnabled])
-
-  if (!isCursorEnabled) {
-    return null
-  }
-
   return (
     <>
-      <div ref={cursorBloomRef} className={styles.cursorBloom} />
-      <div ref={cursorRingRef} className={styles.cursorRing} />
-      <div ref={cursorDotRef} className={styles.cursorDot} />
+      <div ref={bloomRef} className={styles.cursorBloom} aria-hidden="true" />
+      <div ref={ringRef} className={styles.cursorRing} aria-hidden="true" />
+      <div ref={dotRef} className={styles.cursorDot} aria-hidden="true" />
     </>
   )
 }

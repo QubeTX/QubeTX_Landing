@@ -7,6 +7,7 @@ import QubeTXLogo from '@/components/ui/QubeTXLogo'
 import { NAV_ITEMS, PRODUCTS } from '@/data/content'
 import { PretextBlock } from '@/lib/pretext'
 import { RevealText } from '@/lib/motion/RevealText'
+import RollingLabel from '@/components/ui/RollingLink'
 
 const NAV_LINKS = [
   { label: 'Services', href: '#services' },
@@ -56,7 +57,9 @@ export default function Footer() {
             <ul className={styles.columnList}>
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href}>{link.label}</a>
+                  <a href={link.href}>
+                    <RollingLabel text={link.label} />
+                  </a>
                 </li>
               ))}
             </ul>

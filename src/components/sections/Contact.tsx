@@ -2,6 +2,7 @@
 
 import type { FC } from 'react'
 import SectionHeading from '../ui/SectionHeading'
+import Magnetic from '../ui/Magnetic'
 import OutlineButton from '../ui/OutlineButton'
 import type { ContactCta } from '@/data/content'
 import { PretextBlock } from '@/lib/pretext'
@@ -30,9 +31,11 @@ const Contact: FC<ContactProps> = ({ cta }) => {
           {CONTACT_SUBTITLE}
         </PretextBlock>
         <div className={styles.buttonRow}>
-          <OutlineButton href={cta.href} magnetic>
-            {cta.label}
-          </OutlineButton>
+          <Magnetic strength={6}>
+            <OutlineButton href={cta.href} magnetic>
+              {cta.label}
+            </OutlineButton>
+          </Magnetic>
           <span className={styles.prompt} aria-hidden="true">
             response time: &lt; 24h <span className={styles.cursor}>▮</span>
           </span>

@@ -216,7 +216,8 @@
 }
 
 @media (max-width: 1023px) {
-    .cta {
+    /* .right .cta beats the Magnetic wrapper's own display class */
+    .right .cta {
         display: none;
     }
 }

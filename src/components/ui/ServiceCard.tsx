@@ -26,6 +26,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ id, icon, title, description, index
       id={`service-${id}`}
       className={styles.card}
       data-interactive="true"
+      data-glow
       variants={slideUpVariants}
     >
       <div className={styles.top}>

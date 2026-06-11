@@ -6,6 +6,7 @@ import { useScrolled } from '@/hooks/useScrolled'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useAnchorNav } from '@/hooks/useAnchorNav'
 import QubeTXLogo from '@/components/ui/QubeTXLogo'
+import Magnetic from '@/components/ui/Magnetic'
 import OutlineButton from '@/components/ui/OutlineButton'
 import NavDropdown from './NavDropdown'
 import MobileMenu from './MobileMenu'
@@ -71,9 +72,11 @@ export default function Header() {
       </nav>
 
       <div className={styles.right} data-load="header">
-        <OutlineButton href={CONTACT_CTA.href} size="sm" magnetic className={styles.cta}>
-          Get Started
-        </OutlineButton>
+        <Magnetic strength={5} className={styles.cta}>
+          <OutlineButton href={CONTACT_CTA.href} size="sm" magnetic>
+            Get Started
+          </OutlineButton>
+        </Magnetic>
         <MobileMenu items={NAV_ITEMS} cta={CONTACT_CTA} onNavigate={navigate} />
       </div>
     </header>
