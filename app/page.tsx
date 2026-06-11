@@ -10,6 +10,7 @@ import Contact from "@/components/sections/Contact";
 import LoadSequence from "@/components/effects/LoadSequence";
 import ScrollTrace from "@/components/effects/ScrollTrace";
 import ScrollProgress from "@/components/effects/ScrollProgress";
+import EasterEggProvider from "@/components/effects/easter-eggs/EasterEggProvider";
 import { HERO_CONTENT, SERVICES, PROJECTS, CONTACT_CTA } from "@/data/content";
 
 const SECTION_ANCHOR = "scroll-mt-[88px]";
@@ -49,6 +50,7 @@ export default function Home() {
         <Footer />
       </div>
       <LoadSequence />
+      <EasterEggProvider />
     </main>
   );
 }
