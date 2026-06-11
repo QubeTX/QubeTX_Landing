@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { computeGrid, nearestDotIndex, MAX_DOTS } from '../dotGridGeometry'
+import { computeGrid, nearestDotIndex, rippleFalloff, MAX_DOTS } from '../dotGridGeometry'
 
 describe('computeGrid', () => {
   it('returns an empty grid for degenerate boxes', () => {
@@ -60,6 +60,31 @@ describe('computeGrid', () => {
     const core = right.find((d) => d.y > 840 * 0.5 && d.y < 840 * 0.7)!
     const lowest = right.reduce((a, b) => (b.y > a.y ? b : a))
     expect(lowest.baseA).toBeLessThan(core.baseA)
+  })
+})
+
+describe('rippleFalloff', () => {
+  it('is full strength at the origin and zero at the radius edge', () => {
+    expect(rippleFalloff(0, 280)).toBe(1)
+    expect(rippleFalloff(280, 280)).toBe(0)
+    expect(rippleFalloff(999, 280)).toBe(0)
+  })
+
+  it('decreases monotonically with distance', () => {
+    const samples = [0, 70, 140, 210, 280].map((d) => rippleFalloff(d, 280))
+    for (let i = 1; i < samples.length; i++) {
+      expect(samples[i]).toBeLessThan(samples[i - 1])
+    }
+  })
+
+  it('Infinity radius disables attenuation (field-wide external pulses)', () => {
+    expect(rippleFalloff(0, Infinity)).toBe(1)
+    expect(rippleFalloff(5000, Infinity)).toBe(1)
+  })
+
+  it('degenerate radius produces no ripple', () => {
+    expect(rippleFalloff(0, 0)).toBe(0)
+    expect(rippleFalloff(10, -5)).toBe(0)
   })
 })
 

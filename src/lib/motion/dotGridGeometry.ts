@@ -125,6 +125,18 @@ export function computeGrid(
   return { ...built, pitch: p, width, height }
 }
 
+/**
+ * Ripple amplitude falloff — 1 at the origin, easing to 0 at `radius`
+ * (smoothstep), so pointer ripples are a local swell around the cursor
+ * instead of a field-wide flash. `radius: Infinity` disables attenuation
+ * (external pulses sweep the whole field at full strength).
+ */
+export function rippleFalloff(dist: number, radius: number): number {
+  if (radius === Infinity) return 1
+  if (radius <= 0) return 0
+  return 1 - smoothstep(0, radius, dist)
+}
+
 /** Index of the dot nearest to a point — linear scan (cull-safe), pure math. */
 export function nearestDotIndex(geo: DotGridGeometry, px: number, py: number): number {
   let best = -1

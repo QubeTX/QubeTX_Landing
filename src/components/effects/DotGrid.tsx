@@ -3,7 +3,7 @@
 import { useEffect, useRef, type FC } from 'react'
 import { animate, utils } from '@/lib/motion/anime'
 import { buildColorRamp, rampIndex } from '@/lib/motion/colorRamp'
-import { computeGrid, nearestDotIndex, type DotGridGeometry } from '@/lib/motion/dotGridGeometry'
+import { computeGrid, rippleFalloff, type Dot, type DotGridGeometry } from '@/lib/motion/dotGridGeometry'
 import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
 import { EASE_ANIME } from '@/lib/motion/tokens'
 import { subscribe as subscribeResize } from '@/lib/pretext/resizeCoordinator'
@@ -21,14 +21,19 @@ import { subscribe as subscribeResize } from '@/lib/pretext/resizeCoordinator'
  * - one paint loop, paused off-screen (IO); engine pauses on hidden tabs
  *
  * Interactions:
- * - pointer move/down on the [data-dot-pointer-surface] ancestor (or the
- *   container itself) → elastic ripple from the nearest dot
+ * - window-level pointer move/down → elastic swell around the cursor,
+ *   amplitude attenuated to 0 at MOVE_RADIUS/TAP_RADIUS (only dots in
+ *   reach are retargeted, so the trail behind the cursor decays
+ *   naturally). Listening on window matters: the field shows behind the
+ *   fixed header and past the hero, where events never bubble through
+ *   the hero subtree; the radius bound makes out-of-reach moves no-ops.
  * - window 'qubetx:pulse' CustomEvent {x, y, strength} → external ripple
- *   (load-sequence beat, easter eggs, logo snap-back)
+ *   sweeping the full field (load-sequence beat, easter eggs, logo
+ *   snap-back)
  *
  * The container is pointer-events:none (it may extend past the hero into
- * the next section); events come from the pointer surface. Resize goes
- * through the shared resizeCoordinator (NO ResizeObserver — codebase law).
+ * the next section and must never block clicks). Resize goes through the
+ * shared resizeCoordinator (NO ResizeObserver — codebase law).
  * Reduced motion: static ramp, no loops, no ripples.
  */
 
@@ -49,6 +54,10 @@ const DPR_CAP = 1.5
 const RIPPLE_SPEED = 0.35
 const IDLE_SPEED = 0.16
 const ENTRANCE_SPEED = 0.22
+/** px reach of a pointer-move swell (amplitude falls to 0 here) */
+const MOVE_RADIUS = 280
+/** px reach of a tap splash */
+const TAP_RADIUS = 460
 
 type DotGridProps = {
   className?: string
@@ -170,38 +179,56 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
       })
     }
 
-    const ripple = (originIndex: number, strength = 1) => {
-      if (reduced || originIndex < 0 || geo.dots.length === 0) return
-      const origin = geo.dots[originIndex]
-      utils.remove(geo.dots, undefined, 'pulse')
-      utils.remove(geo.dots, undefined, 'mix')
-      animate(geo.dots, {
+    // A ripple's amplitude falls off with distance from the origin (to 0 at
+    // `radius`) and only the dots inside the radius are (re)targeted. Both
+    // halves matter: falloff keeps the swell local to the cursor, and
+    // subset-scoped removal lets dots behind the cursor finish decaying to
+    // baseline instead of being cancelled mid-flight on every pointer event
+    // (the old full-field version saturated the whole grid while moving).
+    const ripple = (ox: number, oy: number, strength = 1, radius = Infinity) => {
+      if (reduced || geo.dots.length === 0) return
+      const dist = new Map<Dot, number>()
+      for (const dot of geo.dots) {
+        const d = Math.hypot(dot.x - ox, dot.y - oy)
+        if (d < radius) dist.set(dot, d)
+      }
+      if (dist.size === 0) return
+      const targets = [...dist.keys()]
+      const amp = (dot: unknown) => rippleFalloff(dist.get(dot as Dot)!, radius)
+      utils.remove(targets, undefined, 'pulse')
+      utils.remove(targets, undefined, 'mix')
+      animate(targets, {
         pulse: [
-          { to: 1 + 1.2 * strength, duration: 160, ease: 'out(2)' },
+          { to: (dot: unknown) => 1 + 1.2 * strength * amp(dot), duration: 160, ease: 'out(2)' },
           { to: 1, duration: 520, ease: 'outElastic(1, .6)' },
         ],
         mix: [
-          { to: Math.min(1, 0.8 * strength), duration: 160, ease: EASE_ANIME },
+          {
+            to: (dot: unknown) => Math.min(1, 0.8 * strength) * amp(dot),
+            duration: 160,
+            ease: EASE_ANIME,
+          },
           { to: 0, duration: 600, ease: EASE_ANIME },
         ],
-        delay: distDelay(RIPPLE_SPEED, origin.x, origin.y),
+        delay: (dot: unknown) => dist.get(dot as Dot)! * RIPPLE_SPEED,
       })
     }
 
-    // Pointer → ripple, throttled by distance (≥24px) or time (≥90ms)
+    // Pointer → ripple, throttled by distance (≥24px) or time (≥90ms).
+    // lastPoint is in client coords so the throttle runs before any
+    // getBoundingClientRect (the handler sees every window pointermove).
     const lastPoint = { x: -9999, y: -9999, t: 0 }
     const onPointer = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
       const now = performance.now()
-      const dx = x - lastPoint.x
-      const dy = y - lastPoint.y
+      const dx = e.clientX - lastPoint.x
+      const dy = e.clientY - lastPoint.y
       if (e.type === 'pointermove' && dx * dx + dy * dy < 576 && now - lastPoint.t < 90) return
-      lastPoint.x = x
-      lastPoint.y = y
+      lastPoint.x = e.clientX
+      lastPoint.y = e.clientY
       lastPoint.t = now
-      ripple(nearestDotIndex(geo, x, y), e.type === 'pointerdown' ? 1.6 : 1)
+      const rect = container.getBoundingClientRect()
+      const down = e.type === 'pointerdown'
+      ripple(e.clientX - rect.left, e.clientY - rect.top, down ? 1.6 : 1, down ? TAP_RADIUS : MOVE_RADIUS)
     }
 
     const onExternalPulse = (e: Event) => {
@@ -210,7 +237,7 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
         y: 0,
       }
       const rect = container.getBoundingClientRect()
-      ripple(nearestDotIndex(geo, x - rect.left, y - rect.top), strength)
+      ripple(x - rect.left, y - rect.top, strength)
     }
 
     const io =
@@ -231,13 +258,14 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
     build(entrance)
     startLoop()
 
-    // Pointer events come from the surface ancestor (the container itself is
-    // pointer-events:none so its below-the-hero extension never blocks clicks)
-    const surface =
-      (container.closest('[data-dot-pointer-surface]') as HTMLElement | null) ?? container
+    // Pointer events are window-level: the field shows behind the fixed
+    // header and extends ~26vh past the hero, and events over those regions
+    // never bubble through the hero section (sibling subtrees). The ripple
+    // radius makes a global listener self-limiting — a pointer out of reach
+    // of every dot is a no-op.
     const unsubscribeResize = subscribeResize(() => build(false))
-    surface.addEventListener('pointermove', onPointer, { passive: true })
-    surface.addEventListener('pointerdown', onPointer, { passive: true })
+    window.addEventListener('pointermove', onPointer, { passive: true })
+    window.addEventListener('pointerdown', onPointer, { passive: true })
     window.addEventListener(PULSE_EVENT, onExternalPulse)
 
     return () => {
@@ -245,8 +273,8 @@ const DotGrid: FC<DotGridProps> = ({ className, entrance = true }) => {
       stopLoop()
       io?.disconnect()
       unsubscribeResize()
-      surface.removeEventListener('pointermove', onPointer)
-      surface.removeEventListener('pointerdown', onPointer)
+      window.removeEventListener('pointermove', onPointer)
+      window.removeEventListener('pointerdown', onPointer)
       window.removeEventListener(PULSE_EVENT, onExternalPulse)
       utils.remove(geo.dots)
     }
