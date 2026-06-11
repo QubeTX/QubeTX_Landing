@@ -14,6 +14,13 @@ export const EASE_CSS = 'cubic-bezier(0.25, 1, 0.5, 1)'
 /** anime.js 4.4 removed the string syntax — this is the easing *function*. */
 export const EASE_ANIME = cubicBezier(0.25, 1, 0.5, 1)
 
+/**
+ * Slot-roll spring overshoot (CSS notation, used as a transition easing by
+ * the slotText engine). Distinct from the house EASE — the roll lands with a
+ * small overshoot; everything else stays on the no-overshoot house curve.
+ */
+export const EASE_SLOT_CSS = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+
 /** Durations in seconds (Framer Motion). */
 export const DUR = {
   micro: 0.18,

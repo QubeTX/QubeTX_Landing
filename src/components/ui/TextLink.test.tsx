@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import TextLink from './TextLink'
 
 describe('TextLink', () => {
@@ -24,5 +24,31 @@ describe('TextLink', () => {
     const link = screen.getByRole('link', { name: /out/i })
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  describe('slot-roll click flash', () => {
+    afterEach(() => vi.useRealTimers())
+
+    it('flashes the label on click and auto-reverts', () => {
+      vi.useFakeTimers()
+      render(
+        <TextLink href="#services" flashLabel="Navigating…">
+          Explore Our Services
+        </TextLink>
+      )
+      const link = screen.getByRole('link', { name: /explore our services/i })
+      fireEvent.click(link)
+      expect(screen.getByRole('link', { name: /navigating/i })).toBe(link)
+      vi.runAllTimers()
+      expect(screen.getByRole('link', { name: /explore our services/i })).toBe(link)
+    })
+
+    it('keeps a plain label without flashLabel', () => {
+      render(<TextLink href="#services">Explore</TextLink>)
+      const link = screen.getByRole('link', { name: /explore/i })
+      fireEvent.click(link)
+      // The non-rollable path never builds roll cells — label is a plain string
+      expect(link.querySelector('[data-slot-cell]')).toBeNull()
+    })
   })
 })

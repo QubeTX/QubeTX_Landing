@@ -76,6 +76,22 @@
     background-position: 100% 0;
 }
 
+/* Slot-roll cells: Chrome does NOT clip the container's background to
+   absolutely-positioned face glyphs, so without this chain the numeral is
+   invisible (transparent color, empty clip). Each cell/face inherits the
+   gradient and clips to its own glyph — the gradient restarts per glyph
+   (browser-judged acceptable on 2–4 char numerals; the hover sweep still
+   propagates through the inherit chain). */
+.value [data-slot-cell] {
+    background: inherit;
+}
+
+.value [data-slot-face] {
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
 .label {
     font-family: var(--font-mono);
     font-size: var(--text-mono-label);

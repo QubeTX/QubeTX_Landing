@@ -17,6 +17,22 @@
     position: relative;
 }
 
+/* Slot-roll variant: the rolling label and its invisible sizers share one
+   grid cell so a flash never resizes the link (the underline and trailing
+   glyph stay put). */
+.textStack {
+    display: inline-grid;
+    justify-items: start;
+}
+
+.textStack > * {
+    grid-area: 1 / 1;
+}
+
+.sizer {
+    visibility: hidden;
+}
+
 /* Underline grows from the left on hover */
 .text::after {
     content: '';

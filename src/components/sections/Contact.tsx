@@ -32,7 +32,7 @@ const Contact: FC<ContactProps> = ({ cta }) => {
         </PretextBlock>
         <div className={styles.buttonRow}>
           <Magnetic strength={6}>
-            <OutlineButton href={cta.href} magnetic>
+            <OutlineButton href={cta.href} hoverLabel={cta.hoverLabel} magnetic>
               {cta.label}
             </OutlineButton>
           </Magnetic>

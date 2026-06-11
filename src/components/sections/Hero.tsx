@@ -62,13 +62,13 @@ const Hero: FC<HeroProps> = ({ content }) => {
         <div className={styles.ctaRow}>
           <span data-load="cta" className={styles.ctaItem}>
             <Magnetic strength={6}>
-              <OutlineButton href={primaryCta.href} magnetic>
+              <OutlineButton href={primaryCta.href} hoverLabel={primaryCta.hoverLabel} magnetic>
                 {primaryCta.label}
               </OutlineButton>
             </Magnetic>
           </span>
           <span data-load="cta" className={styles.ctaItem}>
-            <TextLink href={secondaryCta.href} glyph="⠿">
+            <TextLink href={secondaryCta.href} glyph="⠿" flashLabel={secondaryCta.flashLabel}>
               {secondaryCta.label}
             </TextLink>
           </span>
