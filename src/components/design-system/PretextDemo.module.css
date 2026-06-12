@@ -1,0 +1,36 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 420px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+}
+
+.control input {
+    accent-color: var(--primary-blue);
+}
+
+.stage {
+    max-width: 100%;
+    border: 1px dashed var(--color-border-bright);
+    border-radius: 6px;
+    padding: 16px;
+    transition: width 0.2s var(--ease-out);
+}
+
+.sample {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}

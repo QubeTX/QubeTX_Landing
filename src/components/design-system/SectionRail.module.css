@@ -1,0 +1,83 @@
+.rail {
+    position: fixed;
+    top: 96px;
+    right: 36px;
+    z-index: 30;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    pointer-events: none;
+}
+
+@media (min-width: 1600px) {
+    .rail {
+        display: flex;
+    }
+}
+
+.svg {
+    display: block;
+    overflow: visible;
+}
+
+.track {
+    stroke: var(--color-border);
+    stroke-width: 1;
+}
+
+.trace {
+    stroke: var(--primary-blue);
+    stroke-width: 1.5;
+}
+
+/* Reduced motion: the trace renders fully drawn, statically */
+.trace[data-static] {
+    stroke: var(--color-border-bright);
+}
+
+.tick path {
+    stroke: var(--color-border-bright);
+    stroke-width: 1;
+    fill: var(--color-void);
+    transition: stroke 0.3s var(--ease-out);
+}
+
+.tick[data-passed] path {
+    stroke: var(--primary-blue);
+}
+
+.tick[data-active] path {
+    stroke: var(--color-arrival);
+    stroke-width: 1.5;
+}
+
+.readout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    align-self: flex-end;
+}
+
+.line,
+.label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    /* Width reserved + right-packed: the rolls never move a glyph's anchor.
+       19ch covers the longest label ("Install & download"). */
+    justify-content: flex-end;
+    min-width: 19ch;
+    text-align: right;
+}
+
+.line {
+    color: var(--color-text-dim);
+}
+
+.label {
+    color: var(--text-secondary);
+}

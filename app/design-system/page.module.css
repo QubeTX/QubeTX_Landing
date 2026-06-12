@@ -1,0 +1,28 @@
+.app {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: 100vh;
+    background: var(--color-void);
+}
+
+.main {
+    width: 100%;
+    max-width: 1180px;
+    padding: 0 clamp(20px, 4vw, 56px) 96px;
+    /* Leave breathing room for the section rail on very wide screens */
+    margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+    .app {
+        grid-template-columns: 240px minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 899px) {
+    .app {
+        /* minmax(0,…) — a bare 1fr floors at min-content and wide code
+           blocks would push the column past the viewport */
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -1,6 +1,6 @@
 {
   "name": "qubetx-landing",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The official landing page for QubeTX, a department of ES Development LLC.",
   "private": true,
   "scripts": {
@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:kit": "node scripts/build-kit.mjs"
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.3",
@@ -35,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
     "@vitejs/plugin-react": "^5.1.4",
+    "archiver": "^8.0.0",
     "autoprefixer": "^10.4.22",
     "eslint": "^8.57.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",

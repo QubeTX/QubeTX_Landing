@@ -42,8 +42,9 @@ decisions — read it before touching BootScreen/LoadSequence/the inline script.
 npm install
 npm run dev        # port 3000
 npm run build      # static export → out/
+npm run build:kit  # regenerate public/qubetx-design-system-v{version}.zip
 npm run lint
-npm test           # vitest run (33 files / 144 tests at v3.0.0)
+npm test           # vitest run (50+ files / 250+ tests at v3.1.0)
 npx tsc --noEmit
 
 # Full gate — run before EVERY commit (CI enforces the same three):
@@ -59,11 +60,19 @@ npm run lint; npm test; npm run build
 `#work Work` (hidden `#projects` alias) → `#contact Contact` → `Footer` →
 `LoadSequence` + `EasterEggProvider`. Section wrappers carry `scroll-mt-[88px]`.
 
+**Routes**: `/` (above) · `/wallpaper` (R3F matrix) · `/design-system` (the
+system of record: 26 live-specimen sections from the `src/data/designSystem.ts`
+registry, sidebar w/ kit download, SectionRail; no Header/boot/eggs there —
+boot arming is gated to `location.pathname === '/'` in the layout script).
+
 ### Directory map
 ```
-app/                      layout (fonts, FOUC-guard inline script), page, globals.css (tokens)
+app/                      layout (fonts, FOUC-guard inline script), page, globals.css
+                          (tokens — keep the @kit-tokens markers), design-system/, wallpaper/
 src/data/content.ts       ALL copy/data: NAV_ITEMS, SERVICES, PRODUCTS, ABOUT_CONTENT,
                           PROCESS, PROJECTS, TECH_STACK, HERO_CONTENT, CONTACT_CTA
+src/data/designSystem.ts  /design-system registry: DS_VERSION (== package.json,
+                          test-enforced), DS_SECTIONS (single structure source)
 src/fonts/                woff2 + next/font/local declarations
 src/lib/motion/           motion system: tokens, anime seam, preference store, IO trigger,
                           scopes, splitText/RevealText, slotText/SlotRoll (slot roll),
@@ -72,6 +81,14 @@ src/lib/motion/           motion system: tokens, anime seam, preference store, I
 src/lib/pretext/          Pretext integration (provider, block, resizeCoordinator)
 src/components/layout/    Header, NavDropdown, MobileMenu, Footer, SysStatus
 src/components/sections/  Hero, Services, Products, Technologies, About, Work, Contact
+src/components/terminal/  the technical register (product pages): TerminalFrame
+                          (boot-print render), CommandTable, CapabilityRows,
+                          InstallBlock (copy = slot-roll flash), DownloadCard
+src/components/design-system/  /design-system chrome + doc primitives + demos
+                          (Sidebar, DsSection, SectionRail, CodeBlock, RuleGrid,
+                          DemoPanel, AgentNote, visualizers) + sections/ (26)
+kit/ + scripts/           kit docs (README/SKILL/MOTION_GUIDE) + manifest +
+                          build-kit.mjs → public/qubetx-design-system-v*.zip (committed)
 src/components/ui/        LabelPill, OutlineButton, TextLink, Magnetic, SectionHeading,
                           ServiceCard, ProductCard, ProjectCard, StatValue, RollingLink,
                           RoutedText, QubeTXLogo, icons

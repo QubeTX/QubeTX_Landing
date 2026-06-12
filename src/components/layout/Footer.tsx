@@ -21,6 +21,7 @@ const NAV_LINKS = [
 
 const CONNECT_LINKS = [
   { label: 'Start Your Project', href: '#contact' },
+  { label: 'Design System', href: '/design-system' },
   { label: 'emmettshaughnessy.com', href: 'https://emmettshaughnessy.com', external: true },
 ]
 

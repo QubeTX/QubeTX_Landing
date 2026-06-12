@@ -1,0 +1,33 @@
+.scale {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 2px;
+}
+
+.token {
+    grid-row: 1 / 3;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-primary);
+}
+
+.bar {
+    height: 10px;
+    background: linear-gradient(90deg, var(--gradient-blue), var(--gradient-purple));
+    border-radius: 2px;
+}
+
+.px {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-text-dim);
+}

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* @kit-tokens-start — scripts/build-kit.mjs slices this block into the
+   downloadable kit's tokens/qubetx-tokens.css. Keep the markers. */
 :root {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 10, 15, 28;
@@ -76,6 +78,7 @@
   --text-2xl: clamp(24px, calc(1.5rem + 1.5vw), 36px);
   --text-3xl: clamp(32px, calc(2rem + 2vw), 48px);
 }
+/* @kit-tokens-end */
 
 @theme {
   --color-void: #05070f;

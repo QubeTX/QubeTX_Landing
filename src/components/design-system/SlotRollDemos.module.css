@@ -1,0 +1,120 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.primary,
+.secondary {
+    min-height: 44px;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition:
+        border-color 0.25s var(--ease-out),
+        background-color 0.25s var(--ease-out);
+}
+
+.primary {
+    border: 1px solid var(--primary-blue);
+    background: rgba(0, 102, 255, 0.14);
+    color: var(--text-primary);
+}
+
+.primary:hover,
+.primary:focus-visible {
+    background: rgba(0, 102, 255, 0.24);
+}
+
+.secondary {
+    border: 1px solid var(--color-border-bright);
+    background: var(--color-surface-raised);
+    color: var(--text-primary);
+}
+
+.secondary:hover,
+.secondary:focus-visible {
+    border-color: var(--primary-blue);
+}
+
+/* Labels that roll reserve a stable lane (grid keeps the box steady) */
+.labelStack {
+    display: inline-grid;
+    justify-items: center;
+    min-width: 12ch;
+}
+
+.chev {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 6px;
+    background: var(--color-surface-raised);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: border-color 0.2s var(--ease-out);
+}
+
+.chev:hover,
+.chev:focus-visible {
+    border-color: var(--primary-blue);
+}
+
+.period {
+    display: inline-grid;
+    justify-items: center;
+    min-width: 12ch;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.counter {
+    display: inline-grid;
+    justify-items: start;
+    min-width: 13ch;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.modeSwitch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.modeSwitch input {
+    accent-color: var(--primary-blue);
+    width: 14px;
+    height: 14px;
+}
+
+.hint {
+    flex-basis: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    color: var(--color-text-dim);
+}
+
+.hint code {
+    color: var(--color-arrival);
+}

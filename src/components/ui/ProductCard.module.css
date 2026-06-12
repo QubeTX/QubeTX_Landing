@@ -114,7 +114,8 @@
 }
 
 .status[data-status='ACTIVE'] {
-    color: var(--primary-blue);
+    /* arrival blue — #0066FF is under AA at chip size on the void */
+    color: var(--color-arrival);
 }
 
 .visit {

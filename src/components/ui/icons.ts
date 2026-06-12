@@ -9,6 +9,9 @@ import {
   X,
   ArrowRight,
   ArrowUpRight,
+  Download,
+  Copy,
+  Check,
   type LucideIcon,
 } from 'lucide-react'
 import type { IconKey } from '@/data/content'
@@ -26,5 +29,5 @@ export const SERVICE_ICONS: Record<IconKey, LucideIcon> = {
   shield: ShieldCheck,
 }
 
-export { ChevronDown, Menu, X, ArrowRight, ArrowUpRight }
+export { ChevronDown, Menu, X, ArrowRight, ArrowUpRight, Download, Copy, Check }
 export type { LucideIcon }
