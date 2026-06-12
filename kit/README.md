@@ -33,7 +33,8 @@ qubetx-design-system/
     │                           · InstallBlock · DownloadCard  (the technical register)
     ├── components/layout/      SysStatus (the status heartbeat)
     ├── components/effects/     DotGrid · CustomCursor + engine · SmoothScroll
-    │                           · ScrollProgress · BootScreen · LoadSequence · MatrixDisplay
+    │                           · ScrollProgress · ScrollTrace (optional expressive
+    │                           decoration) · BootScreen · LoadSequence · MatrixDisplay
     └── test/                   vitest setup + mocks (pretext/FM/anime/lenis, IO, matchMedia)
 ```
 
@@ -62,8 +63,11 @@ a general-purpose license.
 
 ## Versioning
 
-Kit version == qubetx.com site version (see the zip filename and
-`package-snippet.json`). The design-system page's sidebar always serves the
-current build; if your copy is old, download a fresh one.
+Kit version == qubetx.com site version (see `package-snippet.json` and the
+saved filename — the sidebar's download attribute stamps it
+`qubetx-design-system-v{version}.zip`). The download URL itself is a stable
+permalink — **https://qubetx.com/qubetx-design-system.zip** always serves
+the current build, so reference that link from docs, skills, and agents; if
+your copy is old, download a fresh one.
 
 — QubeTX, a department of ES Development LLC

@@ -6,7 +6,7 @@ import QubeTXLogo from '@/components/ui/QubeTXLogo'
 import { Download } from '@/components/ui/icons'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useAnchorNav } from '@/hooks/useAnchorNav'
-import { DS_DATE, DS_GROUPS, DS_KIT_FILENAME, DS_SECTIONS, DS_VERSION } from '@/data/designSystem'
+import { DS_DATE, DS_GROUPS, DS_KIT_FILENAME, DS_KIT_URL, DS_SECTIONS, DS_VERSION } from '@/data/designSystem'
 import styles from './Sidebar.module.css'
 
 /**
@@ -44,9 +44,10 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <a className={styles.download} href={`/${DS_KIT_FILENAME}`} download data-interactive="true">
+      {/* Stable href (copyable, survives version bumps); versioned save name */}
+      <a className={styles.download} href={DS_KIT_URL} download={DS_KIT_FILENAME} data-interactive="true">
         <Download size={16} strokeWidth={2} aria-hidden="true" />
-        <span>Download kit (.zip)</span>
+        <span>Download kit</span>
       </a>
 
       {/* Mobile: the nav collapses to a select driving the same smooth jumps */}

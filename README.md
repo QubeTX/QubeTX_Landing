@@ -37,19 +37,24 @@ The landing page showcases our public portfolio including:
 | UI | React 19 | Component-based architecture |
 | Language | TypeScript | Type-safe development with strict mode |
 | Styling | Tailwind CSS v4 | Utility-first CSS with `@theme` directive |
-| 3D | React Three Fiber | Interactive dot matrix background |
-| Animation | Framer Motion | Scroll-triggered animations and transitions |
+| 3D | React Three Fiber | `/wallpaper` matrix only (the index route is three.js-free) |
+| Animation | anime.js v4 + Framer Motion | Imperative motion engine + presence/layout/scroll bindings |
 | Scroll | Lenis | Smooth scrolling with inertia |
 | Text Intelligence | @chenglou/pretext | Layout-shift prevention, orphan/widow control |
-| Deployment | GitHub Pages | Static export via CI/CD |
+| Deployment | Vercel | Push to `main` ⇒ production deploy (static export to `out/`) |
 
 ### Typography
 
-- **Unbounded** — Headlines and titles (display font)
-- **Space Grotesk** — Body text (sans-serif)
-- **Space Mono** — Technical text, tags, and subtitles (monospace)
+Exactly two typefaces carry the entire brand — every surface, including
+`/design-system` and the downloadable kit:
 
-All fonts loaded via `next/font/google` with `display: "swap"` optimization.
+- **Makira** — display + sans (weights 400/500/700/900)
+- **IBM Plex Mono** — technical text, tags, terminal surfaces (weights 400/500/600)
+
+Both are local woff2 loaded via `next/font/local` (`src/fonts/`) with
+`display: "swap"`. Nothing outside `src/fonts/index.ts` references a font
+family by literal name — styles use the `--font-sans` / `--font-mono` /
+`--font-display` token stacks.
 
 ### Design System
 
@@ -60,7 +65,8 @@ All fonts loaded via `next/font/google` with `display: "swap"` optimization.
 - **Breakpoints:** 375px, 390px, 414px, 768px, 1200px
 - **Touch Target Minimum:** 44px
 
-Full design specifications in `QubeTX_Design_System.md`.
+Full design specifications in `DESIGN_SYSTEM.md` (the spec of record; live
+specimens at qubetx.com/design-system).
 
 ---
 

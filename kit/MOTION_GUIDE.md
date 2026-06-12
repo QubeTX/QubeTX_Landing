@@ -92,6 +92,26 @@ RevealText, Pretext, or anime/FM.
   hrefs; CSS `scroll-behavior: smooth` stays absent.
 - Overlays call `lenis.stop()` / `start()`.
 
+### The scroll trace (OPTIONAL expressive decoration)
+
+`ScrollTrace` (kit `effects/`) is the scrub pattern's flagship: a circuit
+trace of `svg.createDrawable` segments drawing down a page gutter and
+reversing back up, junction cubes at section boundaries (`sectionIds` prop;
+geometry is the pure, unit-tested `buildTrace()` in
+`src/lib/motion/scrollTracePath.ts`). Left or right gutter is a per-surface
+choice (`gutterX` is just a lane coordinate) — qubetx.com draws it on the
+left, the /design-system rail rides the right edge.
+
+It is a **decoration, not a requirement** — reserve it for showcase
+surfaces; working tools don't scroll-animate. When you do build one, be
+creative with the product's own context (a waveform, a dependency graph,
+whatever its diagnostic flavor suggests) and keep the brand invariants:
+Lenis-seeked paused timeline, gradient strokes (`#0066FF → #7c3aed`), glow
+as a second wider stroke (never an SVG filter), hidden where the gutter is
+too thin, re-measure only via `resizeCoordinator`, reduced motion = the
+complete trace rendered statically. The specific design varies per surface;
+the language doesn't.
+
 ## 6 · Canvas surfaces (the dot-field model)
 
 anime (or pure math) animates **plain JS objects**; canvas only blits.

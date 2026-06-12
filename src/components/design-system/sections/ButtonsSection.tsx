@@ -39,7 +39,7 @@ export default function ButtonsSection() {
         </TextLink>
       </DemoPanel>
 
-      <DemoPanel caption="RollingLabel — the footer-link letter roll (hover it)" center>
+      <DemoPanel caption="RollingLabel — the hover letter roll for link lists (hover it)" center>
         <a href="#buttons" style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}>
           <RollingLabel text="Hover this label" />
         </a>

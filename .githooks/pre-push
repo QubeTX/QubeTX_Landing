@@ -1,0 +1,5 @@
+#!/bin/sh
+# Backstop: block pushes whose outgoing range changes the design system
+# without a version bump + rebuilt kit zip. Logic in
+# scripts/git-hooks/pre-push-kit.mjs (reads the ref lines from stdin).
+exec node scripts/git-hooks/pre-push-kit.mjs "$@"

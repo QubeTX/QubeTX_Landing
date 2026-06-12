@@ -10,7 +10,7 @@ const ROUTING = [
   { command: 'Heading / sentence enters', description: 'RevealText — masked rise, words (40ms) or chars (18ms), once, IO-triggered' },
   { command: 'Label feels freshly verified', description: 'decode(el, 450) — glyph scramble resolving L→R (eyebrows, pills, stat labels)' },
   { command: 'Short text CHANGED in place', description: 'The slot roll — always (§17)' },
-  { command: 'Link label under hover', description: 'RollingLabel — stacked-copy letter roll (footers, link lists)' },
+  { command: 'Link label under hover', description: 'RollingLabel — stacked-copy letter roll (link lists; use sparingly, one column never two registers)' },
   { command: 'Terminal output appears', description: 'TerminalFrame boot-print (§13) — line stream, never per-char typing of prose' },
   { command: 'Paragraph wraps/reflows', description: 'Not a motion job — PretextBlock reserves the space (§23); blocks animate as wholes' },
 ]

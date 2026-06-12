@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { KIT_DIRS, KIT_FILES } from '../../../kit/manifest.mjs'
-import { DS_KIT_FILENAME } from '@/data/designSystem'
+import { DS_KIT_URL } from '@/data/designSystem'
 
 const root = path.resolve(__dirname, '../../..')
 
@@ -13,10 +13,11 @@ describe('kit manifest', () => {
     }
   })
 
-  it('the built kit zip the sidebar serves exists in public/', () => {
+  it('the built kit zip the sidebar serves exists in public/ (stable permalink)', () => {
+    const name = DS_KIT_URL.replace(/^\//, '')
     expect(
-      existsSync(path.join(root, 'public', DS_KIT_FILENAME)),
-      `run \`npm run build:kit\` — public/${DS_KIT_FILENAME} is missing`
+      existsSync(path.join(root, 'public', name)),
+      `run \`npm run build:kit\` — public/${name} is missing`
     ).toBe(true)
   })
 })
