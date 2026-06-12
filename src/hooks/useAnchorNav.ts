@@ -15,7 +15,7 @@ export function useAnchorNav(offset = -88) {
   return useCallback(
     (href: string): boolean => {
       if (!href.startsWith('#')) return false
-      const el = document.querySelector(href)
+      const el = document.querySelector<HTMLElement>(href)
       if (!el) return false
 
       if (lenis) {
@@ -24,6 +24,12 @@ export function useAnchorNav(offset = -88) {
         el.scrollIntoView({ behavior: 'smooth' })
       }
       history.replaceState(null, '', href)
+
+      // Keyboard/SR users: focus must travel with the scroll, or the next
+      // Tab resumes from the trigger. preventScroll — the engine above owns
+      // the scroll; native focus-scroll would fight it.
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+      el.focus({ preventScroll: true })
       return true
     },
     [lenis, offset]

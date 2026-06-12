@@ -263,3 +263,9 @@ html[data-loading] [data-load] {
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* tabindex="-1" elements are programmatic focus targets (anchor-nav
+   destinations) — unreachable by Tab, so no ring around the whole section */
+:where([tabindex='-1']):focus-visible {
+  outline: none;
+}
