@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# sh hook shims must stay LF — CRLF breaks git's sh on Windows
+.githooks/* text eol=lf

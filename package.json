@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:kit": "node scripts/build-kit.mjs"
+    "build:kit": "node scripts/build-kit.mjs",
+    "bump:ds": "node scripts/bump-design-system.mjs",
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.3",

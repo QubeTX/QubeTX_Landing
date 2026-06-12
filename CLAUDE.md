@@ -50,9 +50,13 @@ npx tsc --noEmit
 # Full gate — run before EVERY commit (CI enforces the same three):
 npm run lint; npm test; npm run build
 
-# Version bump ritual (test-enforced lockstep):
-# package.json version + DS_VERSION (src/data/designSystem.ts) together,
-# then `npm run build:kit` and commit the regenerated zip.
+# Version bump — AUTOMATED by git hooks (.githooks/, wired by `npm install`):
+# committing any design-system change (kit manifest paths, /design-system page,
+# tokens, kit docs — see scripts/git-hooks/dsPaths.mjs) auto-patch-bumps
+# package.json + DS_VERSION/DS_DATE (once per branch vs origin/main), rebuilds
+# the zip, and stages all three into the commit; pre-push blocks ranges that
+# slipped past it (--no-verify commits). Deliberate minor/major releases:
+npm run bump:ds -- --set 3.3.0   # explicit version; plain `npm run bump:ds` = patch
 # /qubetx-design-system.zip is a STABLE permalink referenced externally —
 # never put the version back in the filename (the download attribute carries it).
 ```

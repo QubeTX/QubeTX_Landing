@@ -1,0 +1,6 @@
+#!/bin/sh
+# Design-system kit guard — auto version-bump + zip rebuild when staged
+# changes touch design-system territory. Wired by `npm install` (the
+# prepare script sets core.hooksPath to .githooks). Logic lives in
+# scripts/git-hooks/pre-commit-kit.mjs.
+exec node scripts/git-hooks/pre-commit-kit.mjs
