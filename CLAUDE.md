@@ -44,11 +44,17 @@ npm run dev        # port 3000
 npm run build      # static export → out/
 npm run build:kit  # regenerate public/qubetx-design-system.zip (stable permalink; version inside)
 npm run lint
-npm test           # vitest run (50+ files / 250+ tests at v3.1.0)
+npm test           # vitest run (48 files / 236 tests at v3.2.0)
 npx tsc --noEmit
 
 # Full gate — run before EVERY commit (CI enforces the same three):
 npm run lint; npm test; npm run build
+
+# Version bump ritual (test-enforced lockstep):
+# package.json version + DS_VERSION (src/data/designSystem.ts) together,
+# then `npm run build:kit` and commit the regenerated zip.
+# /qubetx-design-system.zip is a STABLE permalink referenced externally —
+# never put the version back in the filename (the download attribute carries it).
 ```
 
 ## Architecture
@@ -164,10 +170,23 @@ Unchanged core rules (confirmed across many projects):
 - jsdom/React-19 event quirks: `onMouseEnter` fires via `fireEvent.mouseOver`,
   `onFocus` via `fireEvent.focusIn` — or prefer CSS `:hover` so there is
   nothing to simulate.
+- IO-triggered timer sequences: `MockIntersectionObserver.trigger()` and
+  `vi.runAllTimers()` must sit in SEPARATE `act()` blocks — in the same act
+  the timers run before React flushes the in-view effect (nothing scheduled
+  yet, so the test passes/fails for the wrong reason).
 - **jsdom cannot exercise canvas/anime/Lenis paths** — verify all motion work
   in a real Chrome session (DevTools MCP) before calling it done; this is how
   every real bug in the v3 build was caught. For widths <500px use device
   emulation (browser windows won't resize smaller).
+- Real-browser pointer tests: React 19 `onPointerEnter/Leave` do NOT fire from
+  synthetic `dispatchEvent` in real Chrome (jsdom `fireEvent` works; real React
+  ignores untrusted events for enter/leave synthesis). For timed sequences
+  (e.g. interrupting an animation mid-flight) use Playwright
+  `browser_run_code_unsafe` + `page.mouse` — sequential MCP hover calls have
+  >1.3s latency. Resize the page ≥1024px first (MCP browsers default narrower;
+  ScrollTrace <1024 and SectionRail <1600 silently don't render). Probe anime
+  drawables via the `stroke-dasharray` attribute/computed style — `el.style`
+  stays empty.
 - Lighthouse "navigation" CLS on the dev server can be spurious — confirm with
   a buffered PerformanceObserver layout-shift trace in a real navigation.
 
