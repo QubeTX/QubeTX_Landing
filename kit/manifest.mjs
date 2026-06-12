@@ -22,8 +22,11 @@ export const KIT_FILES = [
   { from: 'src/components/layout/SysStatus.tsx', to: 'src/components/layout/SysStatus.tsx' },
   { from: 'src/components/layout/SysStatus.module.css', to: 'src/components/layout/SysStatus.module.css' },
   { from: 'src/components/layout/SysStatus.test.tsx', to: 'src/components/layout/SysStatus.test.tsx' },
-  // Core effects (reference implementations; WallpaperMatrix/ScrollTrace stay site-specific)
+  // Core effects (reference implementations; WallpaperMatrix stays site-specific)
   { from: 'src/components/effects/DotGrid.tsx', to: 'src/components/effects/DotGrid.tsx' },
+  // ScrollTrace — OPTIONAL expressive decoration (scroll-scrubbed circuit trace);
+  // ship it so agents can adapt the pattern per surface, never as a mandate
+  { from: 'src/components/effects/ScrollTrace.tsx', to: 'src/components/effects/ScrollTrace.tsx' },
   { from: 'src/components/effects/DotGrid.test.tsx', to: 'src/components/effects/DotGrid.test.tsx' },
   { from: 'src/components/effects/MatrixDisplay.tsx', to: 'src/components/effects/MatrixDisplay.tsx' },
   { from: 'src/components/effects/CustomCursor.tsx', to: 'src/components/effects/CustomCursor.tsx' },

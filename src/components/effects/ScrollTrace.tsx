@@ -18,16 +18,29 @@ import { subscribe as subscribeResize } from '@/lib/pretext/resizeCoordinator'
  * Layer: absolute full-document SVG behind content; junction cubes echo the
  * logo. Hidden <1024px (the gutter is too thin to matter). Reduced motion:
  * the complete trace renders statically at low opacity.
+ *
+ * Kit note: this is an OPTIONAL expressive decoration, not a mandatory
+ * layer — reserve it for showcase surfaces, and let the specific design
+ * (path, junctions, gutter — left OR right side, per the surface's layout)
+ * vary per surface. Pass `sectionIds` to place the junction cubes at your
+ * own section boundaries; `buildTrace`'s gutterX is just a lane coordinate.
  */
 
 const SECTION_IDS = ['services', 'products', 'technologies', 'about', 'work', 'contact']
 const TL_DURATION = 1000
 
-export default function ScrollTrace() {
+type ScrollTraceProps = {
+  /** Element ids whose top edges get junction cubes (defaults to the qubetx.com sections). */
+  sectionIds?: string[]
+}
+
+export default function ScrollTrace({ sectionIds = SECTION_IDS }: ScrollTraceProps) {
   const svgRef = useRef<SVGSVGElement | null>(null)
   const tlRef = useRef<ReturnType<typeof createTimeline> | null>(null)
   const [geo, setGeo] = useState<TraceGeometry & { height: number } | null>(null)
   const lenis = useLenis()
+  // Value-keyed dep: an inline `sectionIds` literal must not re-measure per render
+  const idsKey = sectionIds.join(' ')
 
   // Measure sections → build geometry (initial, on resize, after fonts settle)
   useEffect(() => {
@@ -37,7 +50,7 @@ export default function ScrollTrace() {
         return
       }
       const docHeight = document.documentElement.scrollHeight
-      const offsets = SECTION_IDS.map((id) => {
+      const offsets = sectionIds.map((id) => {
         const el = document.getElementById(id)
         return el ? el.getBoundingClientRect().top + window.scrollY : null
       }).filter((v): v is number => v !== null)
@@ -68,7 +81,8 @@ export default function ScrollTrace() {
     document.fonts?.ready?.then(measure).catch(() => {})
     const unsubscribe = subscribeResize(measure)
     return unsubscribe
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey])
 
   // Build the paused timeline whenever geometry changes
   useEffect(() => {

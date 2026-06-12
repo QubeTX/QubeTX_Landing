@@ -6,7 +6,7 @@
  */
 
 /** Kept in lockstep with package.json — asserted by a unit test. */
-export const DS_VERSION = '3.1.0'
+export const DS_VERSION = '3.2.0'
 export const DS_DATE = 'June 2026'
 
 export type DsGroup =
@@ -66,5 +66,11 @@ export const DS_SECTIONS: DsSectionMeta[] = [
 /** Sidebar/rail group order (derived once — registry order is canonical). */
 export const DS_GROUPS: DsGroup[] = ['Showcase', 'Editorial', 'Tokens', 'Components', 'Motion', 'Patterns']
 
-/** The kit artifact the sidebar Download button serves. */
+/**
+ * The kit download. The URL is version-STABLE so it can be copied and
+ * referenced externally (docs, skills, other agents) and always serve the
+ * current build; the versioned filename is applied at save time via the
+ * link's `download` attribute.
+ */
+export const DS_KIT_URL = '/qubetx-design-system.zip'
 export const DS_KIT_FILENAME = `qubetx-design-system-v${DS_VERSION}.zip`

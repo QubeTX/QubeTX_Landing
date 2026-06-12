@@ -42,7 +42,7 @@ decisions — read it before touching BootScreen/LoadSequence/the inline script.
 npm install
 npm run dev        # port 3000
 npm run build      # static export → out/
-npm run build:kit  # regenerate public/qubetx-design-system-v{version}.zip
+npm run build:kit  # regenerate public/qubetx-design-system.zip (stable permalink; version inside)
 npm run lint
 npm test           # vitest run (50+ files / 250+ tests at v3.1.0)
 npx tsc --noEmit
@@ -88,7 +88,9 @@ src/components/design-system/  /design-system chrome + doc primitives + demos
                           (Sidebar, DsSection, SectionRail, CodeBlock, RuleGrid,
                           DemoPanel, AgentNote, visualizers) + sections/ (26)
 kit/ + scripts/           kit docs (README/SKILL/MOTION_GUIDE) + manifest +
-                          build-kit.mjs → public/qubetx-design-system-v*.zip (committed)
+                          build-kit.mjs → public/qubetx-design-system.zip
+                          (committed; stable permalink — saved name is versioned
+                          via the sidebar link's download attribute)
 src/components/ui/        LabelPill, OutlineButton, TextLink, Magnetic, SectionHeading,
                           ServiceCard, ProductCard, ProjectCard, StatValue, RollingLink,
                           RoutedText, QubeTXLogo, icons

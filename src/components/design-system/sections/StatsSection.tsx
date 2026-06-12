@@ -11,9 +11,9 @@ export default function StatsSection() {
   return (
     <DsSection
       id="stats"
-      lede="A QubeTX stat doesn't fade in — it lands. The numeral slot-machines through scrambled values and settles in arrival blue; hovering re-verifies it (terminal flavor: numbers you can interrogate). Scroll these into view, then hover them."
+      lede="A QubeTX stat doesn't fade in — it counts. The numeral climbs from zero in decelerating slot-roll steps and lands in arrival blue; hovering re-verifies it (terminal flavor: drain to zero, climb back, same number). Scroll these into view, then hover them — and try leaving mid-count."
     >
-      <DemoPanel caption="StatValue — slot-machine entrance + hover re-verify (the About-section band)">
+      <DemoPanel caption="StatValue — count-up entrance + hover re-verify (the About-section band)">
         <div className={styles.kpiBand}>
           <StatValue value="07" label="Client Projects" />
           <StatValue value="05" label="Products Shipped" />
@@ -24,12 +24,16 @@ export default function StatsSection() {
       <RuleGrid
         rules={[
           {
-            title: 'The entrance is a roll, not a count',
-            body: 'First view: three scrambled quiet rolls (~300ms apart) land on the real value with the arrival-blue flash. The scrambles keep digit count and prefix/suffix — "100%" scrambles as three digits + %.',
+            title: 'The entrance is a count made of rolls',
+            body: 'First view: the numeral climbs 0 → value in exponential-approach steps — big jumps when far, single ticks at the end — quiet intermediates, arrival-blue landing. Digit count and prefix/suffix hold: "100%" counts as three zero-padded digits + %.',
           },
           {
             title: 'Re-verify on hover',
-            body: 'Mouse hover re-rolls through two scrambles back to the SAME value while the label scramble-decodes. Re-verification is repeatable and never changes the number — that’s the point.',
+            body: 'Mouse hover drains the number briskly to zero, then climbs back to the SAME value while the label scramble-decodes. Repeatable, and it never changes the number — that’s the point.',
+          },
+          {
+            title: 'The count always converges',
+            body: 'The displayed number chases a single goal (zero or the value), so a pointer leaving mid-countdown just turns the count around from wherever it is. No stuck states, no snapping — spam-hover all you like.',
           },
           {
             title: 'Gradient numerals need the clip chain',
@@ -73,6 +77,7 @@ export default function StatsSection() {
         checklist={[
           'StatValue ships in the kit ui/ folder (depends on lib/motion: slotText, decode, useInViewOnce)',
           'value is a string — prefix/digits/suffix parse via /^(\\D*)(\\d+)(\\D*)$/; keep it one number',
+          'The slot direction mirrors the numeric direction: counting up rolls up, draining rolls down; only the landing gets the arrival blue',
           'Real numbers only — update content data when reality changes; a stat is a claim',
           'Dashboards with LIVE values: drive animateSlotText/set() on data change (direction "up"), skipUnchanged keeps stable digits still',
         ]}

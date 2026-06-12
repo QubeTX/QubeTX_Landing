@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import DesignSystemPage from '../../../../app/design-system/page'
-import { DS_SECTIONS, DS_KIT_FILENAME } from '@/data/designSystem'
+import { DS_SECTIONS, DS_KIT_FILENAME, DS_KIT_URL } from '@/data/designSystem'
 
 describe('/design-system page structure', () => {
   it('renders every registry section as an anchored element', () => {
@@ -22,11 +22,11 @@ describe('/design-system page structure', () => {
     })
   })
 
-  it('offers the kit download from the sidebar', () => {
+  it('offers the kit download from the sidebar (stable href, versioned save name)', () => {
     render(<DesignSystemPage />)
     const download = screen.getByRole('link', { name: /download kit/i })
-    expect(download).toHaveAttribute('href', `/${DS_KIT_FILENAME}`)
-    expect(download).toHaveAttribute('download')
+    expect(download).toHaveAttribute('href', DS_KIT_URL)
+    expect(download).toHaveAttribute('download', DS_KIT_FILENAME)
   })
 
   it('offers the mobile jump select covering every section', () => {

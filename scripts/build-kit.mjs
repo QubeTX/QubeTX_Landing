@@ -2,7 +2,7 @@
  * Builds the downloadable design-system kit from LIVE source — the zip can
  * never drift from the repo because it IS the repo, sliced by the manifest.
  *
- *   npm run build:kit   →  public/qubetx-design-system-v{version}.zip
+ *   npm run build:kit   →  public/qubetx-design-system.zip  (stable permalink)
  *
  * Contents: agent docs (README/SKILL/MOTION_GUIDE), DESIGN_SYSTEM.md,
  * tokens/qubetx-tokens.css (sliced from app/globals.css between the
@@ -27,7 +27,11 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 const pkg = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'))
 const version = pkg.version
-const outName = `qubetx-design-system-v${version}.zip`
+// Version-STABLE filename: /qubetx-design-system.zip is a copyable permalink
+// that always serves the current build. Version lives inside the zip (docs,
+// tokens header, package-snippet) and in the saved filename via the sidebar
+// link's `download` attribute (DS_KIT_FILENAME).
+const outName = 'qubetx-design-system.zip'
 const outPath = path.join(root, 'public', outName)
 const prefix = 'qubetx-design-system/'
 
@@ -120,9 +124,9 @@ async function main() {
 
   await mkdir(path.dirname(outPath), { recursive: true })
   await unlink(outPath).catch(() => {})
-  // Remove stale kit zips from older versions so public/ serves exactly one
+  // Remove stale versioned zips from the pre-permalink era so public/ serves exactly one
   for (const name of await readdir(path.join(root, 'public'))) {
-    if (name.startsWith('qubetx-design-system-v') && name.endsWith('.zip') && name !== outName) {
+    if (name.startsWith('qubetx-design-system-') && name.endsWith('.zip') && name !== outName) {
       await unlink(path.join(root, 'public', name))
     }
   }

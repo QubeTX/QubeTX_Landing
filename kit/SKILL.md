@@ -37,7 +37,7 @@ Then copy from this kit:
 | `src/fonts/` | same | Makira + IBM Plex Mono woff2 + next/font declarations |
 | `src/components/ui/` | same | buttons, links, pills, cards, stats, logo, icons registry |
 | `src/components/terminal/` | same | TerminalFrame, CommandTable, InstallBlock, DownloadCard, CapabilityRows |
-| `src/components/effects/` | as needed | DotGrid, CustomCursor+engine, SmoothScroll, ScrollProgress, BootScreen, LoadSequence |
+| `src/components/effects/` | as needed | DotGrid, CustomCursor+engine, SmoothScroll, ScrollProgress, ScrollTrace, BootScreen, LoadSequence |
 | `src/test/` | same | setup.ts mocks (pretext/FM/anime/lenis) + IO/matchMedia stubs |
 | `tokens/qubetx-tokens.css` | merge into `app/globals.css` | the full token block |
 
@@ -82,6 +82,7 @@ Both share ALL tokens and the motion doctrine. Never fork the palette.
 | Terminal output | `TerminalFrame` (server-renders all lines; boot-prints on first view) |
 | A canvas surface | DotGrid's model: anime/pure-math animates plain objects, canvas only blits |
 | Scroll trigger / scrub / jump | `useInViewOnce` / Lenis-seeked paused timeline / `useAnchorNav` |
+| Scroll-storytelling decoration (OPTIONAL — showcase surfaces only, never every page) | `ScrollTrace` pattern: `buildTrace()` geometry + drawable timeline seeked from Lenis. Keep the brand language (gradient strokes, no SVG filters, reduced-motion = static); the specific design varies per surface — be creative with the product's context |
 | First-load theater | BootScreen CONTRACT (pre-paint arming, readiness completion, failsafes) — opt-in |
 
 ## The laws (violations are bugs, not style)

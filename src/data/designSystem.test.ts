@@ -1,11 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { DS_GROUPS, DS_KIT_FILENAME, DS_SECTIONS, DS_VERSION } from './designSystem'
+import { DS_GROUPS, DS_KIT_FILENAME, DS_KIT_URL, DS_SECTIONS, DS_VERSION } from './designSystem'
 import pkg from '../../package.json'
 
 describe('design-system registry', () => {
   it('stays in lockstep with the package version', () => {
     expect(DS_VERSION).toBe(pkg.version)
     expect(DS_KIT_FILENAME).toBe(`qubetx-design-system-v${pkg.version}.zip`)
+  })
+
+  it('the kit URL is a version-stable permalink', () => {
+    expect(DS_KIT_URL).toBe('/qubetx-design-system.zip')
   })
 
   it('has unique ids and sequential two-digit numbering', () => {
