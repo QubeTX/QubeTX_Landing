@@ -5,6 +5,56 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-06-11
+
+The design system becomes a product: a full documentation page, a reusable
+technical-register component family, and a downloadable kit. Plus the slot
+roll (shipped to production earlier this version cycle) and the DotGrid
+wave-ripple rework, now formally documented.
+
+### Added
+- **`/design-system`** — the QubeTX system of record: 26 numbered sections
+  (tokens, components, motion, patterns) with LIVE specimens (the real
+  production components), normative rule grids, copy-paste recipes, and an
+  agent-facing implementation note closing every section. Millis-anatomy
+  chrome: grouped sticky sidebar with scroll-spy + kit download, a
+  right-edge **SectionRail** (scroll-drawn circuit trace, isometric cube
+  ticks per section, slot-rolled `SEC NN · PP%` readout; ≥1600px),
+  mobile top-bar collapse with a jump select
+- **The technical register** (`src/components/terminal/`): `TerminalFrame`
+  (terminal chrome whose lines **boot-print** like the loading screen —
+  server HTML carries the full text; reveal streams on first view with live
+  timestamps), `CommandTable`, `CapabilityRows`, `InstallBlock` (OS tabs +
+  copy command with the slot-roll Copy → Copied flash), `DownloadCard` —
+  generalized from reports.qubetx.com layouts, rendered in v3 tokens, the
+  canonical anatomy for every future product page
+- **The downloadable kit** (`public/qubetx-design-system-v3.1.0.zip`, built
+  from live source by `npm run build:kit`): tokens css (sliced from
+  globals.css), fonts (+ standalone @font-face css), the motion/pretext/ui/
+  terminal/effects source layers with their tests, `package-snippet.json`,
+  and agent docs — `SKILL.md` (the qubetx-design agent skill),
+  `MOTION_GUIDE.md`, `README.md`, plus DESIGN_SYSTEM.md and BOOT_SCREEN.md
+- **The slot roll** (`src/lib/motion/slotText.ts` + `SlotRoll.tsx`) — the
+  house micro-interaction for changing labels (vendored from slot-text
+  v0.2.2 MIT via the Millis kit, QubeTX-tuned: `--color-arrival` blue
+  settling to ink; the destination rule: external = hover teaser,
+  internal = click flash); live on both CTAs, the hero TextLink, the boot
+  odometer, the About stats slot-machine, and the footer SYS_STATUS cycle
+- Doc/specimen primitives (`src/components/design-system/`): CodeBlock +
+  tinyTint (dependency-free code tinter), RuleGrid, DemoPanel, AgentNote,
+  Swatch/TypeSpecimen/SpaceScale, EaseCurve (live easing visualizers),
+  SpringDemo, slot-roll/text/dot-field/cursor/Pretext live demos
+
+### Changed
+- **DotGrid ripples are wave objects** (`makeRippleWave`/`applyRippleWaves`,
+  pure + unit-tested): per-event cost 8–36ms → 0.2ms; pointer throttle
+  tightened 24px/90ms → 16px/45ms (the swell now tracks the cursor); zero
+  frames >25ms at 2× ripple density
+- Boot arming is **home-route only** (`location.pathname === '/'` guard in
+  the layout inline script) — `/design-system` and `/wallpaper` never boot
+- Footer Connect column gains the Design System link; lucide registry gains
+  Download/Copy/Check
+
 ## [3.0.0] - 2026-06-11
 
 Complete ground-up redesign ("v3"), driven by the new hero mockup and the

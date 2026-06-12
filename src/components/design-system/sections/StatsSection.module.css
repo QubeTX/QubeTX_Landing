@@ -1,0 +1,9 @@
+/* Doc twin of the About stats band — the live source of truth is
+   About.module.css; keep these visually aligned. */
+.kpiBand {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+}

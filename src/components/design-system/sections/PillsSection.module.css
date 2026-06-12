@@ -1,0 +1,24 @@
+/* Doc specimens of the product status chips — the live source of truth is
+   ProductCard.module.css; keep these visually identical. */
+.statusStable,
+.statusActive {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid;
+}
+
+.statusStable {
+    color: #22c55e;
+    border-color: rgba(34, 197, 94, 0.4);
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.statusActive {
+    color: var(--color-arrival);
+    border-color: rgba(0, 102, 255, 0.4);
+    background: rgba(0, 102, 255, 0.08);
+}

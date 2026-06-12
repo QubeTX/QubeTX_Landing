@@ -32,14 +32,16 @@ export default function RootLayout({
         {/* Pre-paint guards (no-JS never sets either attribute):
             - data-loading hides [data-load] entrance targets; LoadSequence
               lifts it; 3s failsafe.
-            - data-boot arms the BootScreen overlay — only on the first visit
-              of the session (sessionStorage flag) and never under reduced
-              motion; 10s failsafe so a hydration failure can't trap anyone. */}
+            - data-boot arms the BootScreen overlay — HOME ROUTE ONLY (the
+              boot moment belongs to the landing; /design-system and
+              /wallpaper never arm), only on the first visit of the session
+              (sessionStorage flag) and never under reduced motion; 10s
+              failsafe so a hydration failure can't trap anyone. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
               "(function(){var d=document.documentElement;d.setAttribute('data-loading','');" +
-              "try{if(!sessionStorage.getItem('qubetx:booted')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-boot','')}}catch(e){}" +
+              "try{if(location.pathname==='/'&&!sessionStorage.getItem('qubetx:booted')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-boot','')}}catch(e){}" +
               "setTimeout(function(){d.removeAttribute('data-loading')},3000);" +
               "setTimeout(function(){d.removeAttribute('data-boot')},10000);})();",
           }}

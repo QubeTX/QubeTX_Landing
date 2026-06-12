@@ -51,6 +51,11 @@ line appears.
 2. **Arming happens pre-paint via `html[data-boot]`**, set by the layout
    inline script. CSS (`html:not([data-boot]) .overlay { display:none }`)
    means an unarmed page never flashes the overlay — there is no JS race.
+   Since v3.1.0 the arming is additionally gated on
+   `location.pathname === '/'` — the boot moment belongs to the landing;
+   `/design-system` and `/wallpaper` never arm (and a first visit there
+   leaves the sessionStorage flag unset, so a later visit to `/` still
+   boots).
 3. **"Cache detection" = `sessionStorage['qubetx:booted']`.** First boot of
    a browser session sets it; the inline script checks it before paint, so
    return visits skip the overlay entirely (zero flash). Session (not

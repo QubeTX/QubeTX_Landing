@@ -206,7 +206,7 @@ export default function BootScreen() {
 
         <div className={styles.box}>
           <div className={styles.header}>
-            <span>SYSTEM_INITIALIZER // V.3.0.0</span>
+            <span>SYSTEM_INITIALIZER // V.3.1.0</span>
             <span>NODE_ID: QBTX-01</span>
           </div>
 

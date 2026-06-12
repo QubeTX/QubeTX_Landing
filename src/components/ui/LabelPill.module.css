@@ -20,5 +20,5 @@
 .bar {
     padding-left: 12px;
     border-left: 2px solid var(--primary-blue);
-    color: var(--primary-blue);
+    color: var(--color-arrival);
 }

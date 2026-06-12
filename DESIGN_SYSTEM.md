@@ -126,6 +126,19 @@ All section wrappers get `scroll-mt-[88px]`. Section data comes ONLY from
 | `QubeTXLogo` | Stroke-only SVG cube; `size/className/color`. Paths are `svg.createDrawable`-friendly (used by the logo egg). |
 | `icons.ts` | Lucide registry: `SERVICE_ICONS[IconKey]` + chrome icons. Render 20px, `strokeWidth 1.5`, `aria-hidden`. |
 
+### Terminal surfaces — the technical register (`src/components/terminal/`)
+The canonical components for product/tool pages (TR-300-style sites),
+generalized from reports.qubetx.com layouts, v3 tokens, retooled onto the v3
+motion system. Live spec: `/design-system` §13–14.
+
+| Component | Contract |
+|---|---|
+| `TerminalFrame` | Terminal chrome (title bar + corner meta + line body). **Boot-print render**: server HTML carries the FULL final text (law — crawlers/no-JS/reduced see everything instantly); client hides lines post-mount and streams them on first in-view (~90–160ms cadence, blink cursor while printing). `timestamps` stamps `[hh:mm:ss]` from the REAL clock at reveal (server placeholder `[··:··:··]` — the BootScreen precedent). `accent` lines = arrival blue, landmarks only. The frame owns its lines' visibility — no other engine touches them. `bootPrint={false}` for re-mounting contexts. |
+| `CommandTable` | Real `<table>` semantics: mono command column + description; hairline rows brighten on hover (CSS). Also reused on `/design-system` as the generic token/spec table. |
+| `CapabilityRows` | Numbered `01..` feature rows (mono index, display title, dim body, hairline rules). |
+| `InstallBlock` | OS tab pills (real tablist/tab/tabpanel; FM `layoutId` fill glides between) → `$`-prompted command → **Copy button whose label slot-rolls Copy → Copied** (`useSlotRoll().flash()`; clipboard failure flashes `Failed` — honest, never silent). Copy label reserves its widest flash in CSS (zero shift on the 1.4s revert). |
+| `DownloadCard` | One artifact, one action: mono meta + display name + description, one download anchor. Multiple artifacts = stacked cards, never a format dropdown. |
+
 ### Effects (`src/components/effects/`)
 | Component | Architecture |
 |---|---|
@@ -263,6 +276,9 @@ no global CSS, no Tailwind-scanner dependency.
 | Stat slot-machine | 3 scrambled quiet rolls (~300ms apart) → arrival-blue landing on the real value | About stats, first view |
 | Re-verify | 2 scrambled rolls back to the same value + label decode on hover | About stats |
 | Status cycle | slot roll up, arrival blue, every 7s — in-view + tab-visible only | Footer `SYS_STATUS` |
+| Terminal boot-print | line stream on first in-view (~90–160ms cadence), live timestamps, blink cursor while printing | `TerminalFrame` (technical register) |
+| Install copy flash | slot-roll `flash('Copied')` on the copy button — the standard copy confirmation everywhere (never a toast) | `InstallBlock` |
+| Rail readout | quiet odometer `SEC NN · PP%` + arrival-blue section label, ticks ink as the trace passes | `/design-system` SectionRail (≥1600px) |
 | Pointer ripple | elastic swell around the cursor: wave-object model (one ~0.2ms scan per event, pure-math evaluation per frame), distance-delayed, amplitude falls to 0 at 280px (tap 460px); `qubetx:pulse` events sweep the full field | Hero dot field (move + tap) |
 | Decode | glyph scramble resolving L→R, 450ms | Eyebrow, section pills, stat labels |
 | Boot type | per-char opacity stagger 28ms + CSS blink cursor | Products heading |
@@ -285,7 +301,39 @@ no global CSS, no Tailwind-scanner dependency.
 - Slot-roll tests: jsdom never fires `transitionend` and rects are 0 — the engine's **safety-net rebuild** is what makes final states reachable; assert after `vi.runAllTimers()`/`advanceTimersByTime`, and assert the accessible text via `[data-slot-sr]` (it updates immediately). React/RTL hold internal timers under fake timers — assert cell absence (`[data-slot-cell]`), not `vi.getTimerCount() === 0`, for "engine did nothing" cases.
 - CI: lint → `npm test` → build. All three must pass before merge; **push to `main` deploys via Vercel**.
 
-## 10. Hard-won gotchas (read before touching motion/text)
+## 10. The design-system page & kit (`/design-system`)
+
+**The system of record, rendered live.** `app/design-system/page.tsx` +
+`src/components/design-system/` — 26 numbered sections (registry:
+`src/data/designSystem.ts`, the SINGLE source for sidebar/rail/page
+structure + the structural tests) of live specimens (the real production
+components), RuleGrids, CodeBlocks (tinted by `src/lib/designSystem/tinyTint`
+— no highlighter dep), and an `AgentNote` closing every section with
+new-project implementation instructions.
+
+- **Chrome**: grouped sticky sidebar (brand + version + **Download kit**
+  button + `useActiveSection` scroll-spy; collapses <900px to a top bar with
+  a jump `<select>` driving `useAnchorNav`). No site Header/BootScreen/
+  LoadSequence/eggs on this route.
+- **SectionRail** (≥1600px, aria-hidden, pointer-transparent): scroll-drawn
+  trace (drawable + paused timeline seeked from Lenis — the ScrollTrace
+  model), an isometric cube tick per section (`cubePaths` reuse) inking as
+  the head passes, and a slot-rolled readout (`SEC NN · PP%` quiet odometer
+  + arrival-blue section label). The page's opt-in expressive layer —
+  default surfaces stay calm.
+- **Boot arming is home-only**: the layout inline script gates `data-boot`
+  on `location.pathname === '/'` (see BOOT_SCREEN.md).
+- **The kit**: `npm run build:kit` (scripts/build-kit.mjs + kit/manifest.mjs)
+  slices the token block from globals.css (between the `@kit-tokens`
+  markers — keep them), generates fonts.css + package-snippet.json, and zips
+  the source layers + agent docs (kit/README.md, kit/SKILL.md,
+  kit/MOTION_GUIDE.md) into `public/qubetx-design-system-v{version}.zip`
+  (committed; the sidebar serves it statically). `DS_VERSION` must equal
+  package.json's version — a test enforces it, and the kit-manifest test
+  fails loudly on renames. **Run build:kit and update the docs in the same
+  PR as any kit-relevant change.**
+
+## 11. Hard-won gotchas (read before touching motion/text)
 
 1. **anime.js 4.4**: `ease: 'cubicBezier(...)'` string syntax is REMOVED — import the `cubicBezier` function (already wrapped as `EASE_ANIME`). Named eases (`'out(3)'`, `'inOutSine'`, `'outElastic(1, .6)'`) still work as strings.
 2. **SSR hydration**: never derive initial React state from browser-API presence (`typeof IntersectionObserver`) — Node lacks them and the server HTML diverges. Same family: the FOUC-guard attribute needs `suppressHydrationWarning` on `<html>`.

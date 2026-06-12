@@ -1,0 +1,71 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.decodeLine {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-arrival);
+}
+
+.replay {
+    min-height: 38px;
+    padding: 8px 16px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 6px;
+    background: var(--color-surface-raised);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    transition: border-color 0.2s var(--ease-out);
+}
+
+.replay:hover,
+.replay:focus-visible {
+    border-color: var(--color-arrival);
+}
+
+.revealStage {
+    min-width: min(320px, 100%);
+}
+
+.revealSample {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.4rem, 1rem + 2vw, 2.2rem);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.rollLink {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.hint {
+    flex-basis: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    color: var(--color-text-dim);
+}
+
+.hint code {
+    color: var(--color-arrival);
+}
