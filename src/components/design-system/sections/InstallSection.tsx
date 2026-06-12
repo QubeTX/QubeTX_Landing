@@ -4,7 +4,7 @@ import RuleGrid from '../RuleGrid'
 import CodeBlock from '../CodeBlock'
 import AgentNote from '../AgentNote'
 import { InstallBlock, DownloadCard } from '@/components/terminal'
-import { DS_KIT_FILENAME, DS_VERSION } from '@/data/designSystem'
+import { DS_KIT_FILENAME, DS_KIT_URL, DS_VERSION } from '@/data/designSystem'
 
 const TARGETS = [
   {
@@ -44,7 +44,8 @@ export default function InstallSection() {
         <DownloadCard
           name="Design-system kit"
           meta={`v${DS_VERSION} · zip · tokens + fonts + source + agent docs`}
-          href={`/${DS_KIT_FILENAME}`}
+          href={DS_KIT_URL}
+          downloadName={DS_KIT_FILENAME}
           description="The same artifact as the sidebar button: everything a new QubeTX project copies on day one."
         />
       </DemoPanel>

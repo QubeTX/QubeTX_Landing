@@ -6,7 +6,7 @@
  */
 
 /** Kept in lockstep with package.json — asserted by a unit test. */
-export const DS_VERSION = '3.2.0'
+export const DS_VERSION = '3.2.1'
 export const DS_DATE = 'June 2026'
 
 export type DsGroup =
