@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`/eggsy` — the easter-egg key.** A hidden, no-scroll page that hands over
+  the cheatsheet: a Quiver-generated wireframe-cube-cracking-open-like-an-egg
+  centerpiece (glowing core) on the brand dot field, the four-egg register, and
+  a one-click download of `qubetx-egg-key.txt` (built client-side from shared
+  `src/data/eggKey.ts`, so the on-page table and the file can't drift).
+
 ### Fixed
 - **Brand fonts now render.** Makira and IBM Plex Mono are injected as
   `next/font` CSS variables, but the `.variable` classes sat on `<body>` while

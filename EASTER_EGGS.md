@@ -11,6 +11,14 @@ is the answer key.
 | 3 | **TR-300 WEB REPORT** | Konami code: `↑ ↑ ↓ ↓ ← → ← → B A` | Full-screen CRT terminal boot-prints a machine-report-style diagnostic of the site itself (framework, render mode, your cores/viewport/pointer, uptime), ends `ALL SYSTEMS NOMINAL` and links to reports.qubetx.com. **Exit:** `Esc` or the `[esc] exit` button (CRT power-off collapse). Scroll locks while open. |
 | 4 | **Cube de-render** | Click the header cube logo **5× within 2.5 s** | The wireframe logo un-draws its strokes, then redraws itself with an elastic settle and fires a dot-field pulse at its own position. |
 
+## The key page (`/eggsy`)
+
+A hidden, unlinked route — `/eggsy` — serves a public-facing version of this
+key: a no-scroll terminal "dossier" with a Quiver-generated cube-egg
+centerpiece and a one-click download of `qubetx-egg-key.txt`. The page table
+and the downloadable file are both generated from `src/data/eggKey.ts` (the
+public cheatsheet; this file remains the exhaustive engineering answer key).
+
 ## Discoverability breadcrumbs (intentional)
 
 - The **footer bottom-right glyph** `↑↑↓↓←→←→BA` sits at 40% opacity and
