@@ -17,7 +17,7 @@ const BOOT_LINE = '$ qubetx --products'
 
 /**
  * The product line — striped full-width rows (machine-report idiom), each
- * linking to its reports.qubetx.com page. Terminal flavor is concentrated
+ * linking to its product page. Terminal flavor is concentrated
  * in the header's boot line: typed once on first scroll into view, with a
  * forever-blinking block cursor (CSS).
  */
@@ -49,7 +49,7 @@ const Products: FC = () => {
       <SectionHeading
         label="02 // Product line"
         title="Terminal-grade tooling"
-        subtitle="Diagnostic software we build, ship, and run ourselves — free to try at reports.qubetx.com."
+        subtitle="Software we build, ship, and run ourselves — diagnostic CLIs and web tools you can try today."
         aside={
           <span className={styles.boot} ref={setBootRefs} aria-hidden="true">
             {BOOT_LINE.split('').map((ch, i) => (

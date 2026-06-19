@@ -82,19 +82,20 @@ describe('NAV_ITEMS', () => {
 })
 
 describe('PRODUCTS', () => {
-  it('has the five-product line', () => {
+  it('has the product line', () => {
     expect(PRODUCTS.map((p) => p.code)).toEqual([
       'TR-300',
-      'SD-300',
+      // 'SD-300',   // TEMP HIDDEN (WIP) — reinstate alongside content.ts
       'ND-300',
       'WB-300',
-      'SHAUGHVOS',
+      // 'SHAUGHVOS', // TEMP HIDDEN (WIP) — reinstate alongside content.ts
+      'QK-300',
     ])
   })
 
-  it('every product lives under reports.qubetx.com', () => {
+  it('every product is an https link on a QubeTX-owned domain', () => {
     for (const product of PRODUCTS) {
-      expect(product.href).toMatch(/^https:\/\/reports\.qubetx\.com/)
+      expect(product.href).toMatch(/^https:\/\/(reports\.qubetx\.com|qork\.me)/)
     }
   })
 
@@ -127,7 +128,7 @@ describe('ABOUT_CONTENT', () => {
 describe('PROJECTS', () => {
   it('does not contain the System Reports project (lives in PRODUCTS now)', () => {
     expect(PROJECTS.some((p) => p.id === 'system-reports')).toBe(false)
-    expect(PROJECTS).toHaveLength(7)
+    expect(PROJECTS).toHaveLength(6)
   })
 
   it('each project has required fields', () => {

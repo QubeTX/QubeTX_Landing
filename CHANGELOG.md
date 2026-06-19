@@ -5,6 +5,30 @@ All notable changes to the QubeTX Landing Page project will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **Brand fonts now render.** Makira and IBM Plex Mono are injected as
+  `next/font` CSS variables, but the `.variable` classes sat on `<body>` while
+  the `--font-stack-sans` / `--font-sans` token chain reads them from `:root`.
+  A custom property declared on `:root` resolves its `var()`s at `:root`, where
+  the body-scoped variables don't exist — so the whole stack went invalid and
+  every surface fell back to the system sans. The variable classes now sit on
+  `<html>`, so the token chain resolves and the brand type paints everywhere.
+
+### Changed
+- **QorkMe joins the product line.** `qork.me` moves from the Work section
+  (client/portfolio projects) into Products as **QK-300 · QorkMe** — a URL
+  shortener that now ships a universal `qork` CLI and agent-ready
+  infrastructure, so it belongs with the tooling we build, ship, and run
+  ourselves. The Products section copy no longer claims everything lives under
+  reports.qubetx.com; the About counters read 06 Products Shipped / 06 Client
+  Projects.
+- **SD-300 and shaughvOS temporarily hidden** from the product line (and the
+  footer, which renders from the same list) pending WIP. Preserved in source —
+  reinstate by uncommenting their entries in `src/data/content.ts` and the
+  matching codes in `content.test.ts`.
+
 ## [3.1.0] - 2026-06-11
 
 The design system becomes a product: a full documentation page, a reusable

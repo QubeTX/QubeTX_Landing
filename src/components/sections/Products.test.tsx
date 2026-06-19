@@ -10,7 +10,7 @@ describe('Products', () => {
     expect(document.querySelectorAll('[data-boot-char]').length).toBeGreaterThan(0)
   })
 
-  it('renders every product as an external reports.qubetx.com link', () => {
+  it('renders every product as an external link', () => {
     render(<Products />)
     for (const product of PRODUCTS) {
       const link = screen.getByRole('link', {
@@ -22,7 +22,7 @@ describe('Products', () => {
     }
   })
 
-  it('shows all five product codes', () => {
+  it('shows all product codes', () => {
     render(<Products />)
     for (const product of PRODUCTS) {
       expect(screen.getByText(product.code)).toBeInTheDocument()

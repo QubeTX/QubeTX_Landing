@@ -9,12 +9,12 @@ describe('Work', () => {
     expect(screen.getByRole('heading', { name: /client projects/i })).toBeInTheDocument()
   })
 
-  it('renders all seven projects and no System Reports card', () => {
+  it('renders all six projects and no System Reports card', () => {
     render(<Work items={PROJECTS} />)
     for (const project of PROJECTS) {
       expect(screen.getByText(project.title)).toBeInTheDocument()
     }
     expect(screen.queryByText('System Reports')).toBeNull()
-    expect(PROJECTS).toHaveLength(7)
+    expect(PROJECTS).toHaveLength(6)
   })
 })

@@ -25,9 +25,13 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: the inline FOUC-guard script adds data-loading
     // to <html> before hydration (same pattern as theme scripts)
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`dark ${makira.variable} ${plexMono.variable}`}
+      suppressHydrationWarning
+    >
       <body
-        className={`${makira.variable} ${plexMono.variable} font-sans bg-background text-foreground antialiased selection:bg-primary/30`}
+        className="font-sans bg-background text-foreground antialiased selection:bg-primary/30"
       >
         {/* Pre-paint guards (no-JS never sets either attribute):
             - data-loading hides [data-load] entrance targets; LoadSequence

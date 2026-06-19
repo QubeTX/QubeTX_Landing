@@ -133,7 +133,11 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'contact', label: 'Contact', href: '#contact' }
 ]
 
-/** The QubeTX product line — every entry lives under reports.qubetx.com. */
+/**
+ * The QubeTX product line — tooling we build, ship, and run ourselves. Most
+ * live under reports.qubetx.com; standalone properties (e.g. qork.me) carry
+ * their own domain.
+ */
 export const PRODUCTS: Product[] = [
   {
     id: 'tr-300',
@@ -146,6 +150,9 @@ export const PRODUCTS: Product[] = [
     status: 'STABLE',
     tags: ['CLI', 'Rust', 'Cross-platform']
   },
+  /* TEMP HIDDEN (WIP) — reinstate by uncommenting. The Products section and the
+     Footer both render from PRODUCTS, so this hides it everywhere public; keep
+     the matching code in content.test.ts's expected-codes list commented too.
   {
     id: 'sd-300',
     code: 'SD-300',
@@ -157,6 +164,7 @@ export const PRODUCTS: Product[] = [
     status: 'STABLE',
     tags: ['TUI', 'Monitoring']
   },
+  */
   {
     id: 'nd-300',
     code: 'ND-300',
@@ -179,6 +187,9 @@ export const PRODUCTS: Product[] = [
     status: 'ACTIVE',
     tags: ['CLI', 'Git']
   },
+  /* TEMP HIDDEN (WIP) — reinstate by uncommenting. The Products section and the
+     Footer both render from PRODUCTS, so this hides it everywhere public; keep
+     the matching code in content.test.ts's expected-codes list commented too.
   {
     id: 'shaughvos',
     code: 'SHAUGHVOS',
@@ -189,6 +200,18 @@ export const PRODUCTS: Product[] = [
     href: 'https://reports.qubetx.com/shaughvos',
     status: 'ACTIVE',
     tags: ['OS', 'Debian']
+  },
+  */
+  {
+    id: 'qork',
+    code: 'QK-300',
+    name: 'QorkMe',
+    tagline: 'Short links with a universal CLI.',
+    description:
+      'A modern URL shortener with custom aliases and QR generation, plus a universal qork CLI and agent-ready infrastructure for minting links straight from the terminal or automated workflows. Powered by Supabase and Vercel.',
+    href: 'https://qork.me',
+    status: 'STABLE',
+    tags: ['Web App', 'CLI', 'Agent infra']
   }
 ]
 
@@ -199,8 +222,8 @@ export const ABOUT_CONTENT = {
     'Everything on this page — the type, the motion, the dots reacting under your cursor — is the same attention to detail we bring to client work. If it ships under our name, it ships finished.'
   ],
   stats: [
-    { value: '07', label: 'Client Projects' },
-    { value: '05', label: 'Products Shipped' },
+    { value: '06', label: 'Client Projects' },
+    { value: '06', label: 'Products Shipped' },
     { value: '06', label: 'Step Process' },
     { value: '100%', label: 'In-House' }
   ] satisfies Stat[]
@@ -285,16 +308,6 @@ export const PROJECTS: Project[] = [
     tags: ['Business', 'Service', 'Houston'],
     description:
       "A professional website for Houston's premier commercial lawn care provider. The site reflects their commitment to excellence and showcases their comprehensive range of services."
-  },
-  {
-    id: 'qorkme',
-    href: 'https://qork.me',
-    image: '/qorkme.png',
-    alt: 'QorkMe URL Shortener',
-    title: 'QorkMe',
-    tags: ['URL Shortener', 'Tool', 'Bauhaus'],
-    description:
-      'A modern URL shortener with a Bauhaus-inspired dot matrix interface and live clock display. Thoughtful short links for modern teams, powered by Supabase and Vercel.'
   },
   {
     id: 'bauhaus-qr',
