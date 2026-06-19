@@ -251,6 +251,14 @@ Unchanged core rules (confirmed across many projects):
     the pattern: portal as an AnimatePresence *child* (a bare
     `createPortal` return fails `isValidElement` and gets dropped), only
     while open (no SSR `document` access).
+15. **next/font variables go on `<html>`, never `<body>`.** The
+    `--font-stack-sans`/`--font-sans` chain is declared on `:root` (globals.css
+    `@theme`), and a custom property resolves its `var()`s on the element it's
+    declared on — so font vars scoped to a `:root` *descendant* (`<body>`) make
+    the stack invalid-at-computed-value-time and every surface silently falls
+    back to system sans. `layout.tsx` puts `makira.variable`/`plexMono.variable`
+    on `<html>`. Confirm via computed `font-family` in a real browser:
+    `@font-face` present in the build ≠ the cascade resolving.
 
 ## Common Gotchas
 
@@ -269,6 +277,11 @@ Unchanged core rules (confirmed across many projects):
    before judging a visual bug in dev.
 9. Deploys are Vercel-only. Legacy GitHub Pages was disabled 2026-06 (API
    verified 404) — don't re-enable it.
+10. Editing `PRODUCTS`/`PROJECTS` (`src/data/content.ts`) ripples into
+    `content.test.ts` (exact product-code list, the every-product-domain match,
+    `PROJECTS` length) and the `ABOUT_CONTENT` stat counts; the Footer + section
+    render from `PRODUCTS` automatically. To hide a product, comment its entry
+    out (cascades everywhere) and comment its code in the test.
 
 ## Design System
 
