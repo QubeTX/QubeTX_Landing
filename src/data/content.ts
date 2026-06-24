@@ -208,8 +208,8 @@ export const PRODUCTS: Product[] = [
     name: 'QorkMe',
     tagline: 'Short links with a universal CLI.',
     description:
-      'A modern URL shortener with custom aliases and QR generation, plus a universal qork CLI and agent-ready infrastructure for minting links straight from the terminal or automated workflows. Powered by Supabase and Vercel.',
-    href: 'https://qork.me',
+      'A modern URL shortener with custom aliases, plus a universal qork CLI and agent-ready infrastructure for minting links straight from the terminal or automated workflows. Powered by Supabase and Vercel.',
+    href: 'https://qork.me/install',
     status: 'STABLE',
     tags: ['Web App', 'CLI', 'Agent infra']
   }
