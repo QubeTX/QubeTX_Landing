@@ -1,0 +1,122 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* The demo triggers — mono, bordered, like the technical register */
+.trigger {
+    min-height: 40px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 6px;
+    background: var(--color-surface-raised);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+        border-color 0.2s var(--ease-out),
+        background-color 0.2s var(--ease-out);
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+    border-color: var(--color-arrival);
+    background: rgba(0, 102, 255, 0.1);
+}
+
+/* Modal action-row buttons */
+.ghost,
+.primary,
+.danger {
+    min-height: 40px;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+        border-color 0.2s var(--ease-out),
+        background-color 0.2s var(--ease-out),
+        opacity 0.2s var(--ease-out);
+}
+
+.ghost {
+    background: transparent;
+    border-color: var(--color-border-bright);
+    color: var(--text-secondary);
+}
+
+.ghost:hover,
+.ghost:focus-visible {
+    color: var(--text-primary);
+    border-color: var(--color-arrival);
+}
+
+.primary {
+    background: var(--gradient-brand);
+    color: #fff;
+}
+
+.primary:hover,
+.primary:focus-visible {
+    box-shadow: 0 6px 24px -10px var(--glow-blue);
+}
+
+.danger {
+    background: rgba(220, 38, 38, 0.14);
+    border-color: rgba(220, 38, 38, 0.5);
+    color: #fca5a5;
+}
+
+.danger:enabled:hover,
+.danger:enabled:focus-visible {
+    background: rgba(220, 38, 38, 0.22);
+    border-color: #f87171;
+    color: #fecaca;
+}
+
+.danger:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Form field inside dialogs */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 14px;
+}
+
+.field > span {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+}
+
+.field input {
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 6px;
+    background: var(--color-void);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.field input:focus-visible {
+    outline: none;
+    border-color: var(--color-arrival);
+}

@@ -5,7 +5,7 @@ import AgentNote from '../AgentNote'
 import CodeBlock from '../CodeBlock'
 import PretextDemo from '../PretextDemo'
 
-/** §23 — Pretext. DOM-free text measurement and the laws around it. */
+/** §25 — Pretext. DOM-free text measurement and the laws around it. */
 export default function PretextSection() {
   return (
     <DsSection

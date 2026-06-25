@@ -6,7 +6,7 @@ description: The QubeTX design system — use when building, styling, or animati
 # QubeTX Design System — agent skill
 
 You are building a QubeTX surface. The living spec is **qubetx.com/design-system**
-(26 numbered sections, live specimens); the spec of record is **DESIGN_SYSTEM.md**
+(28 numbered sections, live specimens); the spec of record is **DESIGN_SYSTEM.md**
 (shipped in this kit). This skill is the executable summary.
 
 ## The seven principles (decide everything else from these)
@@ -35,7 +35,7 @@ Then copy from this kit:
 | `src/lib/pretext/` | same | PretextBlock, provider, resizeCoordinator (THE resize system) |
 | `src/hooks/` | same | useScrolled, useActiveSection, useAnchorNav |
 | `src/fonts/` | same | Makira + IBM Plex Mono woff2 + next/font declarations |
-| `src/components/ui/` | same | buttons, links, pills, cards, stats, logo, icons registry |
+| `src/components/ui/` | same | buttons, links, pills, cards, stats, modal, logo, icons registry |
 | `src/components/terminal/` | same | TerminalFrame, CommandTable, InstallBlock, DownloadCard, CapabilityRows |
 | `src/components/effects/` | as needed | DotGrid, CustomCursor+engine, SmoothScroll, ScrollProgress, ScrollTrace, BootScreen, LoadSequence |
 | `src/test/` | same | setup.ts mocks (pretext/FM/anime/lenis) + IO/matchMedia stubs |
@@ -83,6 +83,8 @@ Both share ALL tokens and the motion doctrine. Never fork the palette.
 | A canvas surface | DotGrid's model: anime/pure-math animates plain objects, canvas only blits |
 | Scroll trigger / scrub / jump | `useInViewOnce` / Lenis-seeked paused timeline / `useAnchorNav` |
 | Scroll-storytelling decoration (OPTIONAL — showcase surfaces only, never every page) | `ScrollTrace` pattern: `buildTrace()` geometry + drawable timeline seeked from Lenis. Keep the brand language (gradient strokes, no SVG filters, reduced-motion = static); the specific design varies per surface — be creative with the product's context |
+| A scrollbar (any overflow surface) | Native baseline is automatic, themed via `--bs-*` tokens — **never a grey default**. Animated rail is OPT-IN: `useBrandScrollbar(ref, { ticks, readout })` on showcase/long-form surfaces only |
+| A modal / dialog / confirm | `Modal` (portaled to body, focus trap, Esc + scrim dismiss, focus return, Lenis paused). `MobileMenu` is the nav specialization — never hand-roll a fixed overlay |
 | First-load theater | BootScreen CONTRACT (pre-paint arming, readiness completion, failsafes) — opt-in |
 
 ## The laws (violations are bugs, not style)
@@ -95,7 +97,8 @@ Both share ALL tokens and the motion doctrine. Never fork the palette.
   high-frequency channels use wave objects / pure math.
 - **Sentence case in storage; UPPERCASE via CSS.**
 - **Letter-spaced text is never Pretext-measured.**
-- **Fullscreen fixed overlays portal to document.body.**
+- **Fullscreen fixed overlays portal to document.body** (use `Modal`/`MobileMenu`, never hand-roll).
+- **No grey default scrollbar** — theme every overflow surface via the `--bs-*` tokens; inner scroll containers under Lenis need `data-lenis-prevent-wheel` + `overscroll-behavior: contain`.
 - **decode/slot-roll/Pretext/anime/FM never share a node.**
 - **`--color-text-dim` and `--color-arrival` are contrast-tuned — don't adjust.**
 

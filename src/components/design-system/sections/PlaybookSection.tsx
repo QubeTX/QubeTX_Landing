@@ -24,7 +24,7 @@ const BOOTSTRAP = [
   },
   {
     title: 'Pick the register, build the page',
-    body: 'Persuading → landing register (§03). Operating → technical register (§13–14). Compose from the live components; copy from the cheatsheet (§25); route every motion decision through §16–18.',
+    body: 'Persuading → landing register (§03). Operating → technical register (§13–14). Compose from the live components; copy from the cheatsheet (§27); route every motion decision through §17–19.',
   },
   {
     title: 'Run the gate. Every commit.',
@@ -33,19 +33,19 @@ const BOOTSTRAP = [
 ]
 
 const ROUTING = [
-  { command: 'A label that changes', description: '§17 — useSlotRoll / SlotRoll. Always.' },
+  { command: 'A label that changes', description: '§18 — useSlotRoll / SlotRoll. Always.' },
   { command: 'A button or link', description: '§09 — OutlineButton / TextLink + the destination rule' },
   { command: 'A product/tool page', description: '§13–14 — TerminalFrame, CommandTable, InstallBlock, DownloadCard' },
-  { command: 'A heading arriving', description: '§18 — RevealText (words). Pill labels decode' },
-  { command: 'Body copy that wraps', description: '§23 — PretextBlock (min-height; shrinkwrap if left-aligned)' },
+  { command: 'A heading arriving', description: '§19 — RevealText (words). Pill labels decode' },
+  { command: 'Body copy that wraps', description: '§25 — PretextBlock (min-height; shrinkwrap if left-aligned)' },
   { command: 'A card grid', description: '§11 — pick the species by job; glow lives on the grid' },
-  { command: 'A canvas surface', description: '§19 — plain-object animation + pure math + dumb blitter' },
-  { command: 'Scroll behavior', description: '§20 — IO for triggers, Lenis for scrubbing, useAnchorNav for jumps' },
+  { command: 'A canvas surface', description: '§20 — plain-object animation + pure math + dumb blitter' },
+  { command: 'Scroll behavior', description: '§21 — IO for triggers, Lenis for scrubbing, useAnchorNav for jumps' },
   { command: 'A live status / KPI', description: '§12 — StatValue pattern; set() on real change only' },
-  { command: 'First-load theater', description: '§22 — opt-in; copy the boot CONTRACT, not just the look' },
+  { command: 'First-load theater', description: '§24 — opt-in; copy the boot CONTRACT, not just the look' },
 ]
 
-/** §24 — The agent playbook. From empty directory to QubeTX-grade. */
+/** §26 — The agent playbook. From empty directory to QubeTX-grade. */
 export default function PlaybookSection() {
   return (
     <DsSection

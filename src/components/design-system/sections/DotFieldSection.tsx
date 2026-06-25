@@ -15,7 +15,7 @@ const ARCHITECTURE = [
   { command: 'lifecycle', description: 'IO pauses offscreen; rebuilds via resizeCoordinator (waves cleared — index-aligned); reduced motion = static ramp' },
 ]
 
-/** §19 — The dot field. The signature surface and its optimization model. */
+/** §20 — The dot field. The signature surface and its optimization model. */
 export default function DotFieldSection() {
   return (
     <DsSection

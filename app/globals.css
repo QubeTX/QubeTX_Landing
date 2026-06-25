@@ -27,6 +27,22 @@
   --gradient-brand: linear-gradient(90deg, #2563eb, #7c3aed);
   --glow-blue: rgba(37, 99, 235, 0.25);
 
+  /* Brand scrollbar (brand-scrollbar baseline below + useBrandScrollbar
+     overlay). Hybrid: a RESTRAINED native bar on every surface, an
+     EXPRESSIVE gradient rail opt-in. Dark-only, so one token set — no
+     light/dark pair. Forward var() refs (--primary-blue etc.) resolve at
+     computed-value time, so order within :root is irrelevant. */
+  --bs-thumb: var(--color-border-bright);          /* #2c3a5c — native bar at rest */
+  --bs-thumb-hover: var(--primary-blue);           /* #0066FF — native bar on hover */
+  --bs-size: 12px;                                 /* native rail gutter (slim rule via inset border) */
+  --bs-radius: 3px;                                /* QubeTX house radius — NOT Millis's sharp 2px */
+  --bs-track: rgba(0, 102, 255, 0.16);             /* faint blue ghost track (overlay) */
+  --bs-accent: linear-gradient(180deg, var(--gradient-blue), var(--gradient-purple)); /* overlay kinetic rule */
+  --bs-accent-solid: var(--primary-blue);          /* overlay ticks / fallbacks */
+  --bs-mono: var(--font-stack-mono);               /* overlay readout */
+  --bs-readout-bg: var(--color-surface-raised);    /* overlay readout pill */
+  --bs-readout-fg: var(--text-primary);
+
   /* Motion — THE easing for all CSS transitions (machine-report standard) */
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
 
@@ -239,22 +255,55 @@ html[data-loading] [data-load] {
   opacity: 0;
 }
 
-/* Custom Scrollbar */
+/* Brand scrollbar — native restyle baseline (every surface). The REAL browser
+   bar recolored to the QubeTX palette so there is never a grey default to fall
+   back to; `.bs-scroll` hides it where useBrandScrollbar draws the overlay
+   rail. Tokens: --bs-* in the @kit-tokens block above. */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: var(--bs-size, 12px);
+  height: var(--bs-size, 12px);
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0f1c;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: var(--bs-thumb, #2c3a5c);
+  /* transparent inset border + padding-box clip = a slim rule with breathing
+     room, not a fat block flush to the track edge */
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--bs-radius, 3px);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--bs-thumb-hover, #0066ff);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bs-thumb, #2c3a5c) transparent;
+}
+
+/* Overlay surfaces: hide the native bar so only the engine rail shows. The
+   hook adds `.bs-scroll` on attach and removes it on destroy, so a torn-down
+   overlay degrades to the branded native bar above — never the default. */
+.bs-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.bs-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* Global keyboard focus state — essential since custom cursor hides native cursor */

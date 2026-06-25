@@ -7,7 +7,7 @@ const ROUTING = [
   { command: 'Marketing / landing surface', description: 'Landing register: hero + dot field, editorial sections, cards, the full entrance choreography' },
   { command: 'Product / tool page', description: 'Technical register: TerminalFrame hero, CapabilityRows, CommandTable, InstallBlock + DownloadCard (§13–14)' },
   { command: 'Documentation surface', description: 'This page’s chrome: grouped sidebar + numbered sections + live specimens + the rail' },
-  { command: 'Dashboard / live data', description: 'Technical register + live slot rolls on changing values (§12, §17) — no entrance theater' },
+  { command: 'Dashboard / live data', description: 'Technical register + live slot rolls on changing values (§12, §18) — no entrance theater' },
 ]
 
 /** §03 — The two registers. One system, two voices. */
@@ -23,7 +23,7 @@ export default function Registers() {
 
       <AgentNote
         checklist={[
-          'Both registers share ALL tokens (§04–08) and the motion doctrine (§16) — never fork the palette per register',
+          'Both registers share ALL tokens (§04–08) and the motion doctrine (§17) — never fork the palette per register',
           'reports.qubetx.com predates v3 — its layouts are canonized in §13–14; its colors are NOT part of this system and will migrate',
           'Mixing registers on one page is normal (the landing’s Products section is technical-register rows inside an editorial page) — mixing within one component is not',
         ]}

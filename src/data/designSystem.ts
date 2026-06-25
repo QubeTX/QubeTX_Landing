@@ -6,7 +6,7 @@
  */
 
 /** Kept in lockstep with package.json — asserted by a unit test. */
-export const DS_VERSION = '3.2.2'
+export const DS_VERSION = '3.3.0'
 export const DS_DATE = 'June 2026'
 
 export type DsGroup =
@@ -49,18 +49,20 @@ export const DS_SECTIONS: DsSectionMeta[] = [
   { id: 'terminal', num: '13', group: 'Components', label: 'Terminal surfaces', title: 'Terminal surfaces' },
   { id: 'install', num: '14', group: 'Components', label: 'Install & download', title: 'Install & download' },
   { id: 'chrome', num: '15', group: 'Components', label: 'Site chrome', title: 'Site chrome' },
+  { id: 'modal', num: '16', group: 'Components', label: 'Modal & dialog', title: 'Modal & dialog' },
 
-  { id: 'doctrine', num: '16', group: 'Motion', label: 'The doctrine', title: 'The motion doctrine' },
-  { id: 'slot-roll', num: '17', group: 'Motion', label: 'Slot roll', title: 'The slot roll' },
-  { id: 'text-motion', num: '18', group: 'Motion', label: 'Text systems', title: 'Text systems' },
-  { id: 'dot-field', num: '19', group: 'Motion', label: 'Dot field', title: 'The dot field' },
-  { id: 'scroll', num: '20', group: 'Motion', label: 'Scroll systems', title: 'Scroll systems' },
-  { id: 'cursor', num: '21', group: 'Motion', label: 'Cursor & pointer', title: 'Cursor & pointer' },
-  { id: 'boot', num: '22', group: 'Motion', label: 'Boot & load', title: 'Boot & load' },
+  { id: 'doctrine', num: '17', group: 'Motion', label: 'The doctrine', title: 'The motion doctrine' },
+  { id: 'slot-roll', num: '18', group: 'Motion', label: 'Slot roll', title: 'The slot roll' },
+  { id: 'text-motion', num: '19', group: 'Motion', label: 'Text systems', title: 'Text systems' },
+  { id: 'dot-field', num: '20', group: 'Motion', label: 'Dot field', title: 'The dot field' },
+  { id: 'scroll', num: '21', group: 'Motion', label: 'Scroll systems', title: 'Scroll systems' },
+  { id: 'scrollbar', num: '22', group: 'Motion', label: 'Scrollbar', title: 'The brand scrollbar' },
+  { id: 'cursor', num: '23', group: 'Motion', label: 'Cursor & pointer', title: 'Cursor & pointer' },
+  { id: 'boot', num: '24', group: 'Motion', label: 'Boot & load', title: 'Boot & load' },
 
-  { id: 'pretext', num: '23', group: 'Patterns', label: 'Pretext', title: 'Text that knows its shape' },
-  { id: 'playbook', num: '24', group: 'Patterns', label: 'Agent playbook', title: 'The agent playbook' },
-  { id: 'cheatsheet', num: '25', group: 'Patterns', label: 'Cheatsheet', title: 'Cheatsheet' },
+  { id: 'pretext', num: '25', group: 'Patterns', label: 'Pretext', title: 'Text that knows its shape' },
+  { id: 'playbook', num: '26', group: 'Patterns', label: 'Agent playbook', title: 'The agent playbook' },
+  { id: 'cheatsheet', num: '27', group: 'Patterns', label: 'Cheatsheet', title: 'Cheatsheet' },
 ]
 
 /** Sidebar/rail group order (derived once — registry order is canonical). */

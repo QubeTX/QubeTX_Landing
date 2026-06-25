@@ -30,7 +30,10 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className={styles.sidebar}>
+    // data-lenis-prevent-wheel: the sidebar is its own scroll container, so a
+    // wheel/trackpad gesture over it must scroll IT, not drive Lenis on the
+    // page. Touch is left to Lenis (mobile collapses this to a short top bar).
+    <aside className={styles.sidebar} data-lenis-prevent-wheel="">
       <div className={styles.brand}>
         <a className={styles.brandLink} href="/" aria-label="QubeTX home">
           <QubeTXLogo className={styles.brandLogo} />

@@ -116,6 +116,7 @@ export default function MobileMenu({ items, cta, onNavigate }: MobileMenuProps) 
               ref={overlayRef}
               id={OVERLAY_ID}
               className={styles.overlay}
+              data-lenis-prevent=""
               role="dialog"
               aria-modal="true"
               aria-label="Site navigation"

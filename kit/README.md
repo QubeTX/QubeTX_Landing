@@ -21,13 +21,14 @@ qubetx-design-system/
     ├── lib/motion/             tokens · anime seam · slot roll (slotText/SlotRoll)
     │                           · RevealText/splitText · decode · colorRamp
     │                           · dotGridGeometry (wave ripples) · dotFont
-    │                           · scrollTracePath · magnetic · proximity · hooks
+    │                           · scrollTracePath · brandScrollbar/useBrandScrollbar
+    │                           · magnetic · proximity · hooks
     ├── lib/pretext/            PretextBlock · provider · resizeCoordinator
     ├── lib/designSystem/       tinyTint (code tinter)
     ├── hooks/                  useScrolled · useActiveSection · useAnchorNav
     ├── fonts/                  next/font/local declarations
     ├── components/ui/          OutlineButton · TextLink · LabelPill · cards
-    │                           · StatValue · RollingLink · SectionHeading
+    │                           · StatValue · RollingLink · SectionHeading · Modal
     │                           · RoutedText · QubeTXLogo · icons registry
     ├── components/terminal/    TerminalFrame · CommandTable · CapabilityRows
     │                           · InstallBlock · DownloadCard  (the technical register)

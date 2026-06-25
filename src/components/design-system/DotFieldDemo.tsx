@@ -6,7 +6,7 @@ import MatrixDisplay from '@/components/effects/MatrixDisplay'
 import styles from './DotFieldDemo.module.css'
 
 /**
- * §19's live field — a container-sized DotGrid (the production component;
+ * §20's live field — a container-sized DotGrid (the production component;
  * move the pointer across it for the wave ripples) plus a pulse trigger on
  * the qubetx:pulse bus, and the LED matrix board.
  */

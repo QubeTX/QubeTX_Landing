@@ -4,7 +4,7 @@ import { useRef, useState, type FC } from 'react'
 import { useSlotRoll } from '@/lib/motion/SlotRoll'
 import styles from './SlotRollDemos.module.css'
 
-/** §17's live specimens — each panel drives the engine a different way. */
+/** §18's live specimens — each panel drives the engine a different way. */
 
 export const FlashDemo: FC = () => {
   const [labelRef, label] = useSlotRoll('Copy summary')

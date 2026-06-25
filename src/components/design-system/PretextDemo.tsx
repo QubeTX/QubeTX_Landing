@@ -8,7 +8,7 @@ const SAMPLE =
   'Pretext measures this paragraph with canvas measureText before the DOM lays it out — so the height is reserved ahead of time and the last line never wraps a single orphan word alone.'
 
 /**
- * §23's live specimen: drag the width — the paragraph is measured, its
+ * §25's live specimen: drag the width — the paragraph is measured, its
  * height reserved, and (being left-aligned) shrinkwrapped so no orphan
  * word ever wraps alone.
  */

@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import styles from './CursorSandbox.module.css'
 
 /**
- * §21's sandbox — zones the global CustomCursor (mounted in the root
+ * §23's sandbox — zones the global CustomCursor (mounted in the root
  * layout) reacts to. Fine pointers only; touch devices keep the native
  * cursor and see static panels.
  */

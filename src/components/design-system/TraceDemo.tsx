@@ -7,7 +7,7 @@ import { buildTrace } from '@/lib/motion/scrollTracePath'
 import { prefersReducedMotion } from '@/lib/motion/useMotionPreference'
 
 /**
- * §20's live specimen: a miniature ScrollTrace scrubbed by its own transit
+ * §21's live specimen: a miniature ScrollTrace scrubbed by its own transit
  * through the viewport — the paused drawable timeline seeks from how far
  * the panel has traveled, so the circuit draws scrolling down and reverses
  * scrolling up (the scrub pattern demonstrating itself, left-gutter lane

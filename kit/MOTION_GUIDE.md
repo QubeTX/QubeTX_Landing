@@ -2,7 +2,7 @@
 
 The animation playbook behind qubetx.com — distilled from DESIGN_SYSTEM.md
 §motion and the hard-won gotchas. Live demos of everything here:
-https://qubetx.com/design-system (§16–22).
+https://qubetx.com/design-system (§17–24).
 
 ## 1 · Ownership (the load-bearing law)
 
@@ -111,6 +111,27 @@ as a second wider stroke (never an SVG filter), hidden where the gutter is
 too thin, re-measure only via `resizeCoordinator`, reduced motion = the
 complete trace rendered statically. The specific design varies per surface;
 the language doesn't.
+
+### The brand scrollbar (two layers)
+
+The scrollbar is the most-seen chrome on any page, so it carries the brand
+quietly by default and loudly only on request.
+
+- **Layer 1 — native restyle (automatic, universal).** `globals.css` recolors
+  the real browser bar to the `--bs-*` tokens (slate-blue rest → electric-blue
+  hover, 3px house radius, slim rule via a 3px transparent inset border). There
+  is **never** a grey default. This layer can't derender — it IS the native bar.
+- **Layer 2 — animated rail (opt-in).** `useBrandScrollbar(ref, opts)` (kit
+  `lib/motion/`) draws a brand-gradient kinetic rule over a hidden native bar,
+  with optional survey ticks (`[data-bs-section]`/`[data-bs-num]`) and a mono
+  `SEC NN · NN%` readout — SectionRail's convention, scoped to one scroll
+  element instead of the document. Same instinct as the trace: showcase /
+  long-form surfaces only, never every page. anime via the seam; reduced motion
+  = static; re-measure via `resizeCoordinator` (never a ResizeObserver); the
+  Millis plumb-bob is dropped (QubeTX's motif is the cube/circuit).
+- **Inner scroll containers under Lenis** (sidebars, panels) need
+  `data-lenis-prevent-wheel` + `overscroll-behavior: contain` so a wheel gesture
+  scrolls THEM, not the page.
 
 ## 6 · Canvas surfaces (the dot-field model)
 

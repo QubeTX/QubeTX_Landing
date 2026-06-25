@@ -18,11 +18,13 @@ import StatsSection from './StatsSection'
 import TerminalSection from './TerminalSection'
 import InstallSection from './InstallSection'
 import ChromeSection from './ChromeSection'
+import ModalSection from './ModalSection'
 import DoctrineSection from './DoctrineSection'
 import SlotRollSection from './SlotRollSection'
 import TextMotionSection from './TextMotionSection'
 import DotFieldSection from './DotFieldSection'
 import ScrollSection from './ScrollSection'
+import ScrollbarSection from './ScrollbarSection'
 import CursorSection from './CursorSection'
 import BootSection from './BootSection'
 import PretextSection from './PretextSection'
@@ -46,11 +48,13 @@ export const SECTION_COMPONENTS = [
   TerminalSection,
   InstallSection,
   ChromeSection,
+  ModalSection,
   DoctrineSection,
   SlotRollSection,
   TextMotionSection,
   DotFieldSection,
   ScrollSection,
+  ScrollbarSection,
   CursorSection,
   BootSection,
   PretextSection,

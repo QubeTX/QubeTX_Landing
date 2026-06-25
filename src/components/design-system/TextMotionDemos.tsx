@@ -7,7 +7,7 @@ import { useMotionPreference } from '@/lib/motion/useMotionPreference'
 import RollingLabel from '@/components/ui/RollingLink'
 import styles from './TextMotionDemos.module.css'
 
-/** §18's live specimens. */
+/** §19's live specimens. */
 
 export const DecodeDemo: FC = () => {
   const lineRef = useRef<HTMLSpanElement | null>(null)

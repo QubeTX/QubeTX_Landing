@@ -30,7 +30,7 @@ const TRACE_KNOBS = [
   { command: 'cubeR', description: 'Junction cube circumradius (9px wide / 5px tight). cubePaths() returns the hexagon outline + three internal edges as plain d-strings' },
 ]
 
-/** §20 — Scroll systems. One driver, two jobs, three engines — and the trace. */
+/** §21 — Scroll systems. One driver, two jobs, three engines — and the trace. */
 export default function ScrollSection() {
   return (
     <DsSection

@@ -19,7 +19,7 @@ const OPTIONS = [
   { command: 'interrupt: true', description: 'A new roll fast-forwards a running one; false queues + coalesces the latest (flash uses this)' },
 ]
 
-/** §17 — The slot roll. THE house micro-interaction for changing labels. */
+/** §18 — The slot roll. THE house micro-interaction for changing labels. */
 export default function SlotRollSection() {
   return (
     <DsSection
@@ -126,7 +126,7 @@ ctl.set('47%'); ctl.destroy()`}
         standard. The decision tree is short: changing label → <code>useSlotRoll</code> /{' '}
         <code>SlotRoll</code>; transient confirmation → <code>flash()</code>; permanent state →{' '}
         <code>set()</code> with direction following travel. If you are animating text any other
-        way, check §18 first — you are probably reaching for the wrong system.
+        way, check §19 first — you are probably reaching for the wrong system.
       </AgentNote>
     </DsSection>
   )

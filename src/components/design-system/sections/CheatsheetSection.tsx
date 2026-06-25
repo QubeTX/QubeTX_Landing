@@ -3,12 +3,12 @@ import AgentNote from '../AgentNote'
 import CodeBlock from '../CodeBlock'
 import styles from './CheatsheetSection.module.css'
 
-/** §25 — Cheatsheet. The recipes, ready to paste. */
+/** §27 — Cheatsheet. The recipes, ready to paste. */
 export default function CheatsheetSection() {
   return (
     <DsSection
       id="cheatsheet"
-      lede="Every recurring pattern as a paste-ready snippet. Each one assumes the kit layers are in place (§24)."
+      lede="Every recurring pattern as a paste-ready snippet. Each one assumes the kit layers are in place (§26)."
     >
       <div className={styles.grid}>
         <CodeBlock
@@ -99,7 +99,7 @@ useEffect(() => { if (inView && !reduced) play() }, [inView, reduced])`}
         checklist={[
           'Snippets assume the kit imports (@/lib/motion, @/components/terminal, @/lib/pretext)',
           'Every snippet has a fuller treatment in its section — the sidebar numbers match',
-          'If a pattern you need is missing here, it goes through §16’s routing table first, then gets added here',
+          'If a pattern you need is missing here, it goes through §17’s routing table first, then gets added here',
         ]}
       >
         Print this section. Everything above it explains <em>why</em>; this is the muscle memory.

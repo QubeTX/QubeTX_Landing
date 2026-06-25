@@ -30,6 +30,7 @@
     background: var(--color-void);
     padding: 16px clamp(16px, 5vw, 32px) clamp(24px, 6vh, 48px);
     overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .topRow {

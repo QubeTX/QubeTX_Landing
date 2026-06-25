@@ -19,12 +19,12 @@ const ROUTING = [
   { command: 'Scroll-scrubbed scene', description: 'Paused anime timeline seek()ed from a Lenis callback (anime onScroll is BANNED)' },
   { command: 'Multi-step choreography / SVG drawing / staggers', description: 'anime.js via the seam' },
   { command: 'Cursor-distance response', description: 'useProximityGlow / cursorEngine — already built, don’t rebuild' },
-  { command: 'Short text that changed', description: 'Neither — the slot roll. Always. (§17)' },
-  { command: 'Paragraph reveal / heading rise', description: 'RevealText (§18)' },
+  { command: 'Short text that changed', description: 'Neither — the slot roll. Always. (§18)' },
+  { command: 'Paragraph reveal / heading rise', description: 'RevealText (§19)' },
   { command: 'Layout/size reaction to resize', description: 'resizeCoordinator subscription — ResizeObserver is banned codebase-wide' },
 ]
 
-/** §16 — The motion doctrine. The laws that keep 60fps honest. */
+/** §17 — The motion doctrine. The laws that keep 60fps honest. */
 export default function DoctrineSection() {
   return (
     <DsSection
@@ -91,7 +91,7 @@ export default function DoctrineSection() {
           },
           {
             title: 'No per-event tween bursts',
-            body: 'Creating hundreds of anime tweens inside a pointer handler costs 8–36ms a hit (measured). High-frequency interactions get wave objects / pure math evaluated per frame (§19).',
+            body: 'Creating hundreds of anime tweens inside a pointer handler costs 8–36ms a hit (measured). High-frequency interactions get wave objects / pure math evaluated per frame (§20).',
           },
           {
             title: 'CSS beats inline; inline display beats media queries',

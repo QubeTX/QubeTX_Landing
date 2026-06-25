@@ -5,7 +5,7 @@ import AgentNote from '../AgentNote'
 import CodeBlock from '../CodeBlock'
 import CursorSandbox from '../CursorSandbox'
 
-/** §21 — Cursor & pointer. The dot/ring/bloom identity and its engine. */
+/** §23 — Cursor & pointer. The dot/ring/bloom identity and its engine. */
 export default function CursorSection() {
   return (
     <DsSection

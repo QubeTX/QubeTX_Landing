@@ -26,7 +26,7 @@ const SEQUENCE = [
   { command: '6 · the beat', description: 'qubetx:pulse fired bottom-right — the dot field answers' },
 ]
 
-/** §22 — Boot & load. The first-load choreography and its contracts. */
+/** §24 — Boot & load. The first-load choreography and its contracts. */
 export default function BootSection() {
   return (
     <DsSection
