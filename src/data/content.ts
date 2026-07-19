@@ -150,21 +150,6 @@ export const PRODUCTS: Product[] = [
     status: 'STABLE',
     tags: ['CLI', 'Rust', 'Cross-platform']
   },
-  /* TEMP HIDDEN (WIP) — reinstate by uncommenting. The Products section and the
-     Footer both render from PRODUCTS, so this hides it everywhere public; keep
-     the matching code in content.test.ts's expected-codes list commented too.
-  {
-    id: 'sd-300',
-    code: 'SD-300',
-    name: 'System Diagnostic',
-    tagline: 'A live dashboard for your hardware.',
-    description:
-      'Interactive terminal dashboard for real-time system monitoring — CPU, memory, processes, and machine health at a glance.',
-    href: 'https://reports.qubetx.com/sd300',
-    status: 'STABLE',
-    tags: ['TUI', 'Monitoring']
-  },
-  */
   {
     id: 'nd-300',
     code: 'ND-300',
@@ -175,6 +160,17 @@ export const PRODUCTS: Product[] = [
     href: 'https://reports.qubetx.com/nd300',
     status: 'STABLE',
     tags: ['CLI', 'Network']
+  },
+  {
+    id: 'sd-300',
+    code: 'SD-300',
+    name: 'System Diagnostic',
+    tagline: 'A live dashboard for your hardware.',
+    description:
+      'Interactive terminal dashboard for real-time system monitoring — CPU, memory, processes, and machine health at a glance.',
+    href: 'https://reports.qubetx.com/sd300',
+    status: 'STABLE',
+    tags: ['TUI', 'Monitoring']
   },
   {
     id: 'wb-300',

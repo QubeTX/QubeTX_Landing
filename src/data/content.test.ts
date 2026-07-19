@@ -85,8 +85,8 @@ describe('PRODUCTS', () => {
   it('has the product line', () => {
     expect(PRODUCTS.map((p) => p.code)).toEqual([
       'TR-300',
-      // 'SD-300',   // TEMP HIDDEN (WIP) — reinstate alongside content.ts
       'ND-300',
+      'SD-300',
       'WB-300',
       // 'SHAUGHVOS', // TEMP HIDDEN (WIP) — reinstate alongside content.ts
       'QK-300',
