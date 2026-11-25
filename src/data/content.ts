@@ -172,17 +172,6 @@ export const PRODUCTS: Product[] = [
     status: 'STABLE',
     tags: ['TUI', 'Monitoring']
   },
-  {
-    id: 'wb-300',
-    code: 'WB-300',
-    name: 'Workbranch',
-    tagline: 'A control tower for your branches.',
-    description:
-      'Live branch-hierarchy control tower for Git — branches, workbranches, and worktrees mapped in one view.',
-    href: 'https://reports.qubetx.com/wb300',
-    status: 'ACTIVE',
-    tags: ['CLI', 'Git']
-  },
   /* TEMP HIDDEN (WIP) — reinstate by uncommenting. The Products section and the
      Footer both render from PRODUCTS, so this hides it everywhere public; keep
      the matching code in content.test.ts's expected-codes list commented too.

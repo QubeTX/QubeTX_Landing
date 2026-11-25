@@ -87,7 +87,6 @@ describe('PRODUCTS', () => {
       'TR-300',
       'ND-300',
       'SD-300',
-      'WB-300',
       // 'SHAUGHVOS', // TEMP HIDDEN (WIP) — reinstate alongside content.ts
       'QK-300',
     ])
